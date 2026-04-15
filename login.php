@@ -207,7 +207,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                         <form class="d-flex flex-column gap-3" method="POST" action="">
                             <div class="text-center">
-                                <h1 class="fs-4 fw-bold">Hey there <svg class="bi bi-heart-fill"
+                                <h1 class="fs-4 fw-bold">Hey there <svg class="bi bi-heart-fill text-danger"
                                         xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
                                         viewBox="0 0 16 16">
                                         <path fill-rule="evenodd"
