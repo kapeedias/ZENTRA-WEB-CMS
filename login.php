@@ -200,7 +200,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <?php if (!empty($errors)): ?>
                         <div class="w-100 alert-error">
                             <?php foreach ($errors as $err): ?>
-                            <p><?= htmlspecialchars($err) ?></p>
+                            <span><?= htmlspecialchars($err) ?></span>
                             <?php endforeach; ?>
                         </div>
                         <?php endif; ?>
