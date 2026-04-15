@@ -17,31 +17,15 @@
                         </path>
                     </svg>Quick Create </a>
                 <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link" href="#"><i
-                                class="icon ion-speedometer me-2"></i>>Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="icon ion-speedometer me-2"></i>
+                            Dashboard</a></li>
 
-                    <li class="nav-item"><a class="nav-link" href="#"><svg class="bi bi-list-task me-2"
-                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
-                                viewBox="0 0 16 16">
-                                <path fill-rule="evenodd"
-                                    d="M2 2.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5V3a.5.5 0 0 0-.5-.5zM3 3H2v1h1z">
-                                </path>
-                                <path
-                                    d="M5 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5M5.5 7a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1zm0 4a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1z">
-                                </path>
-                                <path fill-rule="evenodd"
-                                    d="M1.5 7a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H2a.5.5 0 0 1-.5-.5zM2 7h1v1H2zm0 3.5a.5.5 0 0 0-.5.5v1a.5.5 0 0 0 .5.5h1a.5.5 0 0 0 .5-.5v-1a.5.5 0 0 0-.5-.5zm1 .5H2v1h1z">
-                                </path>
-                            </svg>Lifecycle<span
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="icon ion-speedometer me-2"></i>
+                            Lifecycle<span
                                 class="badge bg-success shadow-sm position-absolute end-0 ms-auto me-3">22</span></a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#"><svg class="bi bi-bar-chart me-2"
-                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
-                                viewBox="0 0 16 16">
-                                <path
-                                    d="M4 11H2v3h2zm5-4H7v7h2zm5-5v12h-2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1z">
-                                </path>
-                            </svg>Analytics</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#"><i class="icon ion-speedometer me-2"></i>
+                            Analytics</a></li>
                     <li class="nav-item"><a class="nav-link" href="#"><svg class="bi bi-folder me-2"
                                 xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
                                 viewBox="0 0 16 16">
