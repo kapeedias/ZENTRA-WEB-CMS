@@ -95,7 +95,7 @@ enforceSessionSecurity();
                             </ul>
                             <div class="mt-4">
                                 <h6 class="text-muted ps-3 small">
-                                    Welcome <?php echo $_SESSION['user_email']; ?>
+                                    Documents
                                 </h6>
                                 <ul class="nav flex-column">
                                     <li class="nav-item"><a class="nav-link" href="#"><svg class="bi bi-database me-2"
@@ -278,7 +278,7 @@ enforceSessionSecurity();
                                 <li class="breadcrumb-item"><a href="#"><span>Examples</span></a></li>
                                 <li class="breadcrumb-item active"><span>Documents</span></li>
                             </ol>
-                            <h1 class="h2">Documents</h1>
+                            <h1 class="h2">Welcome <?php echo $_SESSION['user_email']; ?></h1>
                         </div>
                     </div>
                     <div>
