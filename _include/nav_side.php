@@ -37,7 +37,8 @@
                         <li class="nav-item">
                             <div><a class="btn btn-link text-decoration-none d-flex justify-content-between align-items-center px-3"
                                     data-bs-toggle="collapse" role="button" aria-expanded="false"
-                                    aria-controls="collapse-1" href="#collapse-1"><span> <i class="bi bi-gear"></i>Admin
+                                    aria-controls="collapse-1" href="#collapse-1"><span> <i
+                                            class="icon ion-ios-cog-outline me-2"></i>Admin
                                         Settings</span><i class="bi bi-chevron-double-right"></i><svg
                                         class="bi bi-chevron-right arrow" xmlns="http://www.w3.org/2000/svg" width="1em"
                                         height="1em" fill="currentColor" viewBox="0 0 16 16">
