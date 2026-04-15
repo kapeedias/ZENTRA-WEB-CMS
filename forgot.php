@@ -178,9 +178,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <!-- End: alert -->
                         <div class="card w-100 max-w-400">
                             <div class="card-body">
-                                <h1 class="fs-5 mb-1">Password recovery</h1>
-                                <p class="text-muted mb-4 small">Enter your email below and we will send you a new
-                                    password</p>
+                                <h1 class="fs-5 mb-1">Password playing hide and seek?</h1>
+                                <p class="text-muted mb-4 small">It happens! Drop your email below and we'll send you a
+                                    shiny new password.</p>
                                 <form>
                                     <div class="mb-3"><label class="form-label" for="email">Email</label><input
                                             class="form-control" type="email" id="useremail"
@@ -191,7 +191,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <script src="https://www.google.com/recaptcha/api.js" async defer>
                                     </script>
                                     <!-- End: recaptcha -->
-                                    <div class="d-grid gap-2"><button class="btn btn-primary" type="submit">Send new
+                                    <div class="d-grid gap-2 my-3"><button class="btn btn-primary" type="submit">Send
+                                            new
                                             password</button></div>
                                     <div class="text-center mt-4 small"><span> Back to&nbsp;</span><a
                                             href="login.php">Login</a></div>
