@@ -198,17 +198,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="d-flex flex-fill justify-content-center align-items-center">
                     <div class="w-100 max-w-320">
                         <?php if (!empty($errors)): ?>
-                        <div class="w-100 alert-error">
-                            <?php foreach ($errors as $err): ?>
-                            <span><?= htmlspecialchars($err) ?></span>
-                            <?php endforeach; ?>
-                        </div>
+                            <div class="w-100 alert-error">
+                                <?php foreach ($errors as $err): ?>
+                                    <span><?= htmlspecialchars($err) ?></span>
+                                <?php endforeach; ?>
+                            </div>
                         <?php endif; ?>
 
                         <form class="d-flex flex-column gap-3" method="POST" action="">
                             <div class="text-center">
-                                <h1 class="fs-4 fw-bold">Login to your account</h1>
-                                <p class="text-muted small">Enter your email below to login to your account</p>
+                                <h1 class="fs-4 fw-bold">Hey there <svg class="bi bi-heart-fill"
+                                        xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
+                                        viewBox="0 0 16 16">
+                                        <path fill-rule="evenodd"
+                                            d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314">
+                                        </path>
+                                    </svg></h1>
+                                <p class="text-muted small">Log in with your email and let's get going.</p>
                             </div>
                             <div class="mb-3"><label class="form-label small fw-medium" for="email">Email</label><input
                                     class="form-control" type="email" placeholder="yourname@work-email.com"
