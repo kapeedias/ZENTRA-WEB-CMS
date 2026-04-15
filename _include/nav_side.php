@@ -26,68 +26,29 @@
                     </li>
                     <li class="nav-item"><a class="nav-link" href="#"><i class="icon ion-speedometer me-2"></i>
                             Analytics</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><svg class="bi bi-folder me-2"
-                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
-                                viewBox="0 0 16 16">
-                                <path
-                                    d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a2 2 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139q.323-.119.684-.12h5.396z">
-                                </path>
-                            </svg>Projects</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#"><svg class="bi bi-people me-2"
-                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
-                                viewBox="0 0 16 16">
-                                <path
-                                    d="M15 14s1 0 1-1-1-4-5-4-5 3-5 4 1 1 1 1zm-7.978-1L7 12.996c.001-.264.167-1.03.76-1.72C8.312 10.629 9.282 10 11 10c1.717 0 2.687.63 3.24 1.276.593.69.758 1.457.76 1.72l-.008.002-.014.002zM11 7a2 2 0 1 0 0-4 2 2 0 0 0 0 4m3-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0M6.936 9.28a6 6 0 0 0-1.23-.247A7 7 0 0 0 5 9c-4 0-5 3-5 4q0 1 1 1h4.216A2.24 2.24 0 0 1 5 13c0-1.01.377-2.042 1.09-2.904.243-.294.526-.569.846-.816M4.92 10A5.5 5.5 0 0 0 4 13H1c0-.26.164-1.03.76-1.724.545-.636 1.492-1.256 3.16-1.275ZM1.5 5.5a3 3 0 1 1 6 0 3 3 0 0 1-6 0m3-2a2 2 0 1 0 0 4 2 2 0 0 0 0-4">
-                                </path>
-                            </svg>Team</a></li>
+
                 </ul>
                 <div class="mt-4">
                     <h6 class="text-muted ps-3 small">
                         Documents
                     </h6>
                     <ul class="nav flex-column">
-                        <li class="nav-item"><a class="nav-link" href="#"><svg class="bi bi-database me-2"
-                                    xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
-                                    viewBox="0 0 16 16">
-                                    <path
-                                        d="M4.318 2.687C5.234 2.271 6.536 2 8 2s2.766.27 3.682.687C12.644 3.125 13 3.627 13 4c0 .374-.356.875-1.318 1.313C10.766 5.729 9.464 6 8 6s-2.766-.27-3.682-.687C3.356 4.875 3 4.373 3 4c0-.374.356-.875 1.318-1.313M13 5.698V7c0 .374-.356.875-1.318 1.313C10.766 8.729 9.464 9 8 9s-2.766-.27-3.682-.687C3.356 7.875 3 7.373 3 7V5.698c.271.202.58.378.904.525C4.978 6.711 6.427 7 8 7s3.022-.289 4.096-.777A5 5 0 0 0 13 5.698M14 4c0-1.007-.875-1.755-1.904-2.223C11.022 1.289 9.573 1 8 1s-3.022.289-4.096.777C2.875 2.245 2 2.993 2 4v9c0 1.007.875 1.755 1.904 2.223C4.978 15.71 6.427 16 8 16s3.022-.289 4.096-.777C13.125 14.755 14 14.007 14 13zm-1 4.698V10c0 .374-.356.875-1.318 1.313C10.766 11.729 9.464 12 8 12s-2.766-.27-3.682-.687C3.356 10.875 3 10.373 3 10V8.698c.271.202.58.378.904.525C4.978 9.71 6.427 10 8 10s3.022-.289 4.096-.777A5 5 0 0 0 13 8.698m0 3V13c0 .374-.356.875-1.318 1.313C10.766 14.729 9.464 15 8 15s-2.766-.27-3.682-.687C3.356 13.875 3 13.373 3 13v-1.302c.271.202.58.378.904.525C4.978 12.71 6.427 13 8 13s3.022-.289 4.096-.777c.324-.147.633-.323.904-.525">
-                                    </path>
-                                </svg>Data Library</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#"> Data Library</a></li>
                         <li class="nav-item">
                             <div><a class="btn btn-link text-decoration-none d-flex justify-content-between align-items-center px-3"
                                     data-bs-toggle="collapse" role="button" aria-expanded="false"
-                                    aria-controls="collapse-1" href="#collapse-1"><span><svg
-                                            class="bi bi-file-text me-2" xmlns="http://www.w3.org/2000/svg" width="1em"
-                                            height="1em" fill="currentColor" viewBox="0 0 16 16">
-                                            <path
-                                                d="M5 4a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm-.5 2.5A.5.5 0 0 1 5 6h6a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5M5 8a.5.5 0 0 0 0 1h6a.5.5 0 0 0 0-1zm0 2a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1z">
-                                            </path>
-                                            <path
-                                                d="M2 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2zm10-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1">
-                                            </path>
-                                        </svg>Reports</span><svg class="bi bi-chevron-right arrow"
-                                        xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" fill="currentColor"
-                                        viewBox="0 0 16 16">
+                                    aria-controls="collapse-1" href="#collapse-1"><span> <i class="bi bi-gear"></i>Admin
+                                        Settings</span><i class="bi bi-chevron-double-right"></i><svg
+                                        class="bi bi-chevron-right arrow" xmlns="http://www.w3.org/2000/svg" width="1em"
+                                        height="1em" fill="currentColor" viewBox="0 0 16 16">
                                         <path fill-rule="evenodd"
                                             d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708">
                                         </path>
                                     </svg></a>
                                 <div class="collapse" id="collapse-1">
                                     <ul class="nav ms-3">
-                                        <li class="nav-item w-100"><a class="nav-link" href="#"><svg
-                                                    class="bi bi-calendar me-2" xmlns="http://www.w3.org/2000/svg"
-                                                    width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z">
-                                                    </path>
-                                                </svg>Recent Orders</a></li>
-                                        <li class="nav-item w-100"><a class="nav-link" href="#"><svg
-                                                    class="bi bi-ticket me-2" xmlns="http://www.w3.org/2000/svg"
-                                                    width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M0 4.5A1.5 1.5 0 0 1 1.5 3h13A1.5 1.5 0 0 1 16 4.5V6a.5.5 0 0 1-.5.5 1.5 1.5 0 0 0 0 3 .5.5 0 0 1 .5.5v1.5a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 11.5V10a.5.5 0 0 1 .5-.5 1.5 1.5 0 1 0 0-3A.5.5 0 0 1 0 6zM1.5 4a.5.5 0 0 0-.5.5v1.05a2.5 2.5 0 0 1 0 4.9v1.05a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-1.05a2.5 2.5 0 0 1 0-4.9V4.5a.5.5 0 0 0-.5-.5z">
-                                                    </path>
-                                                </svg>Coupons</a></li>
+                                        <li class="nav-item w-100"><a class="nav-link" href="#">Recent Orders</a></li>
+                                        <li class="nav-item w-100"><a class="nav-link" href="#">Recent Orders</a></li>
                                     </ul>
                                 </div>
                             </div>
