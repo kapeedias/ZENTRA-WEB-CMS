@@ -146,7 +146,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title>Login - Brand</title>
+    <title><?= APP_NAME ?> - Forgot</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css?h=283928673d7441cd64f1af3db9200eab">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Geist:400,700&amp;display=swap">
     <link rel="stylesheet" href="assets/css/styles.min.css?h=6fca2a621bf969aa555e4e55be38144a">
@@ -163,7 +163,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="d-flex flex-fill justify-content-center align-items-center">
                     <div class="w-100 max-w-320">
                         <!-- Start: alert -->
-                        <div class="w-100 alert-error"><span>Error message goes here</span></div><!-- End: alert -->
+                        <?php if (!empty($success)): ?>
+                            <div class="w-100 alert-success">
+                                <?= implode('<br>', $success) ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if (!empty($errors)): ?>
+                            <div class="w-100 alert-error">
+                                <?= implode('<br>', $errors) ?>
+                            </div>
+                        <?php endif; ?>
+
+                        <!-- End: alert -->
                         <div class="card w-100 max-w-400">
                             <div class="card-body">
                                 <h1 class="fs-5 mb-1">Password recovery</h1>
@@ -176,11 +188,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             autofocus="" autocomplete="off" inputmode="email"></div>
                                     <!-- Start: recaptcha -->
                                     <div class="g-recaptcha" data-sitekey="<?= GOOGLE_RECAPTCHA_SITE_KEY; ?>"></div>
+                                    <script src="https://www.google.com/recaptcha/api.js" async defer>
+                                    </script>
                                     <!-- End: recaptcha -->
                                     <div class="d-grid gap-2"><button class="btn btn-primary" type="submit">Send new
                                             password</button></div>
                                     <div class="text-center mt-4 small"><span> Back to&nbsp;</span><a
-                                            href="login.html">Login</a></div>
+                                            href="login.php">Login</a></div>
                                 </form>
                             </div>
                         </div>
