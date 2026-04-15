@@ -205,7 +205,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <?php endif; ?>
 
-                        <form class="d-flex flex-column gap-3">
+                        <form class="d-flex flex-column gap-3" method="POST" action="">
                             <div class="text-center">
                                 <h1 class="fs-4 fw-bold">Login to your account</h1>
                                 <p class="text-muted small">Enter your email below to login to your account</p>
