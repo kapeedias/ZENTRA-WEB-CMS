@@ -161,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             class="fs-4 fw-bold brand-primary">ZENTRA</span><span
                             class="fs-4 brand-secondary">CMS</span></a></div>
                 <div class="d-flex flex-fill justify-content-center align-items-center">
-                    <div class="w-100 max-w-320">
+                    <div class="w-100 max-w-350">
                         <!-- Start: alert -->
                         <?php if (!empty($success)): ?>
                             <div class="w-100 alert-success">
