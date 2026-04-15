@@ -73,7 +73,7 @@ enforceSessionSecurity();
                                             </path>
                                         </svg>&nbsp;Activity log</a>
                                     <div class="dropdown-divider"></div><a class="dropdown-item link-danger"
-                                        href="#"><svg class="bi bi-box-arrow-right me-2"
+                                        href="logout.php"><svg class="bi bi-box-arrow-right me-2"
                                             xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
                                             fill="currentColor" viewBox="0 0 16 16">
                                             <path fill-rule="evenodd"
