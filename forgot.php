@@ -164,19 +164,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="w-100 max-w-350">
                         <!-- Start: alert -->
                         <?php if (!empty($success)): ?>
-                            <div class="w-100 alert-success">
+                            <div class="w-100 alert-success shadow">
                                 <?= implode('<br>', $success) ?>
                             </div>
                         <?php endif; ?>
 
                         <?php if (!empty($errors)): ?>
-                            <div class="w-100 alert-error">
+                            <div class="w-100 alert-error shadow">
                                 <?= implode('<br>', $errors) ?>
                             </div>
                         <?php endif; ?>
 
                         <!-- End: alert -->
-                        <div class="card w-100 max-w-400">
+                        <div class="card w-100 max-w-400 shadow">
                             <div class="card-body">
                                 <h1 class="fs-5 mb-1">Password playing hide and seek?</h1>
                                 <p class="text-muted mb-4 small">It happens! Drop your email below and we'll send you a
