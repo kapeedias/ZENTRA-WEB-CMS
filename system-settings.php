@@ -104,7 +104,7 @@
                                     <table class="table table-hover" id="AppConfigData" data-search="true">
                                         <thead>
                                             <tr>
-                                                <th class="text-start">Setting</th>
+                                                <th class="text-start" style="max-width: 500px;">Setting</th>
                                                 <th class="text-center">Value</th>
                                                 <th class="text-start">Enabled</th>
                                             </tr>
