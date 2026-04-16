@@ -133,7 +133,7 @@
                                                         </div>
                                                     </td>
                                                     <td>Last updated on
-                                                        <?php echo htmlspecialchars($row['updated_on']); ?> by
+                                                        <?php echo htmlspecialchars($row['updated_on']); ?> <br />by
                                                         <?php echo htmlspecialchars($row['updated_by']); ?>
                                                     </td>
                                                 </tr>
