@@ -156,9 +156,6 @@
                                                                 id="check_<?php echo $row['setting_key']; ?>"
                                                                 name="enabled[<?php echo $row['setting_key']; ?>]"
                                                                 role="switch">
-                                                            <label
-                                                                class="form-check-label text-primary d-none align-content-center"
-                                                                for="check_<?php echo $row['setting_key']; ?>">Active</label>
                                                         </div>
                                                     </td>
                                                     <td>Last updated on
