@@ -46,7 +46,34 @@
                                 <div class="dropdown"><button class="btn btn-link" data-bs-toggle="dropdown"
                                         aria-expanded="false" type="button"><i class="fa fa-ellipsis-v"></i></button>
                                     <div class="dropdown-menu dropdown-menu-end shadow">
-                                        <a class="dropdown-item" href="app-config.php"> Add New Config</a>
+                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
+                                            data-bs-target="#addNewConfigModal"> Add New Config</a>
+
+                                        <!-- Begin addNewConfigModal  -->
+                                        <div class="modal fade" id="addNewConfigModal" tabindex="-1"
+                                            data-bs-backdrop="static" data-bs-keyboard="false"
+                                            aria-labelledby="addNewConfigModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="addNewConfigModalLabel">
+                                                            Modal title</h1>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        ...
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <button type="button" class="btn btn-primary">Save
+                                                            changes</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- End addNewConfigModal  -->
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Export into CSV</a>
                                     </div>
@@ -66,35 +93,8 @@
                                         </thead>
                                         <tbody>
                                             <tr valign="middle">
-                                                <td><button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#exampleModal">
-                                                        Launch demo modal
-                                                    </button>
+                                                <td>
 
-                                                    <!-- Modal -->
-                                                    <div class="modal fade" id="exampleModal" tabindex="-1"
-                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
-                                                                        Modal title</h1>
-                                                                    <button type="button" class="btn-close"
-                                                                        data-bs-dismiss="modal"
-                                                                        aria-label="Close"></button>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    ...
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
-                                                                    <button type="button" class="btn btn-primary">Save
-                                                                        changes</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                     <a class="text-decoration-none d-flex align-items-center gap-2"
                                                         href="#"><img
                                                             class="img-fluid aspect-ratio-1x1 object-fit-cover rounded-circle shadow-sm"
