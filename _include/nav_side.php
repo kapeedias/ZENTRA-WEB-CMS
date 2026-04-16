@@ -17,7 +17,8 @@
                         </path>
                     </svg>Quick Create </a>
                 <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link" href="#"><i class="icon ion-speedometer me-2"></i>
+                    <li class="nav-item"><a class="nav-link" href="myaccount.php"><i
+                                class="icon ion-speedometer me-2"></i>
                             Dashboard</a></li>
 
                     <li class="nav-item"><a class="nav-link" href="#"><i class="icon ion-speedometer me-2"></i>
