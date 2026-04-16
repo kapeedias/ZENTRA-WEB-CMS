@@ -6,8 +6,8 @@
 <script src="assets/js/script.min.js?h=76fb943b07981bddcd684084e3798cff"></script>
 <script>
 const table = $('#AppConfigData').DataTable({
-    pageLength: 5,
-    lengthMenu: [5, 10, 25, 50],
+    pageLength: 10,
+    lengthMenu: [5, 10, 25, 50, 75, 100],
     ordering: true,
     searching: true,
     autoWidth: false, // IMPORTANT
