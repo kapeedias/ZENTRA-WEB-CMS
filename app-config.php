@@ -17,14 +17,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title><?php echo getenv('APP_NAME') ?> - App Configuration</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css?h=283928673d7441cd64f1af3db9200eab">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Geist:400,700&amp;display=swap">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/material-design-icons/3.0.1/iconfont/material-icons.min.css">
-    <link rel="stylesheet" href="assets/css/styles.min.css?h=8185e874b995279ecb2a9d7bb55b09b0">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/dataTables.bootstrap5.min.css">
+    <?php include '_include/head.php'; ?>
 </head>
 
 <body>
@@ -39,23 +32,23 @@
                     <?php include '_include/nav_top.php'; ?>
                     <!-- Start: main content -->
                     <div>
-                        <p>Paragraph</p><!-- Start: Table Card -->
+                        <!-- Start: Table Card -->
                         <div class="card">
                             <div
                                 class="card-header d-flex justify-content-between align-items-center flex-wrap flex-xl-nowrap pb-0 py-3">
                                 <h5 class="fw-bold w-100 mb-3 mb-xl-0">App Configurations</h5>
-                                <form class="position-relative flex-grow-1 flex-shrink-0 flex-xl-grow-0 ms-auto"><input
-                                        class="form-control pe-4" type="search" placeholder="Search"
-                                        name="searchAppConfig"><button
-                                        class="btn border-0 position-absolute top-50 end-0 translate-middle-y"
-                                        type="submit"><i class="fa fa-search"></i></button></form>
+                                <form class="position-relative flex-grow-1 flex-shrink-0 flex-xl-grow-0 ms-auto">
+                                    <input class="form-control pe-4" type="search" placeholder="Search"
+                                        name="searchAppConfig">
+                                    <button class="btn border-0 position-absolute top-50 end-0 translate-middle-y"
+                                        type="submit"><i class="fa fa-search"></i></button>
+                                </form>
                                 <div class="dropdown"><button class="btn btn-link" data-bs-toggle="dropdown"
                                         aria-expanded="false" type="button"><i class="fa fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu dropdown-menu-end shadow"><a class="dropdown-item"
-                                            href="#">7
-                                            Days</a><a class="dropdown-item" href="#">30 Days</a>
-                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Custom
-                                            Period</a>
+                                    <div class="dropdown-menu dropdown-menu-end shadow">
+                                        <a class="dropdown-item" href="app-config.php"> Add New Config</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="#">Export into CSV</a>
                                     </div>
                                 </div>
                             </div>
@@ -231,35 +224,7 @@
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/4.0.0/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
-    <script src="assets/js/script.min.js?h=76fb943b07981bddcd684084e3798cff"></script>
-    <script>
-    const table = $('#AppConfigData').DataTable({
-        pageLength: 5,
-        lengthMenu: [5, 10, 25, 50],
-        ordering: true,
-        searching: true,
-        autoWidth: false, // IMPORTANT
-        scrollX: false, // IMPORTANT (prevents forced horizontal scroll)
-        dom: '<"row align-items-center mb-2"<"col-md-6"l>>' +
-            'rt' +
-            '<"row align-items-center mt-2"<"col-md-6"i><"col-md-6 d-flex justify-content-end"p>>'
-    });
-
-    let timer;
-    $('input[name="searchAppConfig"]').on('input', function() {
-        clearTimeout(timer);
-        const value = this.value;
-
-        timer = setTimeout(() => {
-            table.search(value).draw();
-        }, 150);
-    });
-    </script>
+    <?php include '_include/body_end_plugins.php'; ?>
 </body>
 
 </html>
