@@ -112,7 +112,7 @@
                                         <tbody>
                                             <?php foreach ($settings as $row) {?>
                                             <tr valign="middle">
-                                                <td class="text-end pe-3">
+                                                <td class="text-start pe-3">
                                                     <div>
                                                         <p class="mb-0"><?php echo $row['setting_key']; ?></p>
                                                     </div>
