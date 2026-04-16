@@ -119,7 +119,14 @@
                     </div><!-- End: top-nav-and-details -->
                     <!-- Start: main content -->
                     <div>
-                        <p>Paragraph</p>
+
+
+
+
+
+
+
+
                     </div><!-- End: main content -->
                     <!-- Start: Footer Centered -->
                     <?php include('_include/inner-footer.php'); ?>
