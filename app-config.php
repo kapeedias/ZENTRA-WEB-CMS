@@ -66,7 +66,36 @@
                                         </thead>
                                         <tbody>
                                             <tr valign="middle">
-                                                <td><a class="text-decoration-none d-flex align-items-center gap-2"
+                                                <td><button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal">
+                                                        Launch demo modal
+                                                    </button>
+
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">
+                                                                        Modal title</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    ...
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button type="button" class="btn btn-secondary"
+                                                                        data-bs-dismiss="modal">Close</button>
+                                                                    <button type="button" class="btn btn-primary">Save
+                                                                        changes</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <a class="text-decoration-none d-flex align-items-center gap-2"
                                                         href="#"><img
                                                             class="img-fluid aspect-ratio-1x1 object-fit-cover rounded-circle shadow-sm"
                                                             src="assets/img/team/avatar1.jpg?h=fc3130ca16c6d3ee2009fd4450b80205"
@@ -77,7 +106,8 @@
                                                                 class="text-secondary d-block">Marketing
                                                                 Manager</small>
                                                         </div>
-                                                    </a></td>
+                                                    </a>
+                                                </td>
                                                 <td><span class="badge bg-light d-inline-flex gap-1"><i
                                                             class="material-icons text-success">check_circle</i>&nbsp;Active</span>
                                                 </td>
