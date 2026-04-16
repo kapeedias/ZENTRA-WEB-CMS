@@ -16,7 +16,7 @@ const table = $('#AppConfigData').DataTable({
         'rt' +
         '<"row align-items-center mt-2"<"col-md-6"i><"col-md-6 d-flex justify-content-end"p>>'
 });
-
+//search
 let timer;
 $('input[name="searchAppConfig"]').on('input', function() {
     clearTimeout(timer);
@@ -25,5 +25,12 @@ $('input[name="searchAppConfig"]').on('input', function() {
     timer = setTimeout(() => {
         table.search(value).draw();
     }, 150);
+});
+//filtering
+table.columns().every(function() {
+    var that = this;
+    $('input', this.header()).on('keyup change', function() {
+        that.search(this.value).draw();
+    });
 });
 </script>
