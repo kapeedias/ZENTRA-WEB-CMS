@@ -127,7 +127,7 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <form id="settingsForm" method="POST" action="save_settings.php">
+                                <form id="settingsForm" method="POST" action="">
                                     <div class="table-responsive">
                                         <table class="table table-hover" id="AppConfigData" data-search="true">
                                             <thead>
