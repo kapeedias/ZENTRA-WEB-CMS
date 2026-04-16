@@ -97,48 +97,54 @@
                                 </div>
                             </div>
                             <div class="card-body">
-                                <div class="d-flex justify-content-end save-btn-holder"><button
-                                        class="btn btn-primary btn-sm align-self-end" type="button">Save
-                                        Settings</button></div>
-                                <div class="table-responsive">
-                                    <table class="table table-hover" id="AppConfigData" data-search="true">
-                                        <thead>
-                                            <tr>
-                                                <th class="text-end me-3">Setting</th>
-                                                <th class=" text-center">Value</th>
-                                                <th class="text-start">Enabled</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php foreach ($settings as $row) {?>
-                                            <tr valign="middle">
-                                                <td class="text-end pe-3">
-                                                    <div>
-                                                        <p class="mb-0"><?php echo $row['setting_key']; ?></p>
-                                                    </div>
-                                                </td>
-                                                <td><input type="text" class="form-control"
-                                                        name="<?php echo $row['setting_key']; ?>"
-                                                        value="<?php echo $row['setting_value']; ?> ">
-                                                </td>
-                                                <td>
-                                                    <div class="form-check form-switch d-inline-flex ms-5 badge">
-                                                        <input class="form-check-input form-check sai" type="checkbox"
-                                                            <?php if ($row['is_enabled'] == 1) {echo 'checked';}?>
-                                                            id="check_<?php echo $row['setting_key']; ?>" role="switch">
-                                                        <label
-                                                            class="form-check-label text-primary d-none align-content-center"
-                                                            for="check_<?php echo $row['setting_key']; ?>">Active</label>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <?php }?>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="d-flex justify-content-center save-btn-holder"><button
-                                        class="btn btn-primary btn-sm align-self-end" type="button">Save
-                                        Settings</button></div>
+                                <form id="settingsForm" method="POST" action="save_settings.php">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="AppConfigData" data-search="true">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-end me-3">Setting</th>
+                                                    <th class=" text-center">Value</th>
+                                                    <th class="text-start">Enabled</th>
+                                                    <th class="text-start">Activity</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($settings as $row) {?>
+                                                <tr valign="middle">
+                                                    <td class="text-end pe-3">
+                                                        <div>
+                                                            <p class="mb-0"><?php echo $row['setting_key']; ?></p>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control"
+                                                            name="<?php echo $row['setting_key']; ?>"
+                                                            value="<?php echo htmlspecialchars($row['setting_value']); ?> ">
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-check form-switch d-inline-flex ms-5 badge">
+                                                            <input class="form-check-input form-check sai"
+                                                                type="checkbox"
+                                                                <?php if ($row['is_enabled'] == 1) {echo 'checked';}?>
+                                                                id="check_<?php echo $row['setting_key']; ?>"
+                                                                role="switch">
+                                                            <label
+                                                                class="form-check-label text-primary d-none align-content-center"
+                                                                for="check_<?php echo $row['setting_key']; ?>">Active</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>Last updated on
+                                                        <?php echo htmlspecialchars($row['updated_on']); ?> by
+                                                        <?php echo htmlspecialchars($row['updated_by']); ?>
+                                                    </td>
+                                                </tr>
+                                                <?php }?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="d-flex justify-content-center save-btn-holder"><button
+                                            class="btn btn-primary btn-sm align-self-end" type="submit">Save
+                                            Settings</button></div>
+                                </form>
                             </div>
                         </div><!-- End: Table Card -->
                     </div><!-- End: main content -->
