@@ -104,15 +104,15 @@
                                     <table class="table table-hover" id="AppConfigData" data-search="true">
                                         <thead>
                                             <tr>
-                                                <th class="text-start" style="max-width: 375px !important;">Setting</th>
-                                                <th class="text-center">Value</th>
+                                                <th class="text-end pe-3">Setting</th>
+                                                <th class=" text-center">Value</th>
                                                 <th class="text-start">Enabled</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($settings as $row) {?>
                                             <tr valign="middle">
-                                                <td class="text-start pe-3">
+                                                <td class="text-end pe-3">
                                                     <div>
                                                         <p class="mb-0"><?php echo $row['setting_key']; ?></p>
                                                     </div>
