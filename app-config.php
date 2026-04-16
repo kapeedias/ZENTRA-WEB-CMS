@@ -49,36 +49,36 @@
                                         <a class="dropdown-item" href="#" data-bs-toggle="modal"
                                             data-bs-target="#addNewConfigModal"> Add New Config</a>
 
-                                        <!-- Begin addNewConfigModal  -->
-                                        <div class="modal fade" id="addNewConfigModal" tabindex="-1"
-                                            data-bs-backdrop="static" data-bs-keyboard="false"
-                                            aria-labelledby="addNewConfigModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="addNewConfigModalLabel">
-                                                            Modal title</h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        ...
-                                                    </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                        <button type="button" class="btn btn-primary">Save
-                                                            changes</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- End addNewConfigModal  -->
+
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="#">Export into CSV</a>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Begin addNewConfigModal  -->
+                            <div class="modal fade" id="addNewConfigModal" tabindex="-1" data-bs-backdrop="static"
+                                data-bs-keyboard="false" aria-labelledby="addNewConfigModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="addNewConfigModalLabel">
+                                                Modal title</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ...
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+                                            <button type="button" class="btn btn-primary">Save
+                                                changes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- End addNewConfigModal  -->
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-hover" id="AppConfigData">
