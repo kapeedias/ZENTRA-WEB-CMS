@@ -119,12 +119,13 @@
                                                 </td>
                                                 <td><input type="text" class="form-control"
                                                         name="<?php echo $row['setting_key']; ?>"
-                                                        value="<?php echo $row['setting_value']; ?>"></td>
+                                                        value="<?php echo $row['setting_value'] . " --> " . $row['is_enabled']; ?> ">
+                                                </td>
                                                 <td>
                                                     <div class="form-check form-switch d-inline-flex ms-5 badge">
                                                         <input class="form-check-input form-check sai" type="checkbox"
-                                                            id="check_<?php echo $row['setting_key']; ?>" role="switch"
-                                                            <?php if ($row['is_enabled'] == 1) { echo 'checked'; } ?>>
+                                                            <?php if ($row['is_enabled'] == 1) {echo 'checked';}?>
+                                                            id="check_<?php echo $row['setting_key']; ?>" role="switch">
                                                         <label
                                                             class="form-check-label text-primary d-none align-content-center"
                                                             for="check_<?php echo $row['setting_key']; ?>">Active</label>
