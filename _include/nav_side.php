@@ -23,7 +23,7 @@
 
                     <li class="nav-item"><a class="nav-link" href="#"><i class="icon ion-speedometer me-2"></i>
                             Lifecycle<span
-                                class="badge bg-success shadow-sm position-absolute end-0 ms-auto me-3">22</span></a>
+                                class="badge bg-primary shadow-sm position-absolute end-0 ms-auto me-3">22</span></a>
                     </li>
                     <li class="nav-item"><a class="nav-link" href="#"><i class="icon ion-speedometer me-2"></i>
                             Analytics</a></li>
