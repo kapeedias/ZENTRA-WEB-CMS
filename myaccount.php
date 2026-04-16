@@ -1,13 +1,13 @@
 <?php
-// ==== CONFIG & DEPENDENCIES ====
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/config/init.php';
-require_once __DIR__ . '/config/db.php';
-require_once __DIR__ . '/config/helpers.php';
-require_once __DIR__ . '/classes/User.php';
-$ip = getClientIP();
-secureSessionStart();
-enforceSessionSecurity();
+    // ==== CONFIG & DEPENDENCIES ====
+    require_once __DIR__ . '/config/config.php';
+    require_once __DIR__ . '/config/init.php';
+    require_once __DIR__ . '/config/db.php';
+    require_once __DIR__ . '/config/helpers.php';
+    require_once __DIR__ . '/classes/User.php';
+    $ip = getClientIP();
+    secureSessionStart();
+    enforceSessionSecurity();
 
 ?>
 <!DOCTYPE html>
@@ -16,7 +16,7 @@ enforceSessionSecurity();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title><?= getenv('APP_NAME') ?> - Login</title>
+    <title><?php echo getenv('APP_NAME') ?> - Login</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css?h=283928673d7441cd64f1af3db9200eab">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Geist:400,700&amp;display=swap">
     <link rel="stylesheet" href="assets/css/styles.min.css?h=3a29c92ea4137926cb7ee989224f5bff">
@@ -27,10 +27,10 @@ enforceSessionSecurity();
 <body>
     <div class="container-fluid">
         <div class="row min-vh-100">
-            <?php include('_include/nav_side.php'); ?>
+            <?php include '_include/nav_side.php'; ?>
             <div class="col-md-9 col-xl-10 bg-body-tertiary px-0">
                 <div class="d-md-none p-2 sticky-top">
-                    <?php include('_include/nav_top_branding.php'); ?>
+                    <?php include '_include/nav_top_branding.php'; ?>
                 </div>
                 <main class="px-3 px-md-4">
                     <div
@@ -1160,45 +1160,15 @@ enforceSessionSecurity();
                                         </tbody>
                                     </table>
                                 </div>
-                                <nav aria-label="Table pagination">
-                                    <div
-                                        class="d-flex flex-column justify-content-between align-items-center gap-2 flex-lg-row pt-2 pt-lg-0">
-                                        <div class="text-muted small"><span>Page 1 of 10</span></div>
-                                        <div class="d-flex justify-content-center align-items-center flex-wrap gap-3">
-                                            <div class="d-flex align-items-center gap-2"><label
-                                                    class="form-label mb-0 small">Rows per page</label><select
-                                                    class="form-select-sm w-auto form-select">
-                                                    <option value="">10</option>
-                                                    <option value="">25</option>
-                                                    <option value="">50</option>
-                                                </select></div>
-                                            <nav>
-                                                <ul class="pagination pagination-sm mb-0">
-                                                    <li class="page-item"><a class="page-link" aria-label="Previous"
-                                                            href="#"><span aria-hidden="true">«</span></a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                                    <li class="page-item"><a class="page-link" aria-label="Next"
-                                                            href="#"><span aria-hidden="true">»</span></a></li>
-                                                </ul>
-                                            </nav>
-                                        </div>
-                                    </div>
-                                </nav>
                             </div>
                         </div><!-- End: Table Card -->
                     </div><!-- Start: Footer Centered -->
-                    <?php include('_include/inner-footer.php'); ?>
+                    <?php include '_include/inner-footer.php'; ?>
                 </main>
             </div>
         </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/4.0.0/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="assets/js/script.min.js?h=76fb943b07981bddcd684084e3798cff"></script>
+    <?php include '_include/body_end_plugins.php'; ?>
 </body>
 
 </html>

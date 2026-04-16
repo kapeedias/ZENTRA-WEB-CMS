@@ -62,7 +62,7 @@
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <h1 class="modal-title fs-5" id="addNewConfigModalLabel">
-                                                Modal title</h1>
+                                                Add New Config</h1>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                 aria-label="Close"></button>
                                         </div>
@@ -70,9 +70,9 @@
                                             ...
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
+                                            <button type="button" class="btn btn-danger"
                                                 data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save
+                                            <button type="button" class="btn btn-success">Save
                                                 changes</button>
                                         </div>
                                     </div>
@@ -239,17 +239,8 @@
                         </div><!-- End: Table Card -->
                     </div><!-- End: main content -->
                     <!-- Start: Footer Centered -->
-                    <footer class="text-center py-5"><a
-                            class="text-decoration-none link-body-emphasis d-inline-flex align-items-center"
-                            href="#"><span class="fs-4 fw-bold brand-primary">ZENTRA</span><span
-                                class="fs-4 brand-secondary">CMS</span></a>
-                        <div class="d-flex justify-content-center align-items-center flex-wrap mb-2"><a
-                                class="link-body-emphasis mx-2" href="#">Privacy Policy</a><a
-                                class="link-body-emphasis mx-2" href="#">Terms of Service</a><a
-                                class="link-body-emphasis mx-2" href="#">Cookie Policy</a></div>
-                        <p class="text-muted mb-2">© 2026 Brand. All rights
-                            reserved.</p>
-                    </footer><!-- End: Footer Centered -->
+                    <?php include '_include/inner-footer.php'; ?>
+                    <!-- End: Footer Centered -->
                 </main>
             </div>
         </div>

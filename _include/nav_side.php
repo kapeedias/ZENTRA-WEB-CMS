@@ -45,6 +45,8 @@
                                     <ul class="nav ms-3">
                                         <li class="nav-item w-100"><a class="nav-link" href="app-config.php"><i
                                                     class="icon ion-arrow-right-b me-2"></i> App Config</a></li>
+                                        <li class="nav-item w-100"><a class="nav-link" href="system-settings.php"><i
+                                                    class="icon ion-arrow-right-b me-2"></i> System Settings</a></li>
 
                                     </ul>
                                 </div>
