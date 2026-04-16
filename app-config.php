@@ -1,13 +1,13 @@
 <?php
-// ==== CONFIG & DEPENDENCIES ====
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/config/init.php';
-require_once __DIR__ . '/config/db.php';
-require_once __DIR__ . '/config/helpers.php';
-require_once __DIR__ . '/classes/User.php';
-$ip = getClientIP();
-secureSessionStart();
-enforceSessionSecurity();
+    // ==== CONFIG & DEPENDENCIES ====
+    require_once __DIR__ . '/config/config.php';
+    require_once __DIR__ . '/config/init.php';
+    require_once __DIR__ . '/config/db.php';
+    require_once __DIR__ . '/config/helpers.php';
+    require_once __DIR__ . '/classes/User.php';
+    $ip = getClientIP();
+    secureSessionStart();
+    enforceSessionSecurity();
 
 ?>
 <!DOCTYPE html>
@@ -16,7 +16,7 @@ enforceSessionSecurity();
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title><?= getenv('APP_NAME') ?> - App Configuration</title>
+    <title><?php echo getenv('APP_NAME') ?> - App Configuration</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css?h=283928673d7441cd64f1af3db9200eab">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Geist:400,700&amp;display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -30,21 +30,20 @@ enforceSessionSecurity();
 <body>
     <div class="container-fluid">
         <div class="row min-vh-100">
-            <?php include('_include/nav_side.php'); ?>
+            <?php include '_include/nav_side.php'; ?>
             <div class="col-md-9 col-xl-10 bg-body-tertiary px-0">
                 <div class="d-md-none p-2 sticky-top">
-                    <?php include('_include/nav_top_branding.php'); ?>
+                    <?php include '_include/nav_top_branding.php'; ?>
                 </div>
                 <main class="px-3 px-md-4">
-                    <?php include('_include/nav_top.php'); ?>
+                    <?php include '_include/nav_top.php'; ?>
                     <!-- Start: main content -->
                     <div>
                         <p>Paragraph</p><!-- Start: Table Card -->
                         <div class="card">
                             <div
                                 class="card-header d-flex justify-content-between align-items-center flex-wrap flex-xl-nowrap pb-0 py-3">
-                                <h5 class="fw-bold w-100 mb-3 mb-xl-0">Recent
-                                    Customers</h5>
+                                <h5 class="fw-bold w-100 mb-3 mb-xl-0">App Configurations</h5>
                                 <form class="position-relative flex-grow-1 flex-shrink-0 flex-xl-grow-0 ms-auto"><input
                                         class="form-control pe-4" type="search" placeholder="Search"
                                         name="searchAppConfig"><button
@@ -233,33 +232,34 @@ enforceSessionSecurity();
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/4.0.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
     <script src="assets/js/script.min.js?h=76fb943b07981bddcd684084e3798cff"></script>
     <script>
-        const table = $('#AppConfigData').DataTable({
-            pageLength: 5,
-            lengthMenu: [5, 10, 25, 50],
-            ordering: true,
-            searching: true,
-            autoWidth: false, // IMPORTANT
-            scrollX: false, // IMPORTANT (prevents forced horizontal scroll)
-            dom: '<"row align-items-center mb-2"<"col-md-6"l>>' +
-                'rt' +
-                '<"row align-items-center mt-2"<"col-md-6"i><"col-md-6 d-flex justify-content-end"p>>'
-        });
+    const table = $('#AppConfigData').DataTable({
+        pageLength: 5,
+        lengthMenu: [5, 10, 25, 50],
+        ordering: true,
+        searching: true,
+        autoWidth: false, // IMPORTANT
+        scrollX: false, // IMPORTANT (prevents forced horizontal scroll)
+        dom: '<"row align-items-center mb-2"<"col-md-6"l>>' +
+            'rt' +
+            '<"row align-items-center mt-2"<"col-md-6"i><"col-md-6 d-flex justify-content-end"p>>'
+    });
 
-        let timer;
-        $('input[name="searchAppConfig"]').on('input', function() {
-            clearTimeout(timer);
-            const value = this.value;
+    let timer;
+    $('input[name="searchAppConfig"]').on('input', function() {
+        clearTimeout(timer);
+        const value = this.value;
 
-            timer = setTimeout(() => {
-                table.search(value).draw();
-            }, 150);
-        });
+        timer = setTimeout(() => {
+            table.search(value).draw();
+        }, 150);
+    });
     </script>
 </body>
 
