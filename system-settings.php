@@ -9,6 +9,20 @@
     secureSessionStart();
     enforceSessionSecurity();
 
+    try {
+    $pdo     = Database::getInstance();
+    $userObj = new User($pdo);
+    } catch (PDOException $e) {
+    die("Database connection failed: " . $e->getMessage());
+    }
+
+    try {
+    $stmt     = $pdo->query("SELECT setting_key, setting_value FROM zentra_system_settings");
+    $settings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+    die("Database query failed: " . $e->getMessage());
+    }
+
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
@@ -92,25 +106,31 @@
                                             <tr>
                                                 <th class="text-end pe-3">Setting</th>
                                                 <th class="text-center">Value</th>
-                                                <th></th>
+                                                <th class="text-center">Enabled</th>
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php foreach ($settings as $row) {?>
                                             <tr valign="middle">
                                                 <td class="text-end pe-3">
                                                     <div>
-                                                        <p class="mb-0">DB HOST</p>
+                                                        <p class="mb-0"><?php echo $row['setting_key']; ?></p>
                                                     </div>
                                                 </td>
-                                                <td><input type="text" class="form-control"></td>
+                                                <td><input type="text" class="form-control"
+                                                        name="<?php echo $row['setting_key']; ?>"
+                                                        value="<?php echo $row['setting_value']; ?>"></td>
                                                 <td>
-                                                    <div class="form-check form-switch d-inline-flex ms-5 badge"><input
-                                                            class="form-check-input form-check sai" type="checkbox"
-                                                            id="flexSwitchCheckDefault" role="switch"><label
+                                                    <div class="form-check form-switch d-inline-flex ms-5 badge">
+                                                        <input class="form-check-input form-check sai" type="checkbox"
+                                                            id="check_<?php echo $row['setting_key']; ?>" role="switch">
+                                                        <label
                                                             class="form-check-label text-primary d-none align-content-center"
-                                                            for="flexSwitchCheckDefault">Label</label></div>
+                                                            for="check_<?php echo $row['setting_key']; ?>">Active</label>
+                                                    </div>
                                                 </td>
                                             </tr>
+                                            <?php }?>
                                         </tbody>
                                     </table>
                                 </div>
