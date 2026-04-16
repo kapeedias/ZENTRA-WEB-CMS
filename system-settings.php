@@ -28,11 +28,6 @@
 
     //}
 
-    // Display the submitted data for testing
-    echo '<pre>';
-    print_r($_POST); // Print the entire $_POST array
-    echo '</pre>';
-
     // Check if the form was submitted
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Initialize error and success message variables
@@ -50,7 +45,10 @@
         echo "Enabled: " . ($is_enabled == 1 ? "Checked" : "Unchecked") . "<br><br>";
     }
 
-    // Your form processing logic can follow here...
+    // Display the submitted data for testing
+    echo '<pre>';
+    print_r($_POST); // Print the entire $_POST array
+    echo '</pre>';
     }
 
 ?>
