@@ -17,7 +17,7 @@
     }
 
     try {
-    $stmt     = $pdo->query("SELECT setting_key, setting_value FROM zentra_system_settings");
+    $stmt     = $pdo->query("SELECT * FROM zentra_system_settings");
     $settings = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
     die("Database query failed: " . $e->getMessage());
