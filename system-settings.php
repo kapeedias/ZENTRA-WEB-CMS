@@ -123,7 +123,8 @@
                                                 <td>
                                                     <div class="form-check form-switch d-inline-flex ms-5 badge">
                                                         <input class="form-check-input form-check sai" type="checkbox"
-                                                            id="check_<?php echo $row['setting_key']; ?>" role="switch">
+                                                            id="check_<?php echo $row['setting_key']; ?>" role="switch"
+                                                            <?php if ($row['is_enabled'] == 1) { echo 'checked'; } ?>>
                                                         <label
                                                             class="form-check-label text-primary d-none align-content-center"
                                                             for="check_<?php echo $row['setting_key']; ?>">Active</label>

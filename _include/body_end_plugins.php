@@ -26,11 +26,4 @@ $('input[name="searchAppConfig"]').on('input', function() {
         table.search(value).draw();
     }, 150);
 });
-//filtering
-table.columns().every(function() {
-    var that = this;
-    $('input', this.header()).on('keyup change', function() {
-        that.search(this.value).draw();
-    });
-});
 </script>
