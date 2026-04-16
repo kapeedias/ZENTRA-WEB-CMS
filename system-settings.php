@@ -104,9 +104,9 @@
                                     <table class="table table-hover" id="AppConfigData" data-search="true">
                                         <thead>
                                             <tr>
-                                                <th class="text-end pe-3">Setting</th>
+                                                <th class="text-end">Setting</th>
                                                 <th class="text-center">Value</th>
-                                                <th class="text-center">Enabled</th>
+                                                <th class="text-start">Enabled</th>
                                             </tr>
                                         </thead>
                                         <tbody>
