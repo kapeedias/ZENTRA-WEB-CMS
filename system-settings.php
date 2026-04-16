@@ -23,6 +23,36 @@
     die("Database query failed: " . $e->getMessage());
     }
 
+    // Check if the form was submitted
+    //if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    //}
+
+    // Display the submitted data for testing
+    echo '<pre>';
+    print_r($_POST); // Print the entire $_POST array
+    echo '</pre>';
+
+    // Check if the form was submitted
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Initialize error and success message variables
+    $error_message   = '';
+    $success_message = '';
+
+    // Loop through the settings and print them out
+    echo '<h3>Submitted Settings:</h3>';
+    foreach ($_POST['settings'] as $key => $value) {
+        echo "Setting Key: $key <br>";
+        echo "Setting Value: $value <br>";
+
+        // Display the enabled status
+        $is_enabled = isset($_POST['enabled'][$key]) ? $_POST['enabled'][$key] : 0;
+        echo "Enabled: " . ($is_enabled == 1 ? "Checked" : "Unchecked") . "<br><br>";
+    }
+
+    // Your form processing logic can follow here...
+    }
+
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
@@ -117,7 +147,7 @@
                                                         </div>
                                                     </td>
                                                     <td><input type="text" class="form-control"
-                                                            name="<?php echo $row['setting_key']; ?>"
+                                                            name="settings[<?php echo $row['setting_key']; ?>]"
                                                             value="<?php echo htmlspecialchars($row['setting_value']); ?> ">
                                                     </td>
                                                     <td>
@@ -126,6 +156,7 @@
                                                                 type="checkbox"
                                                                 <?php if ($row['is_enabled'] == 1) {echo 'checked';}?>
                                                                 id="check_<?php echo $row['setting_key']; ?>"
+                                                                name="enabled[<?php echo $row['setting_key']; ?>]"
                                                                 role="switch">
                                                             <label
                                                                 class="form-check-label text-primary d-none align-content-center"
