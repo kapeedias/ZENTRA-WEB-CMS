@@ -30,25 +30,20 @@
 
     // Check if the form was submitted
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Initialize error and success message variables
-    $error_message   = '';
-    $success_message = '';
+    // Process settings data
+    foreach ($_POST['settings'] as $setting_key => $setting_value) {
+        // Check if the setting is enabled (checkbox is checked)
+        if (isset($_POST['enabled'][$setting_key])) {
+            $is_enabled = 1; // Checkbox was checked
+        } else {
+            $is_enabled = 0; // Checkbox was unchecked
+        }
 
-    // Loop through the settings and print them out
-    echo '<h3>Submitted Settings:</h3>';
-    foreach ($_POST['settings'] as $key => $value) {
-        echo "Setting Key: $key <br>";
-        echo "Setting Value: $value <br>";
-
-        // Display the enabled status
-        $is_enabled = isset($_POST['enabled'][$key]) ? $_POST['enabled'][$key] : 0;
+        // Display the setting key, value, and enabled status
+        echo "Setting Key: $setting_key<br>";
+        echo "Setting Value: $setting_value<br>";
         echo "Enabled: " . ($is_enabled == 1 ? "Checked" : "Unchecked") . "<br><br>";
     }
-
-    // Display the submitted data for testing
-    echo '<pre>';
-    print_r($_POST); // Print the entire $_POST array
-    echo '</pre>';
     }
 
 ?>
