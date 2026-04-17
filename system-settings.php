@@ -20,10 +20,6 @@
     $error[] = "Database connection failed: " . $e->getMessage();
     }
 
-    echo "test";
-    echo $_SESSION['user_id'] ?? 'No user ID in session';
-    echo $ip;
-
     // Check if the form was submitted
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($_POST['settings'] as $setting_key => $setting_value) {
