@@ -57,8 +57,7 @@
                     UPDATE `zentra_system_settings`
                     SET
                         `setting_value` = :setting_value,
-                        `is_enabled` = :is_enabled,
-                        `updated_by` = :updated_by
+                        `is_enabled` = :is_enabled
                     WHERE
                         `setting_key` = :setting_key
                 ");
@@ -67,7 +66,6 @@
             $stmt->execute([
                 ':setting_value' => $setting_value,
                 ':is_enabled'    => $is_enabled,
-                ':updated_by'    => $_SESSION['user_name'] ?? 'SYSTEM',
                 ':setting_key'   => $setting_key,
             ]);
 
