@@ -15,7 +15,7 @@
     } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
     }
-
+    echo "test";
     echo $_SESSION['user_id']    = $user['id'];
     echo $_SESSION['user_name']  = $user['first_name'];
     echo $_SESSION['user_email'] = $email;
