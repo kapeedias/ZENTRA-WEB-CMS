@@ -189,7 +189,7 @@
                                                     </td>
                                                     <td><input type="text" class="form-control text-warning"
                                                             name="settings[<?php echo $row['setting_key']; ?>]"
-                                                            value="<?php echo htmlspecialchars($row['setting_value']); ?>">
+                                                            value="<?php echo $row['setting_value']; ?>">
                                                     </td>
                                                     <td>
                                                         <div class="form-check form-switch d-inline-flex ms-5 badge">

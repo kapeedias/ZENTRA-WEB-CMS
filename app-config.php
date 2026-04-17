@@ -36,7 +36,7 @@
                         <div class="card">
                             <div
                                 class="card-header d-flex justify-content-between align-items-center flex-wrap flex-xl-nowrap pb-0 py-3">
-                                <h5 class="fw-bold w-100 mb-3 mb-xl-0">App Configurations</h5>
+                                <h5 class="fw-bold w-100 mb-3 mb-xl-0">App Config</h5>
                                 <form class="position-relative flex-grow-1 flex-shrink-0 flex-xl-grow-0 ms-auto">
                                     <input class="form-control pe-4" type="search" placeholder="Search"
                                         name="searchAppConfig">
