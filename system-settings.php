@@ -187,7 +187,7 @@
                                                             <p class="mb-0"><?php echo $row['setting_key']; ?></p>
                                                         </div>
                                                     </td>
-                                                    <td><input type="text" class="form-control"
+                                                    <td><input type="text" class="form-control text-warning"
                                                             name="settings[<?php echo $row['setting_key']; ?>]"
                                                             value="<?php echo htmlspecialchars($row['setting_value']); ?>">
                                                     </td>
