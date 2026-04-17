@@ -38,10 +38,10 @@
         $setting_value = htmlspecialchars($setting_value, ENT_QUOTES, 'UTF-8'); // Prevent XSS
 
         // Validate that setting_value is not empty (you can add more specific validation here as needed)
-        if (empty($setting_value)) {
-            $errors[] = "Setting value for $setting_key is empty, skipping update.<br>";
-            continue;
-        }
+        //if (empty($setting_value)) {
+        //     $errors[] = "Setting value for $setting_key is empty, skipping update.<br>";
+        // continue;
+        //  }
 
         // Check if the setting is enabled (checkbox is checked)
         if (isset($_POST['enabled'][$setting_key])) {
