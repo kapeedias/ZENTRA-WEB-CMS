@@ -59,6 +59,7 @@
             ]);
 
             $success[] = "Setting '$setting_key' updated successfully.<br>";
+            header("Location: system-settings.php");
         } catch (Exception $e) {
             // Handle any errors that occur during the query execution
             $errors[] = "Error updating setting '$setting_key': " . $e->getMessage() . "<br>";
@@ -126,6 +127,19 @@
                     </div><!-- End: top-nav-and-details -->
                     <!-- Start: main content -->
                     <div>
+                        <!-- Start: alert -->
+                        <?php if (! empty($success)): ?>
+                        <div class="w-100 alert-success shadow">
+                            <?php echo implode('<br>', $success) ?>
+                        </div>
+                        <?php endif; ?>
+
+                        <?php if (! empty($errors)): ?>
+                        <div class="w-100 alert-error shadow">
+                            <?php echo implode('<br>', $errors) ?>
+                        </div>
+                        <?php endif; ?>
+
                         <!-- Start: Table Card -->
                         <div class="card">
                             <div
