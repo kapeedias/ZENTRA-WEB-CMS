@@ -152,7 +152,7 @@
                                                         <div class="form-check form-switch d-inline-flex ms-5 badge">
                                                             <input class="form-check-input form-check sai"
                                                                 type="checkbox"
-                                                                <?php if ($row['is_enabled'] == 1) {echo 'checked';}?>
+                                                                <?php echo($row['is_enabled'] == 1) ? 'checked' : ''; ?>
                                                                 id="check_<?php echo $row['setting_key']; ?>"
                                                                 name="enabled[<?php echo $row['setting_key']; ?>]"
                                                                 role="switch">
