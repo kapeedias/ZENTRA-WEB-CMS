@@ -30,8 +30,23 @@
 
     // Check if the form was submitted
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Process settings data
     foreach ($_POST['settings'] as $setting_key => $setting_value) {
+        // Sanitize setting_key (ensure it's alphanumeric and underscores or dashes only)
+        if (! preg_match('/^[a-zA-Z0-9_-]+$/', $setting_key)) {
+            $errors[] = "Invalid setting key: $setting_key<br>";
+            continue; // Skip this iteration if setting_key is invalid
+        }
+
+                                                                                // Trim and sanitize setting_value
+        $setting_value = trim($setting_value);                                  // Remove extra spaces
+        $setting_value = htmlspecialchars($setting_value, ENT_QUOTES, 'UTF-8'); // Prevent XSS
+
+        // Validate that setting_value is not empty (you can add more specific validation here as needed)
+        if (empty($setting_value)) {
+            $errors[] = "Setting value for $setting_key is empty, skipping update.<br>";
+            continue;
+        }
+
         // Check if the setting is enabled (checkbox is checked)
         if (isset($_POST['enabled'][$setting_key])) {
             $is_enabled = 1; // Checkbox was checked
@@ -39,10 +54,27 @@
             $is_enabled = 0; // Checkbox was unchecked
         }
 
-        // Display the setting key, value, and enabled status
-        echo "Setting Key: $setting_key<br>";
-        echo "Setting Value: $setting_value<br>";
-        echo "Enabled: " . ($is_enabled == 1 ? "Checked" : "Unchecked") . "<br><br>";
+        // Secure database update using prepared statements
+        try {
+            // Prepare the update query
+            $stmt = $pdo->prepare("
+                    UPDATE `zentra_system_settings`
+                    SET `setting_value` = :setting_value, `is_enabled` = :is_enabled
+                    WHERE `setting_key` = :setting_key
+                ");
+
+            // Execute the update query with the prepared values
+            $stmt->execute([
+                ':setting_value' => $setting_value,
+                ':is_enabled'    => $is_enabled,
+                ':setting_key'   => $setting_key,
+            ]);
+
+            $success[] = "Setting '$setting_key' updated successfully.<br>";
+        } catch (Exception $e) {
+            // Handle any errors that occur during the query execution
+            $errors[] = "Error updating setting '$setting_key': " . $e->getMessage() . "<br>";
+        }
     }
     }
 
