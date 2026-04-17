@@ -16,6 +16,14 @@
     die("Database connection failed: " . $e->getMessage());
     }
 
+    $_SESSION['user_id']        = $user['id'];
+    echo $_SESSION['user_name'] = $user['first_name'];
+    $_SESSION['user_email']     = $email;
+    $_SESSION['login_time']     = time();
+    $_SESSION['last_activity']  = time();
+    $_SESSION['user_ip']        = $ip;
+    $_SESSION['user_agent']     = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+
     // Check if the form was submitted
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($_POST['settings'] as $setting_key => $setting_value) {
@@ -24,14 +32,6 @@
             $errors[] = "Invalid setting key: $setting_key<br>";
             continue; // Skip this iteration if setting_key is invalid
         }
-
-        $_SESSION['user_id']        = $user['id'];
-        echo $_SESSION['user_name'] = $user['first_name'];
-        $_SESSION['user_email']     = $email;
-        $_SESSION['login_time']     = time();
-        $_SESSION['last_activity']  = time();
-        $_SESSION['user_ip']        = $ip;
-        $_SESSION['user_agent']     = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
 
                                                                                 // Trim and sanitize setting_value
         $setting_value = trim($setting_value);                                  // Remove extra spaces
