@@ -177,7 +177,6 @@
                                                     <th class="text-end me-3">Setting</th>
                                                     <th class=" text-center">Value</th>
                                                     <th class="text-start">Enabled</th>
-                                                    <th class="text-start">Activity</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -201,10 +200,6 @@
                                                                 name="enabled[<?php echo $row['setting_key']; ?>]"
                                                                 role="switch">
                                                         </div>
-                                                    </td>
-                                                    <td>Last updated on
-                                                        <?php echo htmlspecialchars($row['updated_on']); ?> <br />by
-                                                        <?php echo htmlspecialchars($row['updated_by']); ?>
                                                     </td>
                                                 </tr>
                                                 <?php }?>
