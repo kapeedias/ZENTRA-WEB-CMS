@@ -16,13 +16,13 @@
     die("Database connection failed: " . $e->getMessage());
     }
 
-    $_SESSION['user_id']        = $user['id'];
-    echo $_SESSION['user_name'] = $user['first_name'];
-    $_SESSION['user_email']     = $email;
-    $_SESSION['login_time']     = time();
-    $_SESSION['last_activity']  = time();
-    $_SESSION['user_ip']        = $ip;
-    $_SESSION['user_agent']     = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+    echo $_SESSION['user_id']    = $user['id'];
+    echo $_SESSION['user_name']  = $user['first_name'];
+    echo $_SESSION['user_email'] = $email;
+    $_SESSION['login_time']      = time();
+    $_SESSION['last_activity']   = time();
+    $_SESSION['user_ip']         = $ip;
+    $_SESSION['user_agent']      = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
 
     // Check if the form was submitted
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -124,8 +124,8 @@
                                         href="#"><i class="fa fa-cog me-2"></i>&nbsp;Settings</a><a
                                         class="dropdown-item" href="#"><i class="fa fa-th-list me-2"></i>&nbsp;Activity
                                         log</a>
-                                    <div class="dropdown-divider"></div><a class="dropdown-item link-danger" href="#"><i
-                                            class="fa fa-sign-out me-2"></i>&nbsp;Logout</a>
+                                    <div class="dropdown-divider"></div><a class="dropdown-item link-danger"
+                                        href="logout.php"><i class="fa fa-sign-out me-2"></i>&nbsp;Logout</a>
                                 </div>
                             </div>
                         </div>
