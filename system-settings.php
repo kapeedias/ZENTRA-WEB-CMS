@@ -159,62 +159,66 @@
                                         name="searchAppConfig" autofocus="" autocomplete="off"><button
                                         class="btn border-0 position-absolute top-50 end-0 translate-middle-y"
                                         type="submit"><i class="fa fa-search"></i></button></form>
-
-                                <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Export View to CSV
-                                    Period</a>
+                                <div class="dropdown"><button class="btn btn-link" data-bs-toggle="dropdown"
+                                        aria-expanded="false" type="button"><i class="fa fa-ellipsis-v"></i></button>
+                                    <div class="dropdown-menu dropdown-menu-end shadow"><a class="dropdown-item"
+                                            href="#">Refresh</a>
+                                        <div class="dropdown-divider"></div><a class="dropdown-item" href="#">Export
+                                            View to CSV</a>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <form id="settingsForm" method="POST" action="">
-                            <div class="table-responsive">
-                                <table class="table table-hover" id="AppConfigData" data-search="true">
-                                    <thead>
-                                        <tr>
-                                            <th class="text-end me-3">Setting</th>
-                                            <th class=" text-center">Value</th>
-                                            <th class="text-start">Enabled</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php foreach ($settings as $row) {?>
-                                        <tr valign="middle">
-                                            <td class="text-end pe-3">
-                                                <div>
-                                                    <p class="mb-0"><?php echo $row['setting_key']; ?></p>
-                                                </div>
-                                            </td>
-                                            <td><input type="text" class="form-control"
-                                                    name="settings[<?php echo $row['setting_key']; ?>]"
-                                                    value="<?php echo htmlspecialchars($row['setting_value']); ?>">
-                                            </td>
-                                            <td>
-                                                <div class="form-check form-switch d-inline-flex ms-5 badge">
-                                                    <input class="form-check-input form-check sai" type="checkbox"
-                                                        <?php echo($row['is_enabled'] == 1) ? 'checked' : ''; ?>
-                                                        id="check_<?php echo $row['setting_key']; ?>"
-                                                        name="enabled[<?php echo $row['setting_key']; ?>]"
-                                                        role="switch">
-                                                </div>
-                                            </td>
-                                        </tr>
-                                        <?php }?>
-                                    </tbody>
-                                </table>
+                            <div class="card-body">
+                                <form id="settingsForm" method="POST" action="">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="AppConfigData" data-search="true">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-end me-3">Setting</th>
+                                                    <th class=" text-center">Value</th>
+                                                    <th class="text-start">Enabled</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php foreach ($settings as $row) {?>
+                                                <tr valign="middle">
+                                                    <td class="text-end pe-3">
+                                                        <div>
+                                                            <p class="mb-0"><?php echo $row['setting_key']; ?></p>
+                                                        </div>
+                                                    </td>
+                                                    <td><input type="text" class="form-control"
+                                                            name="settings[<?php echo $row['setting_key']; ?>]"
+                                                            value="<?php echo htmlspecialchars($row['setting_value']); ?>">
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-check form-switch d-inline-flex ms-5 badge">
+                                                            <input class="form-check-input form-check sai"
+                                                                type="checkbox"
+                                                                <?php echo($row['is_enabled'] == 1) ? 'checked' : ''; ?>
+                                                                id="check_<?php echo $row['setting_key']; ?>"
+                                                                name="enabled[<?php echo $row['setting_key']; ?>]"
+                                                                role="switch">
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <?php }?>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="d-flex justify-content-center save-btn-holder"><button
+                                            class="btn btn-primary btn-sm align-self-end" type="submit">Save
+                                            Settings</button></div>
+                                </form>
                             </div>
-                            <div class="d-flex justify-content-center save-btn-holder"><button
-                                    class="btn btn-primary btn-sm align-self-end" type="submit">Save
-                                    Settings</button></div>
-                        </form>
-                    </div>
-            </div><!-- End: Table Card -->
-        </div><!-- End: main content -->
-        <!-- Start: Footer Centered -->
-        <?php include '_include/inner-footer.php'; ?>
-        <!-- End: Footer Centered -->
-        </main>
-    </div>
-    </div>
+                        </div><!-- End: Table Card -->
+                    </div><!-- End: main content -->
+                    <!-- Start: Footer Centered -->
+                    <?php include '_include/inner-footer.php'; ?>
+                    <!-- End: Footer Centered -->
+                </main>
+            </div>
+        </div>
     </div>
     <?php include '_include/body_end_plugins.php'; ?>
 </body>
