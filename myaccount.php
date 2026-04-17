@@ -1,4 +1,8 @@
 <?php
+
+    secureSessionStart();
+    enforceSessionSecurity();
+
     // ==== CONFIG & DEPENDENCIES ====
     require_once __DIR__ . '/config/config.php';
     require_once __DIR__ . '/config/init.php';
@@ -6,20 +10,6 @@
     require_once __DIR__ . '/config/helpers.php';
     require_once __DIR__ . '/classes/User.php';
     $ip = getClientIP();
-    secureSessionStart();
-    enforceSessionSecurity();
-
-    echo "test";
-    echo $_SESSION['user_id'];
-    echo $ip;
-
-    echo $_SESSION['user_id']    = $user['id'];
-    echo $_SESSION['user_name']  = $user['first_name'];
-    echo $_SESSION['user_email'] = $email;
-    $_SESSION['login_time']      = time();
-    $_SESSION['last_activity']   = time();
-    $_SESSION['user_ip']         = $ip;
-    $_SESSION['user_agent']      = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
 
 ?>
 <!DOCTYPE html>

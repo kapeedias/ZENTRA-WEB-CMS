@@ -26,7 +26,7 @@ function sanitizeInput(array $input, array $allowedFields): array
         switch ($type) {
             case 'email':
                 $value = filter_var($value, FILTER_SANITIZE_EMAIL);
-                if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
+                if (! filter_var($value, FILTER_VALIDATE_EMAIL)) {
                     throw new Exception("Invalid email format for $field.");
                 }
                 break;
@@ -38,10 +38,10 @@ function sanitizeInput(array $input, array $allowedFields): array
                 break;
 
             case 'int':
-                if (!ctype_digit($value)) {
+                if (! ctype_digit($value)) {
                     throw new Exception("Invalid integer value for $field.");
                 }
-                $value = (int)$value;
+                $value = (int) $value;
                 break;
 
             case 'password':
@@ -58,6 +58,7 @@ function sanitizeInput(array $input, array $allowedFields): array
 
     return $clean;
 }
+/*
 function secureSessionStart(): void
 {
     if (session_status() === PHP_SESSION_NONE) {
@@ -83,6 +84,31 @@ function secureSessionStart(): void
         ]);
     }
 }
+    */
+
+function secureSessionStart(): void
+{
+    if (session_status() === PHP_SESSION_NONE) {
+
+        // Set cookie params BEFORE session_start()
+        session_set_cookie_params([
+            'lifetime' => 0,
+            'path'     => '/',
+            'domain'   => $_SERVER['HTTP_HOST'],
+            'secure'   => isset($_SERVER['HTTPS']),
+            'httponly' => true,
+            'samesite' => 'Lax',
+        ]);
+
+        ini_set('session.cookie_httponly', 1);
+        ini_set('session.cookie_secure', isset($_SERVER['HTTPS']) ? 1 : 0);
+        ini_set('session.use_strict_mode', 1);
+
+        // NOW start the session
+        session_start();
+    }
+}
+
 function isSessionHijacked(): bool
 {
     // Load Azure‑safe client IP
@@ -90,11 +116,11 @@ function isSessionHijacked(): bool
     $ip = cleanIP(getClientIP());
     // $ip now contains the correct public IP from getClientIP()
 
-    $expectedIp = $_SESSION['user_ip'] ?? null;
+    $expectedIp    = $_SESSION['user_ip'] ?? null;
     $expectedAgent = $_SESSION['user_agent'] ?? null;
     // IMPORTANT: Use Azure‑safe IP, NOT REMOTE_ADDR
-    $currentIp     = $ip;
-    $currentAgent  = $_SERVER['HTTP_USER_AGENT'] ?? '';
+    $currentIp    = $ip;
+    $currentAgent = $_SERVER['HTTP_USER_AGENT'] ?? '';
     // Enforce IP check only if enabled
     if (SESSION_ENFORCE_IP_CHECK && $expectedIp !== $currentIp) {
         return true;
@@ -111,7 +137,7 @@ function enforceSessionSecurity(): void
     require_once __DIR__ . '/config.php';
     $ip = cleanIP(getClientIP());
     // $ip is now available
-    $timeout = defined('SESSION_TIMEOUT_SECONDS') ? SESSION_TIMEOUT_SECONDS : 1800;
+    $timeout  = defined('SESSION_TIMEOUT_SECONDS') ? SESSION_TIMEOUT_SECONDS : 1800;
     $redirect = defined('SESSION_REDIRECT_ON_TIMEOUT') ? SESSION_REDIRECT_ON_TIMEOUT : 'login.php?timeout=1';
 
     $now = time();
@@ -124,12 +150,12 @@ function enforceSessionSecurity(): void
         // Log the forced logout with user ID and IP if available
         if (isset($_SESSION['user_id'])) {
             try {
-                $pdo = Database::getInstance();
+                $pdo     = Database::getInstance();
                 $userObj = new User($pdo);
-                $reason = isSessionHijacked() ? "Session hijacking suspected" : "Session timed out";
+                $reason  = isSessionHijacked() ? "Session hijacking suspected" : "Session timed out";
                 //$userObj->logActivity($_SESSION['user_id'], $reason, 'Forced Logout');
                 $userObj->logActivity($_SESSION['user_id'], $reason, 'Forced Logout', [
-                    'ip' => $ip
+                    'ip' => $ip,
                 ]);
             } catch (Throwable $e) {
                 error_log("Session termination log failed: " . $e->getMessage());
@@ -156,44 +182,65 @@ function getUserAgent(): string
 }
 function getBrowserName($agent)
 {
-    if (strpos($agent, 'Edg') !== false) return 'Microsoft Edge';
-    if (strpos($agent, 'Chrome') !== false) return 'Google Chrome';
-    if (strpos($agent, 'Firefox') !== false) return 'Mozilla Firefox';
-    if (strpos($agent, 'Safari') !== false) return 'Safari';
-    if (strpos($agent, 'OPR') !== false) return 'Opera';
+    if (strpos($agent, 'Edg') !== false) {
+        return 'Microsoft Edge';
+    }
+
+    if (strpos($agent, 'Chrome') !== false) {
+        return 'Google Chrome';
+    }
+
+    if (strpos($agent, 'Firefox') !== false) {
+        return 'Mozilla Firefox';
+    }
+
+    if (strpos($agent, 'Safari') !== false) {
+        return 'Safari';
+    }
+
+    if (strpos($agent, 'OPR') !== false) {
+        return 'Opera';
+    }
+
     return 'Unknown Browser';
     //Usage to get the browser
     //$browser = getBrowserName($agent);
 }
 function getDeviceType($agent)
 {
-    if (preg_match('/mobile/i', $agent)) return 'Mobile';
-    if (preg_match('/tablet|ipad/i', $agent)) return 'Tablet';
+    if (preg_match('/mobile/i', $agent)) {
+        return 'Mobile';
+    }
+
+    if (preg_match('/tablet|ipad/i', $agent)) {
+        return 'Tablet';
+    }
+
     return 'Desktop';
-    //Usage to get the device 
+    //Usage to get the device
     //$device = getDeviceType($agent);
 }
 function getGeoLocation($ip): array
 {
     $raw = @file_get_contents("https://ipwho.is/{$ip}");
 
-    if (!$raw) {
+    if (! $raw) {
         return [
             'city'    => 'Unknown',
             'region'  => 'Unknown',
             'country' => 'Unknown',
-            'raw'     => null
+            'raw'     => null,
         ];
     }
 
     $data = json_decode($raw, true);
 
-    if (!isset($data['success']) || !$data['success']) {
+    if (! isset($data['success']) || ! $data['success']) {
         return [
             'city'    => 'Unknown',
             'region'  => 'Unknown',
             'country' => 'Unknown',
-            'raw'     => $raw
+            'raw'     => $raw,
         ];
     }
 
@@ -201,15 +248,11 @@ function getGeoLocation($ip): array
         'city'    => $data['city'] ?? 'Unknown',
         'region'  => $data['region'] ?? 'Unknown',
         'country' => $data['country'] ?? 'Unknown',
-        'raw'     => $raw
+        'raw'     => $raw,
     ];
 }
 
-
-
-
-
-$agent  = getUserAgent();
+$agent   = getUserAgent();
 $browser = getBrowserName($agent);
 $device  = getDeviceType($agent);
 $geo     = getGeoLocation($ip);
