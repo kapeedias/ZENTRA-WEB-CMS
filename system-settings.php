@@ -17,7 +17,7 @@
     }
 
     echo "test";
-    echo geo();
+    echo $_SESSION['user_id'] ?? 'No user ID in session';
     echo $ip;
 
     // Check if the form was submitted
