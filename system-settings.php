@@ -16,18 +16,6 @@
     die("Database connection failed: " . $e->getMessage());
     }
 
-    try {
-    $stmt     = $pdo->query("SELECT * FROM zentra_system_settings");
-    $settings = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-    die("Database query failed: " . $e->getMessage());
-    }
-
-    // Check if the form was submitted
-    //if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    //}
-
     // Check if the form was submitted
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($_POST['settings'] as $setting_key => $setting_value) {
@@ -78,6 +66,12 @@
     }
     }
 
+    try {
+    $stmt     = $pdo->query("SELECT * FROM zentra_system_settings");
+    $settings = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+    die("Database query failed: " . $e->getMessage());
+    }
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
