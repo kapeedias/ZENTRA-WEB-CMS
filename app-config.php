@@ -1,14 +1,24 @@
 <?php
+
+    require_once __DIR__ . '/config/helpers.php';
+    secureSessionStart();
+
     // ==== CONFIG & DEPENDENCIES ====
     require_once __DIR__ . '/config/config.php';
     require_once __DIR__ . '/config/init.php';
     require_once __DIR__ . '/config/db.php';
-    require_once __DIR__ . '/config/helpers.php';
-    require_once __DIR__ . '/classes/User.php';
-    $ip = getClientIP();
-    secureSessionStart();
-    enforceSessionSecurity();
 
+    require_once __DIR__ . '/classes/User.php';
+
+    enforceSessionSecurity();
+    $ip = getClientIP();
+
+    try {
+    $pdo     = Database::getInstance();
+    $userObj = new User($pdo);
+    } catch (PDOException $e) {
+    $error[] = "Database connection failed: " . $e->getMessage();
+    }
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
@@ -67,7 +77,18 @@
                                                 aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            ...
+                                            <form id="addConfigForm" method="post">
+                                                <div class="mb-3">
+                                                    <label for="configKey" class="form-label">Config Key</label>
+                                                    <input type="text" class="form-control" id="configKey"
+                                                        name="configKey" required>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="configValue" class="form-label">Config Value</label>
+                                                    <input type="text" class="form-control" id="configValue"
+                                                        name="configValue" required>
+                                                </div>
+                                            </form>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary"

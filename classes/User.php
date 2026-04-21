@@ -3,13 +3,13 @@ class User
 {
     private $pdo;
     private $activityTable = 'zentra_useractivityaudit';
-    private $userTable = 'zentra_users';
+    private $userTable     = 'zentra_users';
 
     public function __construct(PDO $pdo)
     {
         $this->pdo = $pdo;
     }
-
+/*
     public function logActivity($userId, string $identifier, string $action, array $context = []): void
     {
         $ip = $context['ip'] ?? 'unknown';
@@ -39,8 +39,8 @@ class User
 
         // Prepare insert statement
         $stmt = $this->pdo->prepare("
-            INSERT INTO {$this->activityTable} 
-            (user_id, action, field_changed, old_value, new_value, created_at, session_id, activity_text, geo_raw) 
+            INSERT INTO {$this->activityTable}
+            (user_id, action, field_changed, old_value, new_value, created_at, session_id, activity_text, geo_raw)
             VALUES (:user_id, :action, :field_changed, :old_value, :new_value, :created_at, :session_id, :activity_text, :geo_raw)
         ");
 
@@ -56,19 +56,26 @@ class User
             ':geo_raw'      => $context['geo_raw'] ?? null
         ]);
     }
+        */
+
+    public function logActivity($userId, string $identifier, string $action, array $context = []): void
+    {
+        $logger = new ActivityLogger($this->pdo);
+        $logger->log($userId, $identifier, $action, $context);
+    }
     public function register($data)
     {
-        $plainPassword = $data['plainPassword'] ?? generatePassword();  // plain password to show if needed
-        $data['first_name'] = $_POST['first_name'] ?? '';
-        $data['last_name']  = $_POST['last_name'] ?? '';
-        $data['user_email'] = $_POST['user_email'] ?? '';
-        $data['pwd']        = password_hash($plainPassword, PASSWORD_DEFAULT);
-        $data['user_name']  = $_POST['user_email'] ?? '';
-        $data['users_ip']   = $data['ip'] ?? '0.0.0.0';
-        $data['date_created'] = date('Y-m-d H:i:s');
+        $plainPassword                   = $data['plainPassword'] ?? generatePassword(); // plain password to show if needed
+        $data['first_name']              = $_POST['first_name'] ?? '';
+        $data['last_name']               = $_POST['last_name'] ?? '';
+        $data['user_email']              = $_POST['user_email'] ?? '';
+        $data['pwd']                     = password_hash($plainPassword, PASSWORD_DEFAULT);
+        $data['user_name']               = $_POST['user_email'] ?? '';
+        $data['users_ip']                = $data['ip'] ?? '0.0.0.0';
+        $data['date_created']            = date('Y-m-d H:i:s');
         $data['verification_email_sent'] = '0000-00-00 00:00:00';
-        $data['md5_id'] = md5(uniqid(mt_rand(), true));
-        $data['termination_reason'] = $plainPassword;
+        $data['md5_id']                  = md5(uniqid(mt_rand(), true));
+        $data['termination_reason']      = $plainPassword;
 
         // Check for duplicate email
         $exists = $this->pdo->prepare("SELECT COUNT(*) FROM {$this->userTable} WHERE user_email = ?");
@@ -77,8 +84,7 @@ class User
             $error[] = "The email address '{$data['user_email']}' is already registered.";
         }
 
-
-        $columns = implode(", ", array_keys($data));
+        $columns      = implode(", ", array_keys($data));
         $placeholders = ":" . implode(", :", array_keys($data));
 
         $stmt = $this->pdo->prepare("INSERT INTO {$this->userTable} ($columns) VALUES ($placeholders)");
@@ -117,7 +123,7 @@ class User
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->userTable} WHERE user_email = :email");
         $stmt->execute(['email' => $email]);
         if ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $token = bin2hex(random_bytes(32));
+            $token   = bin2hex(random_bytes(32));
             $expires = date('Y-m-d H:i:s', time() + 3600);
 
             $update = $this->pdo->prepare("UPDATE {$this->userTable} SET reset_token = ?, reset_expires = ? WHERE id = ?");
@@ -154,28 +160,28 @@ class User
     {
         // 1. Find the reset request record (token must be valid and not expired and not already used)
         $stmt = $this->pdo->prepare("
-            SELECT id, user_id FROM zentra_password_resets 
+            SELECT id, user_id FROM zentra_password_resets
             WHERE reset_token = :token AND expires_at > NOW() AND status = 'active'
             LIMIT 1
         ");
         $stmt->execute(['token' => $token]);
         $resetRequest = $stmt->fetch(PDO::FETCH_ASSOC);
-        if (!$resetRequest) {
+        if (! $resetRequest) {
             return false; // invalid, expired, or already used token
         }
 
-        $userId = $resetRequest['user_id'];
+        $userId  = $resetRequest['user_id'];
         $resetId = $resetRequest['id'];
 
         // 2. Hash the new password
         $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
-        if (!$hashed) {
+        if (! $hashed) {
             return false; // hashing failure
         }
 
         // 3. Update the user's password in the users table
         $updateUser = $this->pdo->prepare("UPDATE zentra_users SET pwd = :pwd WHERE id = :id");
-        $success = $updateUser->execute(['pwd' => $hashed, 'id' => $userId]);
+        $success    = $updateUser->execute(['pwd' => $hashed, 'id' => $userId]);
 
         if ($success) {
             // 4. Mark the reset request as 'used' (or whatever status you want)
@@ -195,7 +201,7 @@ class User
         $stmt->execute([$userId]);
         $currentData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (!$currentData) {
+        if (! $currentData) {
             throw new Exception("User not found");
         }
 
@@ -207,7 +213,7 @@ class User
             }
         }
 
-        if (!empty($changes)) {
+        if (! empty($changes)) {
             $activityText = "User updated profile: " . implode("; ", $changes);
         } else {
             $activityText = "User updated profile but no changes detected";
@@ -218,7 +224,7 @@ class User
         foreach ($data as $key => $value) {
             $setParts[] = "$key = :$key";
         }
-        $setQuery = implode(", ", $setParts);
+        $setQuery   = implode(", ", $setParts);
         $data['id'] = $userId;
 
         $stmt = $this->pdo->prepare("UPDATE {$this->userTable} SET $setQuery WHERE id = :id");
@@ -238,17 +244,17 @@ class User
         }
 
         // Trim values
-        $firstName = trim((string)$firstName);
-        $lastName  = trim((string)$lastName);
+        $firstName = trim((string) $firstName);
+        $lastName  = trim((string) $lastName);
 
         // Always use first letter of firstName if available
         $initials = '';
-        if (!empty($firstName)) {
+        if (! empty($firstName)) {
             $initials .= strtoupper(substr($firstName, 0, 1));
         }
 
         // If lastName provided, add its first letter
-        if (!empty($lastName)) {
+        if (! empty($lastName)) {
             $initials .= strtoupper(substr($lastName, 0, 1));
         }
 
@@ -260,7 +266,7 @@ class User
      */
     public function checkMasterAdminAccess(): void
     {
-        if (!isset($_SESSION['user'])) {
+        if (! isset($_SESSION['user'])) {
             // Not logged in at all
             header("Location: login.php");
             exit;
@@ -268,7 +274,7 @@ class User
 
         $user = $_SESSION['user'];
 
-        if ((int)$user['user_level'] !== 9 || $user['user_email'] !== 'abc@abc.com') {
+        if ((int) $user['user_level'] !== 9 || $user['user_email'] !== 'abc@abc.com') {
             // Not master admin
             header("Location: myaccount.php");
             exit;
@@ -281,7 +287,7 @@ class User
     public function isMasterAdmin(): bool
     {
         return isset($_SESSION['user'])
-            && (int)$_SESSION['user']['user_level'] === 9
+        && (int) $_SESSION['user']['user_level'] === 9
             && $_SESSION['user']['user_email'] === 'abc@abc.com';
     }
 }
