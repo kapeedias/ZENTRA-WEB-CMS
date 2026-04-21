@@ -3,7 +3,7 @@
 class ActivityLogger
 {
     protected $pdo;
-    protected $activityTable = "zentra_activity_log";
+    protected $activityTable = "zentra_useractivityaudit";
 
     public function __construct($pdo)
     {
