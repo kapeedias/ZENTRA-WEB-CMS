@@ -1,49 +1,50 @@
 <?php
-// ==== CONFIG & DEPENDENCIES ====
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/config/db.php';
-require_once __DIR__ . '/config/init.php';
-require_once __DIR__ . '/config/helpers.php';
-require_once __DIR__ . '/classes/User.php';
+    // ==== CONFIG & DEPENDENCIES ====
+    require_once __DIR__ . '/config/config.php';
+    require_once __DIR__ . '/config/db.php';
+    require_once __DIR__ . '/config/init.php';
+    require_once __DIR__ . '/config/helpers.php';
+    require_once __DIR__ . '/classes/User.php';
+    require_once __DIR__ . '/classes/ActivityLogger.php';
 
-// ==== SECURE SESSION START ====
-secureSessionStart();
+    // ==== SECURE SESSION START ====
+    secureSessionStart();
 
-// ==== REQUEST CONTEXT (IP, AGENT, GEO, DEVICE) ====
-$ip     = cleanIP(getClientIP());
-$agent  = getUserAgent();
-$browser = getBrowserName($agent);
-$device  = getDeviceType($agent);
-$geo     = getGeoLocation($ip);
+    // ==== REQUEST CONTEXT (IP, AGENT, GEO, DEVICE) ====
+    $ip      = cleanIP(getClientIP());
+    $agent   = getUserAgent();
+    $browser = getBrowserName($agent);
+    $device  = getDeviceType($agent);
+    $geo     = getGeoLocation($ip);
 
-// ==== ERROR DISPLAY HANDLER ====
-$errors = $_SESSION['login_errors'] ?? [];
-unset($_SESSION['login_errors']);
+    // ==== ERROR DISPLAY HANDLER ====
+    $errors = $_SESSION['login_errors'] ?? [];
+    unset($_SESSION['login_errors']);
 
-try {
-    $pdo = Database::getInstance();
+    try {
+    $pdo     = Database::getInstance();
     $userObj = new User($pdo);
-} catch (PDOException $e) {
+    } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
-}
+    }
 
-// ==== RATE LIMITING CONFIG ====
-if (!isset($_SESSION['login_attempts'])) {
+    // ==== RATE LIMITING CONFIG ====
+    if (! isset($_SESSION['login_attempts'])) {
     $_SESSION['login_attempts'] = [];
-}
+    }
 
-// Remove expired attempts
-foreach ($_SESSION['login_attempts'] as $time => $recordedIp) {
+    // Remove expired attempts
+    foreach ($_SESSION['login_attempts'] as $time => $recordedIp) {
     if (time() - $time > $lockoutTime) {
         unset($_SESSION['login_attempts'][$time]);
     }
-}
+    }
 
-// Count login attempts from this IP
-$attempts = array_filter($_SESSION['login_attempts'], fn($v) => $v === $ip);
+    // Count login attempts from this IP
+    $attempts = array_filter($_SESSION['login_attempts'], fn($v) => $v === $ip);
 
-// ==== LOGIN HANDLER ====
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // ==== LOGIN HANDLER ====
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (count($attempts) >= $maxAttempts) {
         $errors[] = 'Too many login attempts. Please wait before trying again.';
@@ -54,17 +55,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // === INPUT SANITIZATION ===
             $allowedFields = [
                 'useremail'    => 'email',
-                'userpassword' => 'password'
+                'userpassword' => 'password',
             ];
-            $input = sanitizeInput($_POST, $allowedFields);
-            $email = $input['useremail'];
+            $input    = sanitizeInput($_POST, $allowedFields);
+            $email    = $input['useremail'];
             $password = $input['userpassword'];
         } catch (Exception $e) {
             $errors[] = $e->getMessage();
         }
 
         // === reCAPTCHA VERIFICATION ===
-        $recaptchaSecret = GOOGLE_RECAPTCHA_SECRET_KEY;
+        $recaptchaSecret   = GOOGLE_RECAPTCHA_SECRET_KEY;
         $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
 
         if (empty($recaptchaResponse)) {
@@ -75,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 "&response=" . urlencode($recaptchaResponse) .
                 "&remoteip=" . urlencode($ip));
             $captchaResult = json_decode($verify);
-            if (!$captchaResult->success) {
+            if (! $captchaResult->success) {
                 $errors[] = 'reCAPTCHA verification failed.';
             }
         }
@@ -87,11 +88,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute(['email' => $email]);
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-                if (!$user || !password_verify($password, $user['pwd'])) {
+                if (! $user || ! password_verify($password, $user['pwd'])) {
                     $errors[] = 'Invalid email or password.';
-                } elseif ((int)$user['banned'] === 1) {
+                } elseif ((int) $user['banned'] === 1) {
                     $errors[] = 'Your account has been banned.';
-                } elseif ((int)$user['approved'] !== 1) {
+                } elseif ((int) $user['approved'] !== 1) {
                     $errors[] = 'Your account has not been approved yet.';
                 } else {
                     // ==== SUCCESSFUL LOGIN ====
@@ -103,17 +104,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     session_regenerate_id(true); // Prevent session fixation
 
-                    $userId = (int)$user['id'];
-                    $_SESSION['user_id']     = $user['id'];
-                    $_SESSION['user_name']   = $user['first_name'];
-                    $_SESSION['user_email']  = $email;
-                    $_SESSION['login_time']  = time();
+                    $userId                    = (int) $user['id'];
+                    $_SESSION['user_id']       = $user['id'];
+                    $_SESSION['user_name']     = $user['first_name'];
+                    $_SESSION['user_email']    = $email;
+                    $_SESSION['login_time']    = time();
                     $_SESSION['last_activity'] = time();
-                    $_SESSION['user_ip']     = $ip;
-                    $_SESSION['user_agent']  = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+                    $_SESSION['user_ip']       = $ip;
+                    $_SESSION['user_agent']    = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
 
                     // ==== ACTIVITY LOG ====
-                    $identifier = "User {$user['first_name']} ({$email}) logged in";
+                    /* $identifier = "User {$user['first_name']} ({$email}) logged in";
                     $userObj->logActivity(
                         $userId,
                         $identifier,
@@ -125,10 +126,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             'city'    => $geo['city'],
                             'region'  => $geo['region'],
                             'country' => $geo['country'],
-                            'geo_raw'  => $geo['raw']
+                            'geo_raw' => $geo['raw'],
+                        ]
+                    );*/
+
+                    // ==== ACTIVITY LOG ====
+                    $identifier = "User {$user['first_name']} ({$email}) logged in";
+
+                    $userObj->logActivity(
+                        $userId,
+                        $identifier,
+                        'Login',
+                        [
+                            'user_name'     => $user['first_name'], // REQUIRED for ActivityLogger
+                            'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+                            'ip'            => $ip,
+                            'browser'       => $browser,
+                            'device'        => $device,
+                            'city'          => $geo['city'] ?? null,
+                            'region'        => $geo['region'] ?? null,
+                            'country'       => $geo['country'] ?? null,
+                            'geo_raw'       => $geo['raw'] ?? null,
                         ]
                     );
-
 
                     header("Location: myaccount.php");
                     exit;
@@ -141,15 +161,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // === LOG FAILED ATTEMPTS + REDIRECT ===
-    if (!empty($errors)) {
+    if (! empty($errors)) {
         $_SESSION['login_attempts'][time()] = $ip;
 
-        $errorText = implode(" | ", $errors);
+        $errorText  = implode(" | ", $errors);
         $safeEmail  = $email ?? 'unknown';
         $identifier = "Failed login attempt for email: {$safeEmail}";
-        $userId = $user['id'] ?? null;
+        $userId     = $user['id'] ?? null;
 
-        $userObj->logActivity(
+        /*$userObj->logActivity(
             $userId,
             $identifier,
             'Login Error',
@@ -164,7 +184,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'city'          => $geo['city'],
                 'region'        => $geo['region'],
                 'country'       => $geo['country'],
-                'geo_raw'       => $geo['raw']
+                'geo_raw'       => $geo['raw'],
+            ]
+        );*/
+
+        $userObj->logActivity(
+            $userId,
+            $identifier,
+            'Login Error',
+            [
+                'user_name'     => $safeEmail, // shows email for failed attempts
+                'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+                'field_changed' => 'LOGIN_ATTEMPT',
+                'old_value'     => 'UNAUTHENTICATED',
+                'new_value'     => 'ERROR',
+                'context_error' => $errorText,
+                'ip'            => $ip,
+                'browser'       => $browser,
+                'device'        => $device,
+                'city'          => $geo['city'] ?? null,
+                'region'        => $geo['region'] ?? null,
+                'country'       => $geo['country'] ?? null,
+                'geo_raw'       => $geo['raw'] ?? null,
             ]
         );
 
@@ -173,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: login.php");
         exit;
     }
-}
+    }
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
@@ -181,7 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title><?= getenv('APP_NAME') ?> - Login</title>
+    <title><?php echo getenv('APP_NAME') ?> - Login</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css?h=283928673d7441cd64f1af3db9200eab">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Geist:400,700&amp;display=swap">
     <link rel="stylesheet" href="assets/css/styles.min.css?h=3a29c92ea4137926cb7ee989224f5bff">
@@ -197,12 +238,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             class="fs-4 brand-secondary">CMS</span></a></div>
                 <div class="d-flex flex-fill justify-content-center align-items-center">
                     <div class="w-100 max-w-320">
-                        <?php if (!empty($errors)): ?>
-                            <div class="w-100 alert-error">
-                                <?php foreach ($errors as $err): ?>
-                                    <span><?= htmlspecialchars($err) ?></span>
-                                <?php endforeach; ?>
-                            </div>
+                        <?php if (! empty($errors)): ?>
+                        <div class="w-100 alert-error">
+                            <?php foreach ($errors as $err): ?>
+                            <span><?php echo htmlspecialchars($err) ?></span>
+                            <?php endforeach; ?>
+                        </div>
                         <?php endif; ?>
 
                         <form class="d-flex flex-column gap-3" method="POST" action="">
@@ -226,7 +267,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     class="form-control" type="password" id="userpassword" placeholder="**********"
                                     autocomplete="off" required name="userpassword">
                             </div>
-                            <div class="g-recaptcha" data-sitekey="<?= GOOGLE_RECAPTCHA_SITE_KEY; ?>"></div>
+                            <div class="g-recaptcha" data-sitekey="<?php echo GOOGLE_RECAPTCHA_SITE_KEY; ?>"></div>
                             <script src="https://www.google.com/recaptcha/api.js" async defer>
                             </script>
                             <button class="btn btn-primary w-100" type="submit">Login</button>
