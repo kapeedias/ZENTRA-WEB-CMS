@@ -29,8 +29,8 @@ $userTimezone = $_SESSION['user_timezone'] ?? 'UTC';
 $ip = cleanIP(getClientIP());
 
 $ua      = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
-$browser = detectBrowser($ua);
-$device  = detectDevice($ua);
+$browser = getBrowserName($ua);
+$device  = getDeviceType($ua);
 
 // If you have geo lookup stored in session (recommended)
 $geo = $_SESSION['geo'] ?? [
