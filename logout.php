@@ -51,7 +51,7 @@ try {
     $logger->log(
         $userId,
         "User {$userFullName} logged out",
-        "LOGOUT",
+        "Logout",
         [
             'user_name'     => $userFullName,
             'user_timezone' => $userTimezone,
