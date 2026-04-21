@@ -20,7 +20,7 @@ if (
 
 $userId       = $_SESSION['user_id'];
 $userEmail    = $_SESSION['user_email'];
-$userFullName = $_SESSION['user_full_name'] ?? 'Unknown User';
+$userFullName = $_SESSION['user_name'] ?? 'Unknown User';
 $userTimezone = $_SESSION['user_timezone'] ?? 'UTC';
 
 // ------------------------------------------------------------
