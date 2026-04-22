@@ -1,24 +1,39 @@
 <?php
 
+    // ==== CONFIG FIRST (order matters) ====
+    require_once __DIR__ . '/config/config.php';
     require_once __DIR__ . '/config/helpers.php';
     secureSessionStart();
 
-    // ==== CONFIG & DEPENDENCIES ====
-    require_once __DIR__ . '/config/config.php';
     require_once __DIR__ . '/config/init.php';
     require_once __DIR__ . '/config/db.php';
-
     require_once __DIR__ . '/classes/User.php';
 
+    // ==== SESSION SECURITY ====
     enforceSessionSecurity();
+
+    // ==== GET CLIENT IP ====
     $ip = getClientIP();
 
+    // ==== DB CONNECTION ====
     try {
-    $pdo     = Database::getInstance();
-    $userObj = new User($pdo);
+    $pdo = Database::getInstance();
     } catch (PDOException $e) {
     $error[] = "Database connection failed: " . $e->getMessage();
+    return;
     }
+
+    // ==== LOAD MODULE TYPES (cached) ====
+    if (! isset($_SESSION['module_types_cache'])) {
+    try {
+        $stmt                           = $pdo->query("SELECT * FROM zentra_module_types");
+        $_SESSION['module_types_cache'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        $error[] = "Database query failed: " . $e->getMessage();
+    }
+    }
+
+    $settings = $_SESSION['module_types_cache'];
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
@@ -113,14 +128,13 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                            <?php if (! empty($settings)): ?>
+                                            <?php foreach ($settings as $row): ?>
                                             <tr valign="middle">
                                                 <td>
 
                                                     <a class="text-decoration-none d-flex align-items-center gap-2"
-                                                        href="#"><img
-                                                            class="img-fluid aspect-ratio-1x1 object-fit-cover rounded-circle shadow-sm"
-                                                            src="assets/img/team/avatar1.jpg?h=fc3130ca16c6d3ee2009fd4450b80205"
-                                                            alt="Customer" width="40" height="40">
+                                                        href="#">
                                                         <div>
                                                             <p class="fw-bold mb-0">Joanna
                                                                 Prince</p><small
@@ -150,108 +164,13 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr valign="middle">
-                                                <td><a class="text-decoration-none d-flex align-items-center gap-2"
-                                                        href="#"><img
-                                                            class="img-fluid aspect-ratio-1x1 object-fit-cover rounded-circle shadow-sm"
-                                                            src="assets/img/team/avatar2.jpg?h=7086b181e9fb853914a2cca97301c640"
-                                                            alt="Customer" width="40" height="40">
-                                                        <div>
-                                                            <p class="fw-bold mb-0">Mike
-                                                                Johnson</p><small class="text-secondary d-block">CTO,
-                                                                Corpy
-                                                                Corp</small>
-                                                        </div>
-                                                    </a></td>
-                                                <td><span class="badge bg-light d-inline-flex gap-1"><i
-                                                            class="material-icons text-warning">pause_circle_filled</i>&nbsp;Paused</span>
-                                                </td>
-                                                <td>$9,123.45</td>
-                                                <td>21 Jul, 2025</td>
-                                                <td class="text-center">
-                                                    <div class="dropstart"><a class="btn" data-bs-toggle="dropdown"
-                                                            aria-expanded="false" role="button"><i
-                                                                class="fa fa-ellipsis-v"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end"><a
-                                                                class="dropdown-item" href="#"><i
-                                                                    class="material-icons me-2">remove_red_eye</i>View</a><a
-                                                                class="dropdown-item" href="#"><i
-                                                                    class="material-icons me-2">create</i>Edit</a>
-                                                            <div class="dropdown-divider"></div><a
-                                                                class="dropdown-item link-danger" href="#"><i
-                                                                    class="material-icons me-2">delete</i>Delete</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
+                                            <?php endforeach; ?>
+                                            <?php else: ?>
+                                            <tr>
+                                                <td colspan="5" class="text-center text-secondary py-4">No configuration
+                                                    settings found.</td>
                                             </tr>
-                                            <tr valign="middle">
-                                                <td><a class="text-decoration-none d-flex align-items-center gap-2"
-                                                        href="#"><img
-                                                            class="img-fluid aspect-ratio-1x1 object-fit-cover rounded-circle shadow-sm"
-                                                            src="assets/img/team/avatar3.jpg?h=d00658bdbe17fa68ec776823ea82e9c1"
-                                                            alt="Customer" width="40" height="40">
-                                                        <div>
-                                                            <p class="fw-bold mb-0">Joanna
-                                                                Prince</p><small
-                                                                class="text-secondary d-block">Marketing
-                                                                Manager</small>
-                                                        </div>
-                                                    </a></td>
-                                                <td><span class="badge bg-light d-inline-flex gap-1"><i
-                                                            class="material-icons text-success">check_circle</i>&nbsp;Active</span>
-                                                </td>
-                                                <td>$423.45</td>
-                                                <td>21 Jul, 2025</td>
-                                                <td class="text-center">
-                                                    <div class="dropstart"><a class="btn" data-bs-toggle="dropdown"
-                                                            aria-expanded="false" role="button"><i
-                                                                class="fa fa-ellipsis-v"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end"><a
-                                                                class="dropdown-item" href="#"><i
-                                                                    class="material-icons me-2">remove_red_eye</i>View</a><a
-                                                                class="dropdown-item" href="#"><i
-                                                                    class="material-icons me-2">create</i>Edit</a>
-                                                            <div class="dropdown-divider"></div><a
-                                                                class="dropdown-item link-danger" href="#"><i
-                                                                    class="material-icons me-2">delete</i>Delete</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr valign="middle">
-                                                <td><a class="text-decoration-none d-flex align-items-center gap-2"
-                                                        href="#"><img
-                                                            class="img-fluid aspect-ratio-1x1 object-fit-cover rounded-circle shadow-sm"
-                                                            src="assets/img/team/avatar4.jpg?h=13fcb1a3bcb58463519bc5974513259b"
-                                                            alt="Customer" width="40" height="40">
-                                                        <div>
-                                                            <p class="fw-bold mb-0">Mike
-                                                                Johnson</p><small class="text-secondary d-block">CTO,
-                                                                Corpy
-                                                                Corp</small>
-                                                        </div>
-                                                    </a></td>
-                                                <td><span class="badge bg-light d-inline-flex gap-1"><i
-                                                            class="material-icons text-danger">cancel</i>&nbsp;Canceled</span>
-                                                </td>
-                                                <td>$523.45</td>
-                                                <td>21 Jul, 2025</td>
-                                                <td class="text-center">
-                                                    <div class="dropstart"><a class="btn" data-bs-toggle="dropdown"
-                                                            aria-expanded="false" role="button"><i
-                                                                class="fa fa-ellipsis-v"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end"><a
-                                                                class="dropdown-item" href="#"><i
-                                                                    class="material-icons me-2">remove_red_eye</i>View</a><a
-                                                                class="dropdown-item" href="#"><i
-                                                                    class="material-icons me-2">create</i>Edit</a>
-                                                            <div class="dropdown-divider"></div><a
-                                                                class="dropdown-item link-danger" href="#"><i
-                                                                    class="material-icons me-2">delete</i>Delete</a>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
