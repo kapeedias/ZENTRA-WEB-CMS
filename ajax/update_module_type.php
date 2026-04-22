@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../config/helpers.php';
 secureSessionStart();
 
@@ -7,7 +8,6 @@ header('Content-Type: application/json; charset=utf-8');
 
 error_log("AJAX SESSION: " . print_r($_SESSION, true));
 
-require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../classes/User.php';
 require_once __DIR__ . '/../classes/ActivityLogger.php';
