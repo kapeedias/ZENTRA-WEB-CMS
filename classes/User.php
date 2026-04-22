@@ -4,59 +4,16 @@ class User
     private $pdo;
     private $activityTable = 'zentra_useractivityaudit';
     private $userTable     = 'zentra_users';
+    public int $id;
+    public string $full_name;
+    public string $timezone;
 
-    public function __construct(PDO $pdo)
+    public function __construct(?PDO $pdo = null)
     {
-        $this->pdo = $pdo;
-    }
-/*
-    public function logActivity($userId, string $identifier, string $action, array $context = []): void
-    {
-        $ip = $context['ip'] ?? 'unknown';
-        $city     = $context['city'] ?? null;
-        $region   = $context['region'] ?? null;
-        $country  = $context['country'] ?? null;
-        $browser  = $context['browser'] ?? null;
-        $device   = $context['device'] ?? null;
-        $sessionId = session_id();
-        $timestamp = gmdate('Y-m-d H:i:s');
-
-        // Build readable location string
-        $locationParts = array_filter([$city, $region, $country]);
-        $location = $locationParts ? implode(', ', $locationParts) : 'Unknown Location';
-
-        // Build readable device/browser string
-        $agentInfo = trim(($browser ? $browser : '') .
-            ($device ? " on {$device}" : ''));
-
-        if (!$agentInfo) {
-            $agentInfo = 'Unknown Device';
+        if ($pdo !== null) {
+            $this->pdo = $pdo;
         }
-
-        // Compose dynamic activity text
-        // Final activity text
-        $activity_text = "{$identifier} at {$timestamp} UTC from IP {$ip} ({$location}) using {$agentInfo}";
-
-        // Prepare insert statement
-        $stmt = $this->pdo->prepare("
-            INSERT INTO {$this->activityTable}
-            (user_id, action, field_changed, old_value, new_value, created_at, session_id, activity_text, geo_raw)
-            VALUES (:user_id, :action, :field_changed, :old_value, :new_value, :created_at, :session_id, :activity_text, :geo_raw)
-        ");
-
-        $stmt->execute([
-            'user_id'       => $userId,
-            'action'        => ucfirst($action),
-            'field_changed' => $context['field_changed'] ?? null,
-            'old_value'     => $context['old_value'] ?? null,
-            'new_value'     => $context['new_value'] ?? null,
-            'created_at'    => $timestamp,
-            'session_id'    => $sessionId,
-            'activity_text' => $activity_text,
-            ':geo_raw'      => $context['geo_raw'] ?? null
-        ]);
     }
-        */
 
     public function logActivity($userId, string $identifier, string $action, array $context = []): void
     {
@@ -137,25 +94,6 @@ class User
         }
         return false;
     }
-    /*
-    public function resetPassword($token, $newPassword) {
-        $stmt = $this->pdo->prepare("SELECT * FROM {$this->userTable} WHERE reset_token = :token AND reset_expires > NOW()");
-        $stmt->execute(['token' => $token]);
-
-        if ($user = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $hashed = password_hash($newPassword, PASSWORD_DEFAULT);
-            $update = $this->pdo->prepare("UPDATE {$this->userTable} SET pwd = ?, reset_token = NULL, reset_expires = NULL WHERE id = ?");
-            $update->execute([$hashed, $user['id']]);
-
-            // Create descriptive log identifier with user ID and IP
-            $identifier = "Password reset performed for user ID {$user['id']} from IP " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown');
-
-            $this->logActivity($user['id'], $identifier, 'Password Reset');
-            return true;
-        }
-        return false;
-        }
-    */
     public function resetPassword(string $token, string $newPassword): bool
     {
         // 1. Find the reset request record (token must be valid and not expired and not already used)
@@ -290,4 +228,18 @@ class User
         && (int) $_SESSION['user']['user_level'] === 9
             && $_SESSION['user']['user_email'] === 'abc@abc.com';
     }
+    public static function loadFromSession(): ?User
+    {
+        if (! isset($_SESSION['user_id'])) {
+            return null;
+        }
+
+        $user            = new User();
+        $user->id        = $_SESSION['user_id'];
+        $user->full_name = $_SESSION['user_name'] ?? null;
+        $user->timezone  = $_SESSION['user_timezone'] ?? 'UTC';
+
+        return $user;
+    }
+
 }

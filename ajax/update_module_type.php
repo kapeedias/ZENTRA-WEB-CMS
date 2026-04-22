@@ -1,9 +1,13 @@
 <?php
+ob_clean();
+header('Content-Type: application/json; charset=utf-8');
+
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../config/helpers.php';
 secureSessionStart();
 
 require_once __DIR__ . '/../config/db.php';
+require_once __DIR__ . '/../classes/User.php';
 require_once __DIR__ . '/../classes/ActivityLogger.php';
 
 if (! isset($_POST['type_key']) || ! isset($_POST['is_enabled'])) {
