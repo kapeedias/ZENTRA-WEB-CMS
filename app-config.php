@@ -64,53 +64,8 @@
                                     <button class="btn border-0 position-absolute top-50 end-0 translate-middle-y"
                                         type="submit"><i class="fa fa-search"></i></button>
                                 </form>
-                                <div class="dropdown"><button class="btn btn-link" data-bs-toggle="dropdown"
-                                        aria-expanded="false" type="button"><i class="fa fa-ellipsis-v"></i></button>
-                                    <div class="dropdown-menu dropdown-menu-end shadow">
-                                        <a class="dropdown-item" href="#" data-bs-toggle="modal"
-                                            data-bs-target="#addNewConfigModal"> Add New Config</a>
-
-
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="#">Export into CSV</a>
-                                    </div>
-                                </div>
                             </div>
-                            <!-- Begin addNewConfigModal  -->
-                            <div class="modal fade" id="addNewConfigModal" tabindex="-1" data-bs-backdrop="static"
-                                data-bs-keyboard="false" aria-labelledby="addNewConfigModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-dialog-centered">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h1 class="modal-title fs-5" id="addNewConfigModalLabel">
-                                                Add New Config</h1>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form id="addConfigForm" method="post">
-                                                <div class="mb-3">
-                                                    <label for="configKey" class="form-label">Config Key</label>
-                                                    <input type="text" class="form-control" id="configKey"
-                                                        name="configKey" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="configValue" class="form-label">Config Value</label>
-                                                    <input type="text" class="form-control" id="configValue"
-                                                        name="configValue" required>
-                                                </div>
-                                            </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary">Save
-                                                changes</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End addNewConfigModal  -->
+
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-hover" id="AppConfigData">
