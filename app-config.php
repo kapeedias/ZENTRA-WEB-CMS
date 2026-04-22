@@ -121,8 +121,8 @@
                                         <thead>
                                             <tr class="bg-secondary">
                                                 <th>Name</th>
-                                                <th>Status</th>
                                                 <th>Lifetime Value</th>
+                                                <th>Status</th>
                                                 <th>Join Date</th>
                                                 <th width="40px"></th>
                                             </tr>
@@ -137,29 +137,24 @@
                                                         href="#">
                                                         <div>
                                                             <p class="fw-bold mb-0"><?php echo $row['type_name']; ?></p>
-                                                            <small class="text-secondary d-block">Marketing
-                                                                Manager</small>
+                                                            <small
+                                                                class="text-secondary d-block"><?php echo $row['description']; ?></small>
                                                         </div>
                                                     </a>
                                                 </td>
+                                                <td><?php echo $row['type_key']; ?></td>
                                                 <td><span class="badge bg-light d-inline-flex gap-1"><i
                                                             class="material-icons text-success">check_circle</i>&nbsp;Active</span>
                                                 </td>
                                                 <td>$123.45</td>
-                                                <td>21 Jul, 2025</td>
-                                                <td class="text-center">
-                                                    <div class="dropstart"><a class="btn" data-bs-toggle="dropdown"
-                                                            aria-expanded="false" role="button"><i
-                                                                class="fa fa-ellipsis-v"></i></a>
-                                                        <div class="dropdown-menu dropdown-menu-end"><a
-                                                                class="dropdown-item" href="#"><i
-                                                                    class="material-icons me-2">remove_red_eye</i>View</a><a
-                                                                class="dropdown-item" href="#"><i
-                                                                    class="material-icons me-2">create</i>Edit</a>
-                                                            <div class="dropdown-divider"></div><a
-                                                                class="dropdown-item link-danger" href="#"><i
-                                                                    class="material-icons me-2">delete</i>Delete</a>
-                                                        </div>
+
+                                                <td>
+                                                    <div class="form-check form-switch d-inline-flex ms-5 badge">
+                                                        <input class="form-check-input form-check sai" type="checkbox"
+                                                            <?php echo($row['is_enabled'] == 1) ? 'checked' : ''; ?>
+                                                            id="check_<?php echo $row['type_key']; ?>"
+                                                            name="enabled[<?php echo $row['type_key']; ?>]"
+                                                            role="switch">
                                                     </div>
                                                 </td>
                                             </tr>
