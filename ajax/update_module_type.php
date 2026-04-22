@@ -54,6 +54,8 @@ try {
         'user_id' => $userId,
         'key'     => $typeKey,
     ]);
+    // Create logger instance
+    $logger = new ActivityLogger($pdo);
 
     // Log activity (NO custom message)
     $logger->log(
