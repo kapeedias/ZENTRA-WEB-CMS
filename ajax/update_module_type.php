@@ -18,10 +18,15 @@ if (! isset($_POST['type_key']) || ! isset($_POST['is_enabled'])) {
 $typeKey   = $_POST['type_key'];
 $isEnabled = (int) $_POST['is_enabled'];
 
+$user         = User::loadFromSession();
+$userId       = $user->id;
+$userName     = $user->full_name;
+$userTimezone = $user->timezone;
+/*
 $userId       = $_SESSION['user_id'] ?? null;
 $userName     = $_SESSION['user_name'] ?? 'Unknown User';
 $userTimezone = $_SESSION['user_timezone'] ?? 'UTC';
-
+*/
 // Capture context
 $ip      = getClientIP();
 $ua      = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';

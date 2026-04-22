@@ -236,7 +236,7 @@ class User
 
         $user            = new User();
         $user->id        = $_SESSION['user_id'];
-        $user->full_name = $_SESSION['user_name'] ?? null;
+        $user->full_name = $_SESSION['user_name'] ?? 'Unknown User';
         $user->timezone  = $_SESSION['user_timezone'] ?? 'UTC';
 
         return $user;
