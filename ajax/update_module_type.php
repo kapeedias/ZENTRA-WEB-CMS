@@ -33,10 +33,13 @@ $geo     = $_SESSION['geo'] ?? [
 try {
     $pdo = Database::getInstance();
 
-    // Get old value for audit
-    $stmtOld = $pdo->prepare("SELECT is_enabled FROM zentra_module_types WHERE type_key = :key");
+    // Fetch old value + type_name
+    $stmtOld = $pdo->prepare("SELECT type_name, is_enabled FROM zentra_module_types WHERE type_key = :key");
     $stmtOld->execute(['key' => $typeKey]);
-    $oldValue = (int) $stmtOld->fetchColumn();
+    $oldRow = $stmtOld->fetch(PDO::FETCH_ASSOC);
+
+    $oldValue = (int) $oldRow['is_enabled'];
+    $typeName = $oldRow['type_name'];
 
     // Update module type
     $stmt = $pdo->prepare("
@@ -52,25 +55,22 @@ try {
         'key'     => $typeKey,
     ]);
 
-    // Log activity
-    $logger = new ActivityLogger($pdo);
+    // Log activity (NO custom message)
     $logger->log(
         $userId,
         "Module Type Updated",
         "UPDATE",
         [
-            'user_name'     => $userName,
-            'user_timezone' => $userTimezone,
-            'type_key'      => $typeKey,
-            'old_value'     => $oldValue,
-            'new_value'     => $isEnabled,
-            'ip'            => $ip,
-            'browser'       => $browser,
-            'device'        => $device,
-            'city'          => $geo['city'],
-            'region'        => $geo['region'],
-            'country'       => $geo['country'],
-            'geo_raw'       => $geo['raw'],
+            'field_changed' => "App Config → {$typeName}",
+            'old_value' => $oldValue,
+            'new_value' => $isEnabled,
+            'ip'        => $ip,
+            'browser'   => $browser,
+            'device'    => $device,
+            'city'      => $geo['city'],
+            'region'    => $geo['region'],
+            'country'   => $geo['country'],
+            'geo_raw'   => $geo['raw'],
         ]
     );
 
