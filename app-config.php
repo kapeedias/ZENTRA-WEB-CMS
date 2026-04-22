@@ -143,6 +143,7 @@
 
             fetch('ajax/update_module_type.php', {
                     method: 'POST',
+                    credentials: 'same-origin',
                     headers: {
                         'Content-Type': 'application/x-www-form-urlencoded'
                     },

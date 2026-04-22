@@ -119,23 +119,6 @@
                     $_SESSION['user_agent']    = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
 
                     // ==== ACTIVITY LOG ====
-                    /* $identifier = "User {$user['first_name']} ({$email}) logged in";
-                    $userObj->logActivity(
-                        $userId,
-                        $identifier,
-                        'Login',
-                        [
-                            'ip'      => $ip,
-                            'browser' => $browser,
-                            'device'  => $device,
-                            'city'    => $geo['city'],
-                            'region'  => $geo['region'],
-                            'country' => $geo['country'],
-                            'geo_raw' => $geo['raw'],
-                        ]
-                    );*/
-
-                    // ==== ACTIVITY LOG ====
                     $identifier = "User {$user['first_name']} ({$email}) logged in";
 
                     $userObj->logActivity(
@@ -173,25 +156,6 @@
         $safeEmail  = $email ?? 'unknown';
         $identifier = "Failed login attempt for email: {$safeEmail}";
         $userId     = $user['id'] ?? null;
-
-        /*$userObj->logActivity(
-            $userId,
-            $identifier,
-            'Login Error',
-            [
-                'field_changed' => 'LOGIN_ATTEMPT',
-                'old_value'     => 'UNAUTHENTICATED',
-                'new_value'     => 'ERROR',
-                'context_error' => $errorText,
-                'ip'            => $ip,
-                'browser'       => $browser,
-                'device'        => $device,
-                'city'          => $geo['city'],
-                'region'        => $geo['region'],
-                'country'       => $geo['country'],
-                'geo_raw'       => $geo['raw'],
-            ]
-        );*/
 
         $userObj->logActivity(
             $userId,
