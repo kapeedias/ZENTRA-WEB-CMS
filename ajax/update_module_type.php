@@ -74,6 +74,8 @@ try {
         "Module Type Updated",
         "UPDATE",
         [
+            'user_name'     => $userName,
+            'user_timezone' => $userTimezone,
             'field_changed' => "App Config → {$typeName}",
             'old_value' => $oldValue,
             'new_value' => $isEnabled,
