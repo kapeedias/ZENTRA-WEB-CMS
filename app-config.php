@@ -136,8 +136,8 @@
                                                     <a class="text-decoration-none d-flex align-items-center gap-2"
                                                         href="#">
                                                         <div>
-                                                            <p class="fw-bold mb-0"><?php echo $row->name; ?></p><small
-                                                                class="text-secondary d-block">Marketing
+                                                            <p class="fw-bold mb-0"><?php echo $row->type_name; ?></p>
+                                                            <small class="text-secondary d-block">Marketing
                                                                 Manager</small>
                                                         </div>
                                                     </a>
