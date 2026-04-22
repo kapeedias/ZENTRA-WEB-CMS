@@ -120,11 +120,11 @@
                                     <table class="table table-hover" id="AppConfigData">
                                         <thead>
                                             <tr>
-                                                <th>Name</th>
-                                                <th>Status</th>
-                                                <th>Lifetime Value</th>
-                                                <th>Join Date</th>
-                                                <th width="40px"></th>
+                                                <th class="text-primary">Name</th>
+                                                <th class="text-primary">Status</th>
+                                                <th class="text-primary">Lifetime Value</th>
+                                                <th class="text-primary">Join Date</th>
+                                                <th class="text-primary" width="40px"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
