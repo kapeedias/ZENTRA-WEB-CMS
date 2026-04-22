@@ -30,7 +30,6 @@
     $error[] = "Database query failed: " . $e->getMessage();
     }
 
-    $settings = $_SESSION['module_types_cache'];
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
