@@ -11,14 +11,14 @@
                     src="assets/img/team/avatar2.jpg?h=7086b181e9fb853914a2cca97301c640" width="32"
                     height="32"></button>
             <div class="dropdown-menu dropdown-menu-end shadow"><a class="dropdown-item" href="#"><i
-                        class="fa fa-user-o me-2"></i>&nbsp;Profile</a><a class="dropdown-item" href="#"><i
+                        class="fa fa-user-o me-2"></i>&nbsp;Profile</a><a class="dropdown-item" href="profile.php"><i
                         class="fa fa-cog me-2"></i>&nbsp;Settings</a><a class="dropdown-item" href="#"><i
                         class="fa fa-th-list me-2"></i>&nbsp;Activity
                     log</a>
-                <div class="dropdown-divider"></div><a class="dropdown-item link-danger" href="#"><i
+                <div class="dropdown-divider"></div><a class="dropdown-item link-danger" href="logout.php"><i
                         class="fa fa-sign-out me-2"></i>&nbsp;Logout</a>
             </div>
         </div>
     </div>
-    <?php include('_include/top_nav_breadcrumbs.php'); ?>
+    <?php include '_include/top_nav_breadcrumbs.php'; ?>
 </div><!-- End: top-nav-and-details -->
