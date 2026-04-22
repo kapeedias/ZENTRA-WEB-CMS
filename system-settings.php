@@ -28,16 +28,9 @@
             $errors[] = "Invalid setting key: $setting_key<br>";
             continue; // Skip this iteration if setting_key is invalid
         }
-
                                                                                 // Trim and sanitize setting_value
         $setting_value = trim($setting_value);                                  // Remove extra spaces
         $setting_value = htmlspecialchars($setting_value, ENT_QUOTES, 'UTF-8'); // Prevent XSS
-
-        // Validate that setting_value is not empty (you can add more specific validation here as needed)
-        //if (empty($setting_value)) {
-        //     $errors[] = "Setting value for $setting_key is empty, skipping update.<br>";
-        // continue;
-        //  }
 
         // Check if the setting is enabled (checkbox is checked)
         if (isset($_POST['enabled'][$setting_key])) {
@@ -80,7 +73,7 @@
     $stmt     = $pdo->query("SELECT * FROM zentra_system_settings");
     $settings = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-    die("Database query failed: " . $e->getMessage());
+    $error[] = "Database query failed: " . $e->getMessage();
     }
 ?>
 <!DOCTYPE html>

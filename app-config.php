@@ -23,14 +23,11 @@
     return;
     }
 
-    // ==== LOAD MODULE TYPES (cached) ====
-    if (! isset($_SESSION['module_types_cache'])) {
     try {
-        $stmt                           = $pdo->query("SELECT * FROM zentra_module_types");
-        $_SESSION['module_types_cache'] = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $stmt     = $pdo->query("SELECT * FROM zentra_module_types");
+    $settings = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
-        $error[] = "Database query failed: " . $e->getMessage();
-    }
+    $error[] = "Database query failed: " . $e->getMessage();
     }
 
     $settings = $_SESSION['module_types_cache'];
