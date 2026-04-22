@@ -1,6 +1,7 @@
 <?php
 ob_clean();
 header('Content-Type: application/json; charset=utf-8');
+error_log("AJAX SESSION: " . print_r($_SESSION, true));
 
 require_once __DIR__ . '/../config/config.php';
 require_once __DIR__ . '/../config/helpers.php';
