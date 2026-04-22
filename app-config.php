@@ -120,8 +120,8 @@
                                     <table class="table table-hover" id="AppConfigData">
                                         <thead>
                                             <tr class="bg-secondary">
-                                                <th>Name</th>
-                                                <th>Lifetime Value</th>
+                                                <th>Module Name</th>
+                                                <th>Module Key</th>
                                                 <th>Status</th>
                                                 <th></th>
                                             </tr>
@@ -142,11 +142,15 @@
                                                     </a>
                                                 </td>
                                                 <td><?php echo $row['type_key']; ?></td>
-                                                <td><span class="badge bg-light d-inline-flex gap-1"><i
+                                                <td id="status_<?php echo $row['type_key']; ?>">
+                                                    <?php if ($row['is_enabled'] == 1): ?>
+                                                    <span class="badge bg-light d-inline-flex gap-1"><i
                                                             class="material-icons text-success">check_circle</i>&nbsp;Active</span>
+                                                    <?php else: ?>
+                                                    <span class="badge bg-light d-inline-flex gap-1"><i
+                                                            class="material-icons text-danger">cancel</i>&nbsp;Inactive</span>
+                                                    <?php endif; ?>
                                                 </td>
-
-
                                                 <td>
                                                     <div class="form-check form-switch d-inline-flex ms-5 badge">
                                                         <input class="form-check-input form-check sai" type="checkbox"
@@ -179,6 +183,39 @@
         </div>
     </div>
     <?php include '_include/body_end_plugins.php'; ?>
+    <script>
+    document.querySelectorAll('.sai').forEach(function(toggle) {
+        toggle.addEventListener('change', function() {
+
+            const typeKey = this.id.replace('check_', '');
+            const isEnabled = this.checked ? 1 : 0;
+
+            fetch('ajax/update_module_type.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `type_key=${typeKey}&is_enabled=${isEnabled}`
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        const statusCell = document.getElementById(`status_${typeKey}`);
+
+                        if (isEnabled === 1) {
+                            statusCell.innerHTML = `<span class="badge bg-success">Active</span>`;
+                        } else {
+                            statusCell.innerHTML =
+                                `<span class="badge bg-secondary">Inactive</span>`;
+                        }
+                    } else {
+                        alert("Error: " + data.message);
+                    }
+                });
+        });
+    });
+    </script>
+
 </body>
 
 </html>
