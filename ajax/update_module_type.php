@@ -1,46 +1,49 @@
+php
 <?php
-ob_clean();
-header('Content-Type: application/json; charset=utf-8');
-error_log("AJAX SESSION: " . print_r($_SESSION, true));
+    require_once __DIR__ . '/../config/helpers.php';
+    secureSessionStart();
 
-require_once __DIR__ . '/../config/config.php';
-require_once __DIR__ . '/../config/helpers.php';
-secureSessionStart();
+    ob_clean();
+    header('Content-Type: application/json; charset=utf-8');
 
-require_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/../classes/User.php';
-require_once __DIR__ . '/../classes/ActivityLogger.php';
+    error_log("AJAX SESSION: " . print_r($_SESSION, true));
 
-if (! isset($_POST['type_key']) || ! isset($_POST['is_enabled'])) {
+    require_once __DIR__ . '/../config/config.php';
+
+    require_once __DIR__ . '/../config/db.php';
+    require_once __DIR__ . '/../classes/User.php';
+    require_once __DIR__ . '/../classes/ActivityLogger.php';
+
+    if (! isset($_POST['type_key']) || ! isset($_POST['is_enabled'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid request']);
     exit;
-}
+    }
 
-$typeKey   = $_POST['type_key'];
-$isEnabled = (int) $_POST['is_enabled'];
+    $typeKey   = $_POST['type_key'];
+    $isEnabled = (int) $_POST['is_enabled'];
 
-$user         = User::loadFromSession();
-$userId       = $user->id;
-$userName     = $user->full_name;
-$userTimezone = $user->timezone;
-/*
+    $user         = User::loadFromSession();
+    $userId       = $user->id;
+    $userName     = $user->full_name;
+    $userTimezone = $user->timezone;
+    /*
 $userId       = $_SESSION['user_id'] ?? null;
 $userName     = $_SESSION['user_name'] ?? 'Unknown User';
 $userTimezone = $_SESSION['user_timezone'] ?? 'UTC';
 */
-// Capture context
-$ip      = getClientIP();
-$ua      = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
-$browser = getBrowserName($ua);
-$device  = getDeviceType($ua);
-$geo     = $_SESSION['geo'] ?? [
+    // Capture context
+    $ip      = getClientIP();
+    $ua      = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+    $browser = getBrowserName($ua);
+    $device  = getDeviceType($ua);
+    $geo     = $_SESSION['geo'] ?? [
     'city'    => null,
     'region'  => null,
     'country' => null,
     'raw'     => null,
-];
+    ];
 
-try {
+    try {
     $pdo = Database::getInstance();
 
     // Fetch old value + type_name
@@ -91,6 +94,6 @@ try {
         'status'  => $isEnabled == 1 ? 'Active' : 'Inactive',
     ]);
 
-} catch (Exception $e) {
+    } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => $e->getMessage()]);
 }
