@@ -199,10 +199,13 @@
                         const statusCell = document.getElementById(`status_${typeKey}`);
 
                         if (isEnabled === 1) {
-                            statusCell.innerHTML = `<span class="badge bg-success">Active</span>`;
+                            statusCell.innerHTML =
+                                `<span class="badge bg-light d-inline-flex gap-1"><i
+                                                            class="material-icons text-success">check_circle</i>&nbsp;Active</span>`;
                         } else {
                             statusCell.innerHTML =
-                                `<span class="badge bg-secondary">Inactive</span>`;
+                                `<span class="badge bg-light d-inline-flex gap-1"><i
+                                                            class="material-icons text-danger">cancel</i>&nbsp;Inactive</span>`;
                         }
                     } else {
                         alert("Error: " + data.message);
