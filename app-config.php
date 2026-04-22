@@ -123,8 +123,7 @@
                                                 <th>Name</th>
                                                 <th>Lifetime Value</th>
                                                 <th>Status</th>
-                                                <th>Join Date</th>
-                                                <th width="40px"></th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -146,7 +145,7 @@
                                                 <td><span class="badge bg-light d-inline-flex gap-1"><i
                                                             class="material-icons text-success">check_circle</i>&nbsp;Active</span>
                                                 </td>
-                                                <td>$123.45</td>
+
 
                                                 <td>
                                                     <div class="form-check form-switch d-inline-flex ms-5 badge">
