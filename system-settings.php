@@ -7,10 +7,10 @@
     require_once __DIR__ . '/config/config.php';
     require_once __DIR__ . '/config/init.php';
     require_once __DIR__ . '/config/db.php';
-
     require_once __DIR__ . '/classes/User.php';
-    require_once __DIR__ . 'classes/MenuManager.php';
-    require_once __DIR__ . '_include/nav_renderer.php';
+    require_once __DIR__ . '/classes/MenuManager.php';
+    require_once __DIR__ . '/_include/nav_renderer.php';
+    require_once __DIR__ . '/classes/ModuleManager.php';
     enforceSessionSecurity();
     $ip = getClientIP();
 
