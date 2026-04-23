@@ -8,6 +8,8 @@
     require_once __DIR__ . '/config/init.php';
     require_once __DIR__ . '/config/db.php';
     require_once __DIR__ . '/classes/User.php';
+    require_once __DIR__ . 'classes/MenuManager.php';
+    require_once __DIR__ . 'includes/nav_renderer.php';
 
     // ==== SESSION SECURITY ====
     enforceSessionSecurity();
@@ -22,7 +24,7 @@
     $error[] = "Database connection failed: " . $e->getMessage();
     return;
     }
-
+    $moduleManager = new ModuleManager($pdo); // ← REQUIRED
     try {
     $stmt     = $pdo->query("SELECT * FROM zentra_module_types");
     $settings = $stmt->fetchAll(PDO::FETCH_ASSOC);

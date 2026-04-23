@@ -11,6 +11,8 @@
     require_once __DIR__ . '/config/helpers.php';
     require_once __DIR__ . '/classes/User.php';
     require_once __DIR__ . '/classes/ActivityLogger.php';
+    require_once __DIR__ . 'classes/MenuManager.php';
+    require_once __DIR__ . 'includes/nav_renderer.php';
 
     // ==== SECURE SESSION START ====
     secureSessionStart();
@@ -42,8 +44,8 @@
     } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
     }
-
-    // ==== RATE LIMITING CONFIG ====
+    $moduleManager = new ModuleManager($pdo); // ← REQUIRED
+                                          // ==== RATE LIMITING CONFIG ====
     if (! isset($_SESSION['login_attempts'])) {
     $_SESSION['login_attempts'] = [];
     }

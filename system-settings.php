@@ -9,16 +9,20 @@
     require_once __DIR__ . '/config/db.php';
 
     require_once __DIR__ . '/classes/User.php';
-
+    require_once __DIR__ . 'classes/MenuManager.php';
+    require_once __DIR__ . 'includes/nav_renderer.php';
     enforceSessionSecurity();
     $ip = getClientIP();
 
     try {
     $pdo     = Database::getInstance();
     $userObj = new User($pdo);
+
     } catch (PDOException $e) {
     $error[] = "Database connection failed: " . $e->getMessage();
     }
+
+    $moduleManager = new ModuleManager($pdo); // ← REQUIRED
 
     // Check if the form was submitted
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {

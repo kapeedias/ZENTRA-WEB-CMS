@@ -1,47 +1,49 @@
 <?php
-// ==== CONFIG & DEPENDENCIES ====
-require_once __DIR__ . '/config/config.php';
-require_once __DIR__ . '/config/db.php';
-require_once __DIR__ . '/config/init.php';
-require_once __DIR__ . '/config/helpers.php';
-require_once __DIR__ . '/classes/User.php';
-require_once __DIR__ . '/classes/Mailer.php';
+    // ==== CONFIG & DEPENDENCIES ====
+    require_once __DIR__ . '/config/config.php';
+    require_once __DIR__ . '/config/db.php';
+    require_once __DIR__ . '/config/init.php';
+    require_once __DIR__ . '/config/helpers.php';
+    require_once __DIR__ . '/classes/User.php';
+    require_once __DIR__ . '/classes/Mailer.php';
+    require_once __DIR__ . 'classes/MenuManager.php';
+    require_once __DIR__ . 'includes/nav_renderer.php';
 
-// ==== SECURE SESSION START ====
-secureSessionStart();
+    // ==== SECURE SESSION START ====
+    secureSessionStart();
 
-// ==== INITIALIZE ====
-$errors = $_SESSION['forgot_errors'] ?? [];
-unset($_SESSION['forgot_errors']);
-$success = $_SESSION['forgot_success'] ?? null;
-unset($_SESSION['forgot_success']);
+    // ==== INITIALIZE ====
+    $errors = $_SESSION['forgot_errors'] ?? [];
+    unset($_SESSION['forgot_errors']);
+    $success = $_SESSION['forgot_success'] ?? null;
+    unset($_SESSION['forgot_success']);
 
-try {
-    $pdo = Database::getInstance();
+    try {
+    $pdo     = Database::getInstance();
     $userObj = new User($pdo);
-    $mailer = new Mailer();
-} catch (PDOException $e) {
+    $mailer  = new Mailer();
+    } catch (PDOException $e) {
     die("Database error: " . htmlspecialchars($e->getMessage()));
-}
-
-// ==== RATE LIMITING CONFIG ====
-if (!isset($_SESSION['forgot_attempts'])) {
+    }
+    $moduleManager = new ModuleManager($pdo); // ← REQUIRED
+                                          // ==== RATE LIMITING CONFIG ====
+    if (! isset($_SESSION['forgot_attempts'])) {
     $_SESSION['forgot_attempts'] = [];
-}
+    }
 
-// Remove expired attempts
-foreach ($_SESSION['forgot_attempts'] as $time => $recordedIp) {
+    // Remove expired attempts
+    foreach ($_SESSION['forgot_attempts'] as $time => $recordedIp) {
     if (time() - $time > $lockoutTime) {
         unset($_SESSION['forgot_attempts'][$time]);
     }
-}
+    }
 
-// Count attempts from this IP
-$attempts = array_filter($_SESSION['forgot_attempts'], fn($v) => $v === $ip);
+    // Count attempts from this IP
+    $attempts = array_filter($_SESSION['forgot_attempts'], fn($v) => $v === $ip);
 
-// ==== FORM SUBMISSION HANDLER ====
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $errors = [];
+    // ==== FORM SUBMISSION HANDLER ====
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $errors  = [];
     $success = [];
     if (count($attempts) >= $maxAttempts) {
         $errors[] = 'Too many password reset requests from your IP. Please wait and try again later.';
@@ -59,19 +61,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // reCAPTCHA verification
-    $recaptchaSecret = GOOGLE_RECAPTCHA_SECRET_KEY;
+    $recaptchaSecret   = GOOGLE_RECAPTCHA_SECRET_KEY;
     $recaptchaResponse = $_POST['g-recaptcha-response'] ?? '';
 
     if (empty($recaptchaResponse)) {
         $errors[] = 'Please complete the reCAPTCHA.';
     } else {
         $verify = file_get_contents("https://www.google.com/recaptcha/api/siteverify?" . http_build_query([
-            'secret' => $recaptchaSecret,
+            'secret'   => $recaptchaSecret,
             'response' => $recaptchaResponse,
-            'remoteip' => $ip
+            'remoteip' => $ip,
         ]));
         $captchaResult = json_decode($verify);
-        if (!$captchaResult->success) {
+        if (! $captchaResult->success) {
             $errors[] = 'reCAPTCHA verification failed.';
         }
     }
@@ -83,31 +85,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute(['email' => $email]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (!$user) {
+            if (! $user) {
                 // To prevent user enumeration, do NOT reveal this directly
                 $errors[] = "We have successfully got your password reset request. If our system finds an account with the email provided, a reset link will be sent to the same email address shortly.";
-            } elseif ((int)$user['banned'] === 1) {
+            } elseif ((int) $user['banned'] === 1) {
                 $errors[] = 'This account has been banned.';
-            } elseif ((int)$user['approved'] !== 1) {
+            } elseif ((int) $user['approved'] !== 1) {
                 $errors[] = 'This account has not been approved yet.';
             } else {
                 // Generate token and expiry (1 hour validity)
-                $token = bin2hex(random_bytes(16));
+                $token   = bin2hex(random_bytes(16));
                 $expires = date('Y-m-d H:i:s', time() + 3600);
 
                 // Store token and expiry in your password resets table
                 $insert = $pdo->prepare("INSERT INTO zentra_password_resets (user_id, reset_token, expires_at) VALUES (:uid, :token, :expires)");
                 $insert->execute([
-                    'uid' => $user['id'],
-                    'token' => $token,
-                    'expires' => $expires
+                    'uid'     => $user['id'],
+                    'token'   => $token,
+                    'expires' => $expires,
                 ]);
 
                 // Send reset email
                 $mailSent = $mailer->sendResetPasswordEmail($user['user_email'], $user['first_name'], $token);
 
                 if ($mailSent) {
-                    $success[] = "A password reset link has been sent to your email.";
+                    $success[]  = "A password reset link has been sent to your email.";
                     $identifier = "Password reset requested for user {$user['user_email']}";
                     $userObj->logActivity($user['id'], $identifier, 'Password Reset Requested');
                 } else {
@@ -121,10 +123,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Log attempts and errors
-    if (!empty($errors)) {
+    if (! empty($errors)) {
         $_SESSION['forgot_attempts'][time()] = $ip;
-        $identifier = "Failed password reset request for email: " . ($email ?? '[unknown]');
-        $userId = $user['id'] ?? null;
+        $identifier                          = "Failed password reset request for email: " . ($email ?? '[unknown]');
+        $userId                              = $user['id'] ?? null;
         $userObj->logActivity(
             $userId,
             $identifier,
@@ -134,11 +136,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Save errors or success message for display and redirect to self
-    $_SESSION['forgot_errors'] = $errors;
+    $_SESSION['forgot_errors']  = $errors;
     $_SESSION['forgot_success'] = $success ?? null;
     header("Location: forgot.php");
     exit;
-}
+    }
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
@@ -146,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title><?= APP_NAME ?> - Forgot</title>
+    <title><?php echo APP_NAME ?> - Forgot</title>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css?h=283928673d7441cd64f1af3db9200eab">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Geist:400,700&amp;display=swap">
     <link rel="stylesheet" href="assets/css/styles.min.css?h=6fca2a621bf969aa555e4e55be38144a">
@@ -163,16 +165,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div class="d-flex flex-fill justify-content-center align-items-center">
                     <div class="w-100 max-w-350">
                         <!-- Start: alert -->
-                        <?php if (!empty($success)): ?>
-                            <div class="w-100 alert-success shadow">
-                                <?= implode('<br>', $success) ?>
-                            </div>
+                        <?php if (! empty($success)): ?>
+                        <div class="w-100 alert-success shadow">
+                            <?php echo implode('<br>', $success) ?>
+                        </div>
                         <?php endif; ?>
 
-                        <?php if (!empty($errors)): ?>
-                            <div class="w-100 alert-error shadow">
-                                <?= implode('<br>', $errors) ?>
-                            </div>
+                        <?php if (! empty($errors)): ?>
+                        <div class="w-100 alert-error shadow">
+                            <?php echo implode('<br>', $errors) ?>
+                        </div>
                         <?php endif; ?>
 
                         <!-- End: alert -->
@@ -187,7 +189,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             placeholder="yourname@work-email.com" required="" name="useremail"
                                             autofocus="" autocomplete="off" inputmode="email"></div>
                                     <!-- Start: recaptcha -->
-                                    <div class="g-recaptcha" data-sitekey="<?= GOOGLE_RECAPTCHA_SITE_KEY; ?>"></div>
+                                    <div class="g-recaptcha" data-sitekey="<?php echo GOOGLE_RECAPTCHA_SITE_KEY; ?>">
+                                    </div>
                                     <script src="https://www.google.com/recaptcha/api.js" async defer>
                                     </script>
                                     <!-- End: recaptcha -->

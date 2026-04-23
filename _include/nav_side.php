@@ -75,9 +75,6 @@
                 </div>
 
                 <?php
-                    require_once __DIR__ . '/../classes/MenuManager.php';
-                    require_once __DIR__ . '/nav_renderer.php';
-
                     $menuManager = new MenuManager($pdo, $moduleManager);
                     $items       = $menuManager->getMenuItems($_SESSION['tenant_id'] ?? null);
                 ?>
