@@ -22,6 +22,16 @@
     $device  = getDeviceType($agent);
     $geo     = getGeoLocation($ip);
 
+    $_SESSION['geo'] = [
+    'city'    => $geo['city'],
+    'region'  => $geo['region'],
+    'country' => $geo['country'],
+    'postal'  => $geo['postal'],
+    'raw'     => $geo['raw'],
+    ];
+
+    $_SESSION['user_timezone'] = $geo['timezone'];
+
     // ==== ERROR DISPLAY HANDLER ====
     $errors = $_SESSION['login_errors'] ?? [];
     unset($_SESSION['login_errors']);

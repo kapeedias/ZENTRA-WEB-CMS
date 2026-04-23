@@ -222,33 +222,96 @@ function getDeviceType($agent)
 }
 function getGeoLocation($ip): array
 {
-    $raw = @file_get_contents("https://ipwho.is/{$ip}");
+    $url = "https://ipwho.is/" . urlencode($ip);
+    $raw = @file_get_contents($url);
 
+    // If API unreachable
     if (! $raw) {
         return [
-            'city'    => 'Unknown',
-            'region'  => 'Unknown',
-            'country' => 'Unknown',
-            'raw'     => null,
+            'success'      => false,
+            'ip'           => $ip,
+            'city'         => 'Unknown',
+            'region'       => 'Unknown',
+            'country'      => 'Unknown',
+            'country_code' => null,
+            'continent'    => null,
+            'postal'       => null,
+            'latitude'     => null,
+            'longitude'    => null,
+            'asn'          => null,
+            'isp'          => null,
+            'org'          => null,
+            'timezone'     => 'UTC',
+            'timezone_utc' => null,
+            'local_time'   => null,
+            'calling_code' => null,
+            'capital'      => null,
+            'currency'     => null,
+            'flag'         => null,
+            'raw'          => null,
         ];
     }
 
     $data = json_decode($raw, true);
 
+    // If API returns success=false
     if (! isset($data['success']) || ! $data['success']) {
         return [
-            'city'    => 'Unknown',
-            'region'  => 'Unknown',
-            'country' => 'Unknown',
-            'raw'     => $raw,
+            'success'      => false,
+            'ip'           => $ip,
+            'city'         => 'Unknown',
+            'region'       => 'Unknown',
+            'country'      => 'Unknown',
+            'country_code' => null,
+            'continent'    => null,
+            'postal'       => null,
+            'latitude'     => null,
+            'longitude'    => null,
+            'asn'          => null,
+            'isp'          => null,
+            'org'          => null,
+            'timezone'     => 'UTC',
+            'timezone_utc' => null,
+            'local_time'   => null,
+            'calling_code' => null,
+            'capital'      => null,
+            'currency'     => null,
+            'flag'         => null,
+            'raw'          => $raw,
         ];
     }
 
+    // Build final structured response
     return [
-        'city'    => $data['city'] ?? 'Unknown',
-        'region'  => $data['region'] ?? 'Unknown',
-        'country' => $data['country'] ?? 'Unknown',
-        'raw'     => $raw,
+        'success'      => true,
+        'ip'           => $ip,
+        'city'         => $data['city'] ?? 'Unknown',
+        'region'       => $data['region'] ?? 'Unknown',
+        'country'      => $data['country'] ?? 'Unknown',
+        'country_code' => $data['country_code'] ?? null,
+        'continent'    => $data['continent'] ?? null,
+        'postal'       => $data['postal'] ?? null, // ZIP / Postal Code
+        'latitude'     => $data['latitude'] ?? null,
+        'longitude'    => $data['longitude'] ?? null,
+
+        // Network info
+        'asn'          => $data['connection']['asn'] ?? null,
+        'isp'          => $data['connection']['isp'] ?? null,
+        'org'          => $data['connection']['org'] ?? null,
+
+        // Timezone block
+        'timezone'     => $data['timezone']['id'] ?? 'UTC',
+        'timezone_utc' => $data['timezone']['utc'] ?? null,
+        'local_time'   => $data['timezone']['current_time'] ?? null,
+
+        // Extra metadata
+        'calling_code' => $data['calling_code'] ?? null,
+        'capital'      => $data['capital'] ?? null,
+        'currency'     => $data['currency']['code'] ?? null,
+        'flag'         => $data['flag']['emoji'] ?? null,
+
+        // Raw JSON for SOC2 audit logs
+        'raw'          => $raw,
     ];
 }
 
