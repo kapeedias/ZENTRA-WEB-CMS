@@ -6,7 +6,7 @@ secureSessionStart();
 ob_clean();
 header('Content-Type: application/json; charset=utf-8');
 
-error_log("AJAX SESSION: " . print_r($_SESSION, true));
+//error_log("AJAX SESSION: " . print_r($_SESSION, true));
 
 require_once __DIR__ . '/../config/db.php';
 require_once __DIR__ . '/../classes/User.php';
