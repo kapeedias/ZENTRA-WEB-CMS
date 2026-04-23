@@ -10,7 +10,7 @@
 
     require_once __DIR__ . '/classes/User.php';
     require_once __DIR__ . 'classes/MenuManager.php';
-    require_once __DIR__ . 'includes/nav_renderer.php';
+    require_once __DIR__ . '_include/nav_renderer.php';
     enforceSessionSecurity();
     $ip            = getClientIP();
     $moduleManager = new ModuleManager($pdo); // ← REQUIRED
