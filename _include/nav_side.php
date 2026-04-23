@@ -83,15 +83,15 @@
                     <h6 class="text-muted ps-3 small">DB Modules</h6>
 
                     <?php renderMenu($items); ?>
-                    <li class="nav-item"><a class="nav-link" href="logout.php"><i
-                                class="icon ion-log-out-outline me-2"></i>
-                            Logout</a></li>
+
                 </div>
 
                 <div class="mt-4">
 
                     <ul class="nav flex-column">
-
+                        <li class="nav-item"><a class="nav-link" href="logout.php"><i
+                                    class="icon ion-log-out-outline me-2"></i>
+                                Logout</a></li>
                     </ul>
                 </div>
             </div><!-- End: Menu Items -->
