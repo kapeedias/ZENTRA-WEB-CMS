@@ -12,22 +12,18 @@ class ModuleManager
     /**
      * Check if a module is enabled in App Config
      */
-    public function isModuleEnabled(string $moduleSlug): bool
+    public function isModuleEnabled(string $typeKey): bool
     {
         $sql = "SELECT is_enabled
                 FROM zentra_module_types
-                WHERE module_slug = :slug
+                WHERE type_key = :key
                 LIMIT 1";
 
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['slug' => $moduleSlug]);
+        $stmt->execute(['key' => $typeKey]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if (! $row) {
-            return false; // module not found
-        }
-
-        return (bool) $row['is_enabled'];
+        return $row ? (bool) $row['is_enabled'] : false;
     }
 
     /**
