@@ -42,8 +42,8 @@
     } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
     }
-    $moduleManager = new ModuleManager($pdo); // ← REQUIRED
-                                          // ==== RATE LIMITING CONFIG ====
+
+    // ==== RATE LIMITING CONFIG ====
     if (! isset($_SESSION['login_attempts'])) {
     $_SESSION['login_attempts'] = [];
     }
