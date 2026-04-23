@@ -1,8 +1,6 @@
 <?php
 // Database connection
 
-<  ? php;
-
 // ==== CONFIG FIRST (order matters) ====
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/config/helpers.php';
