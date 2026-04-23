@@ -19,7 +19,7 @@ try {
 // Load JSON from the Font Awesome 4.7 gist
 $json = file_get_contents('https://gist.githubusercontent.com/khanzadimahdi/5f0e9327f1c7abe551f043b3f9259d63/raw/57dcf7abdf5d29268614887ecbb13e1e35236965/fontwawesome-icons-4.7.json');
 $data = json_decode($json, true);
-
+/*
 // Prepare insert statement
 $stmt = $pdo->prepare("
     INSERT INTO zentra_icons (icon_class, icon_name, fa_version, category, is_enabled, created_at)
@@ -41,3 +41,4 @@ foreach ($data['icons'] as $icon) {
 }
 
 echo "✅ Icons inserted successfully!";
+*/
