@@ -66,49 +66,55 @@
                                         <h5 class="fw-bold mb-0"></h5>
                                     </div>
                                     <div class="card-body pt-2">
-                                        <div class="mb-3"><span>Event Title</span><input
-                                                class="fw-bold form-control-sm form-control" type="text" autofocus=""
-                                                required="" name="event_title"><span class="text-secondary text-x-small"
-                                                id="event-url">http://mywebsite.com/events/2026/04/23/navrathri-2026</span>
-                                        </div>
-                                        <div class="row g-3">
-                                            <div class="col-md-6">
-                                                <div class="small text-muted mb-1"><span>Event Start Date &amp;
-                                                        Time</span></div>
-                                                <div class="fw-semibold"><input
-                                                        class="fw-bold form-control-sm form-control"
-                                                        type="datetime-local" name="event_start_date_time" required="">
+                                        <form method="POST" name="create-event" id="create-event">
+                                            <div class="mb-3"><span>Event Title</span><input
+                                                    class="fw-bold form-control-sm form-control" type="text"
+                                                    autofocus="" required="" name="event_title"><span
+                                                    class="text-secondary text-x-small"
+                                                    id="event-url">http://mywebsite.com/events/2026/04/23/navrathri-2026</span>
+                                            </div>
+                                            <div class="row g-3">
+                                                <div class="col-md-6">
+                                                    <div class="small text-muted mb-1"><span>Event Start Date &amp;
+                                                            Time</span></div>
+                                                    <div class="fw-semibold"><input
+                                                            class="fw-bold form-control-sm form-control"
+                                                            type="datetime-local" name="event_start_date_time"
+                                                            required="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="small text-muted mb-1"><span>Event End Date &amp;
+                                                            Time</span></div>
+                                                    <div class="fw-semibold"><input
+                                                            class="fw-bold form-control-sm form-control"
+                                                            type="datetime-local" name="event_end_date_time"
+                                                            required="">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="small text-muted mb-1"><span>Event Status</span></div>
+                                                    <div class="fw-semibold"><span
+                                                            class="badge fw-bold bg-light d-inline-flex gap-1"><i
+                                                                class="fa fa-hourglass-half text-info"></i>&nbsp;Draft</span>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="small text-muted mb-1"><span>Event Location</span></div>
+                                                    <div class="fw-semibold"><select class="form-select-sm form-select"
+                                                            name="event_location">
+                                                            <optgroup label="This is a group">
+                                                                <option value="12" selected="">This is item 1</option>
+                                                                <option value="13">This is item 2</option>
+                                                                <option value="14">This is item 3</option>
+                                                            </optgroup>
+                                                        </select></div>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="small text-muted mb-1"><span>Event End Date &amp;
-                                                        Time</span></div>
-                                                <div class="fw-semibold"><input
-                                                        class="fw-bold form-control-sm form-control"
-                                                        type="datetime-local" name="event_end_date_time" required="">
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="small text-muted mb-1"><span>Event Status</span></div>
-                                                <div class="fw-semibold"><span
-                                                        class="badge fw-bold bg-light d-inline-flex gap-1"><i
-                                                            class="fa fa-hourglass-half text-info"></i>&nbsp;Draft</span>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <div class="small text-muted mb-1"><span>Event Location</span></div>
-                                                <div class="fw-semibold"><select class="form-select-sm form-select"
-                                                        name="event_location">
-                                                        <optgroup label="This is a group">
-                                                            <option value="12" selected="">This is item 1</option>
-                                                            <option value="13">This is item 2</option>
-                                                            <option value="14">This is item 3</option>
-                                                        </optgroup>
-                                                    </select></div>
-                                            </div>
-                                        </div>
-                                        <div class="text-end my-3"><button class="btn btn-primary" type="button">Create
-                                                Event</button></div>
+                                            <div class="text-end my-3"><button class="btn btn-primary"
+                                                    type="button">Create
+                                                    Event</button></div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -121,6 +127,18 @@
         </div>
     </div>
     <?php include '_include/body_end_plugins.php'; ?>
+    <script>
+    $(function() {
+        $('input[name="event_start_date_time"]').daterangepicker({
+            timePicker: true,
+            startDate: moment().startOf('hour'),
+            endDate: moment().startOf('hour').add(32, 'hour'),
+            locale: {
+                format: 'M/DD hh:mm A'
+            }
+        });
+    });
+    </script>
 </body>
 
 </html>
