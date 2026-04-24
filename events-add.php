@@ -135,48 +135,21 @@
     </div>
     <?php include '_include/body_end_plugins.php'; ?>
     <script>
-    function slugify(text) {
-        return text
-            .toString()
-            .toLowerCase()
-            .trim()
-            .replace(/[^a-z0-9\s-]/g, '')
-            .replace(/\s+/g, '-')
-            .replace(/-+/g, '-');
+    async function checkAndFixDuplicateSlug(slug, startDate, startTime) {
+        let newSlug = slug;
+        let counter = 2;
+
+        while (true) {
+            const exists = await checkDuplicateEvent(newSlug, startDate, startTime);
+            if (!exists) return newSlug;
+
+            newSlug = slug + '-' + counter;
+            counter++;
+        }
     }
 
-    function splitDateTime(dtValue) {
-        if (!dtValue) return {
-            date: null,
-            time: null
-        };
-        const [date, time] = dtValue.split('T');
-        return {
-            date,
-            time
-        };
-    }
-
-    function updateEventUrl() {
-        const slug = document.getElementById('event_slug').value;
-        const startDate = document.getElementById('event_start_date').value;
-
-        if (!slug || !startDate) return;
-
-        const [year, month, day] = startDate.split('-');
-
-        const url = `https://mywebsite.com/events/${year}/${month}/${day}/${slug}`;
-        document.getElementById('event-url').innerText = url;
-    }
-
-    function checkDuplicateEvent() {
-        const slug = document.getElementById('event_slug').value;
-        const startDate = document.getElementById('event_start_date').value;
-        const startTime = document.getElementById('event_start_time').value;
-
-        if (!slug || !startDate) return;
-
-        fetch('ajax/check_event_duplicate.php', {
+    function checkDuplicateEvent(slug, startDate, startTime) {
+        return fetch('ajax/check_event_duplicate.php', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/x-www-form-urlencoded'
@@ -184,49 +157,50 @@
                 body: `slug=${slug}&start_date=${startDate}&start_time=${startTime}`
             })
             .then(res => res.json())
-            .then(data => {
-                if (data.exists) {
-                    document.getElementById('event-url').style.color = "red";
-                } else {
-                    document.getElementById('event-url').style.color = "#6c757d";
-                }
-            });
+            .then(data => data.exists);
     }
 
-    // EVENT TITLE → SLUG + URL
-    document.querySelector('input[name="event_title"]').addEventListener('input', function() {
-        const slug = slugify(this.value);
-        document.getElementById('event_slug').value = slug;
+    async function updateSlugAndUrl() {
+        const title = document.querySelector('input[name="event_title"]').value;
+        const slug = slugify(title);
 
-        updateEventUrl();
-        checkDuplicateEvent();
+        const startDate = document.getElementById('event_start_date').value;
+        const startTime = document.getElementById('event_start_time').value;
+
+        if (!slug || !startDate) return;
+
+        const uniqueSlug = await checkAndFixDuplicateSlug(slug, startDate, startTime);
+
+        document.getElementById('event_slug').value = uniqueSlug;
+
+        const [year, month, day] = startDate.split('-');
+        const url = `https://abbotsfordhindutemple.org/events/${year}/${month}/${day}/${uniqueSlug}`;
+        document.getElementById('event-url').innerText = url;
+    }
+
+    // When user types title
+    document.querySelector('input[name="event_title"]').addEventListener('input', async function() {
+        const now = new Date();
+        const today = now.toISOString().split('T')[0];
+
+        if (!document.getElementById('event_start_date').value) {
+            document.getElementById('event_start_date').value = today;
+        }
+
+        await updateSlugAndUrl();
     });
 
-    // START DATE/TIME → SPLIT + URL + DUPLICATE CHECK
-    document.querySelector('input[name="event_start_date_time"]').addEventListener('change', function() {
-        const {
-            date,
-            time
-        } = splitDateTime(this.value);
+    // When user selects start date/time
+    document.querySelector('input[name="event_start_date_time"]').addEventListener('change', async function() {
+        const [date, time] = this.value.split('T');
 
         document.getElementById('event_start_date').value = date;
         document.getElementById('event_start_time').value = time;
 
-        updateEventUrl();
-        checkDuplicateEvent();
-    });
-
-    // END DATE/TIME → SPLIT
-    document.querySelector('input[name="event_end_date_time"]').addEventListener('change', function() {
-        const {
-            date,
-            time
-        } = splitDateTime(this.value);
-
-        document.getElementById('event_end_date').value = date;
-        document.getElementById('event_end_time').value = time;
+        await updateSlugAndUrl();
     });
     </script>
+
 
 </body>
 
