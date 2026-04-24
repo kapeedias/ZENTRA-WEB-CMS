@@ -68,18 +68,6 @@
                                     </div>
                                     <div class="card-body pt-2">
                                         <form method="POST" name="create-event" id="create-event">
-                                            <input type="hidden" name="event_slug" id="event_slug">
-                                            <input type="hidden" name="event_start_date" id="event_start_date">
-                                            <input type="hidden" name="event_start_time" id="event_start_time">
-                                            <input type="hidden" name="event_end_date" id="event_end_date">
-                                            <input type="hidden" name="event_end_time" id="event_end_time">
-
-                                            <div class="mb-3"><span>Event Title</span><input
-                                                    class="fw-bold form-control-sm form-control" type="text"
-                                                    autofocus="" required="" name="event_title"><span
-                                                    class="text-secondary text-x-small"
-                                                    id="event-url">http://mywebsite.com/events/2026/04/23/navrathri-2026</span>
-                                            </div>
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <div class="small text-muted mb-1"><span>Event Start Date &amp;
@@ -134,74 +122,6 @@
         </div>
     </div>
     <?php include '_include/body_end_plugins.php'; ?>
-    <script>
-    async function checkAndFixDuplicateSlug(slug, startDate, startTime) {
-        let newSlug = slug;
-        let counter = 2;
-
-        while (true) {
-            const exists = await checkDuplicateEvent(newSlug, startDate, startTime);
-            if (!exists) return newSlug;
-
-            newSlug = slug + '-' + counter;
-            counter++;
-        }
-    }
-
-    function checkDuplicateEvent(slug, startDate, startTime) {
-        return fetch('ajax/check_event_duplicate.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                },
-                body: `slug=${slug}&start_date=${startDate}&start_time=${startTime}`
-            })
-            .then(res => res.json())
-            .then(data => data.exists);
-    }
-
-    async function updateSlugAndUrl() {
-        const title = document.querySelector('input[name="event_title"]').value;
-        const slug = slugify(title);
-
-        const startDate = document.getElementById('event_start_date').value;
-        const startTime = document.getElementById('event_start_time').value;
-
-        if (!slug || !startDate) return;
-
-        const uniqueSlug = await checkAndFixDuplicateSlug(slug, startDate, startTime);
-
-        document.getElementById('event_slug').value = uniqueSlug;
-
-        const [year, month, day] = startDate.split('-');
-        const url = `https://abbotsfordhindutemple.org/events/${year}/${month}/${day}/${uniqueSlug}`;
-        document.getElementById('event-url').innerText = url;
-    }
-
-    // When user types title
-    document.querySelector('input[name="event_title"]').addEventListener('input', async function() {
-        const now = new Date();
-        const today = now.toISOString().split('T')[0];
-
-        if (!document.getElementById('event_start_date').value) {
-            document.getElementById('event_start_date').value = today;
-        }
-
-        await updateSlugAndUrl();
-    });
-
-    // When user selects start date/time
-    document.querySelector('input[name="event_start_date_time"]').addEventListener('change', async function() {
-        const [date, time] = this.value.split('T');
-
-        document.getElementById('event_start_date').value = date;
-        document.getElementById('event_start_time').value = time;
-
-        await updateSlugAndUrl();
-    });
-    </script>
-
-
 </body>
 
 </html>
