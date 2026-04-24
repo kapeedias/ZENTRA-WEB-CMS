@@ -11,6 +11,12 @@
     // ==== SECURE SESSION START ====
     secureSessionStart();
 
+    // If user is already logged in, redirect to dashboard
+    if (! empty($_SESSION['user_id'])) {
+    header("Location: myaccount.php");
+    exit;
+    }
+
     // ==== REQUEST CONTEXT (IP, AGENT, GEO, DEVICE) ====
     $ip      = cleanIP(getClientIP());
     $agent   = getUserAgent();
