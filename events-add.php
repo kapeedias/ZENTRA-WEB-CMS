@@ -79,7 +79,6 @@
                                                     <div class="small text-muted mb-1"><span>Event Start Date &amp;
                                                             Time</span></div>
                                                     <div class="fw-semibold">
-                                                        <input type="text" name="event_start_date_time" />
                                                         <input class="fw-bold form-control-sm form-control"
                                                             type="datetime-local" name="event_start_date_time"
                                                             required="">
