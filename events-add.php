@@ -42,18 +42,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title><?php echo getenv('APP_NAME') ?> - Add Event</title>
     <?php include '_include/head.php'; ?>
-    <script>
-    $(function() {
-        $('input[name="event_start_date_time"]').daterangepicker({
-            timePicker: true,
-            startDate: moment().startOf('hour'),
-            endDate: moment().startOf('hour').add(32, 'hour'),
-            locale: {
-                format: 'M/DD hh:mm A'
-            }
-        });
-    });
-    </script>
+
 </head>
 
 <body>
