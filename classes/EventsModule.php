@@ -34,44 +34,60 @@ class EventsModule extends ModuleBase
      * ----------------------------------------------------------- */
     public function create(array $data, int $userId, array $context = [])
     {
-        $this->validateRequired($data, ['title', 'start_date']);
-
-        $userTz   = $data['user_timezone'] ?? $this->getTimezone();
-        $startUTC = $this->toUTC($data['start_date'], $userTz);
-        $endUTC   = isset($data['end_date']) && $data['end_date'] !== ''
-            ? $this->toUTC($data['end_date'], $userTz)
-            : null;
+        $this->validateRequired($data, ['title', 'event_start_date', 'event_start_time']);
 
         $sql = "
-            INSERT INTO zentra_events
-            (object_id, title, description, start_date, end_date, is_all_day, recurrence_rule, is_active, created_at)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, UTC_TIMESTAMP())
-        ";
+        INSERT INTO zentra_events
+        (
+            object_id,
+            event_slug,
+            title,
+            event_description,
+            event_location,
+            event_start_date,
+            event_end_date,
+            event_start_time,
+            event_end_time,
+            event_timezone,
+            is_event_all_day,
+            is_event_active,
+            event_category,
+            color_code,
+            created_by,
+            created_on
+        )
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+    ";
 
         $stmt = $this->db->prepare($sql);
+
         $stmt->execute([
             $this->object_id,
+            $data['event_slug'],
             $this->sanitize($data['title']),
-            $this->sanitize($data['description'] ?? ''),
-            $startUTC,
-            $endUTC,
-            isset($data['is_all_day']) ? (int) $data['is_all_day'] : 0,
-            $data['recurrence_rule'] ?? null,
+            $this->sanitize($data['event_description'] ?? ''),
+            $this->sanitize($data['event_location'] ?? null),
+            $data['event_start_date'],
+            $data['event_end_date'],
+            $data['event_start_time'],
+            $data['event_end_time'],
+            $data['event_timezone'] ?? 'UTC',
+            isset($data['is_event_all_day']) ? (int) $data['is_event_all_day'] : 0,
             1, // default active
+            $data['event_category'] ?? null,
+            $data['color_code'] ?? null,
+            $userId,
         ]);
 
         $eventId = (int) $this->db->lastInsertId();
 
         if ($this->logger) {
             $this->logger->log($userId, 'Event Created', 'create', array_merge($context, [
-                'field_changed' => 'event',
-                'new_value'     => json_encode([
-                    'event_id'   => $eventId,
-                    'title'      => $data['title'],
-                    'start_utc'  => $startUTC,
-                    'end_utc'    => $endUTC,
-                    'is_all_day' => isset($data['is_all_day']) ? (int) $data['is_all_day'] : 0,
-                ]),
+                'event_id' => $eventId,
+                'title'    => $data['title'],
+                'slug'     => $data['event_slug'],
+                'start'    => $data['event_start_date'] . ' ' . $data['event_start_time'],
+                'end'      => $data['event_end_date'] . ' ' . $data['event_end_time'],
             ]));
         }
 

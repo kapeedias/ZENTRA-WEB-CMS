@@ -68,6 +68,12 @@
                                     </div>
                                     <div class="card-body pt-2">
                                         <form method="POST" name="create-event" id="create-event">
+                                            <input type="hidden" name="event_slug" id="event_slug">
+                                            <input type="hidden" name="event_start_date" id="event_start_date">
+                                            <input type="hidden" name="event_start_time" id="event_start_time">
+                                            <input type="hidden" name="event_end_date" id="event_end_date">
+                                            <input type="hidden" name="event_end_time" id="event_end_time">
+
                                             <div class="mb-3"><span>Event Title</span><input
                                                     class="fw-bold form-control-sm form-control" type="text"
                                                     autofocus="" required="" name="event_title"><span
@@ -128,6 +134,99 @@
         </div>
     </div>
     <?php include '_include/body_end_plugins.php'; ?>
+    <script>
+    function slugify(text) {
+        return text
+            .toString()
+            .toLowerCase()
+            .trim()
+            .replace(/[^a-z0-9\s-]/g, '')
+            .replace(/\s+/g, '-')
+            .replace(/-+/g, '-');
+    }
+
+    function splitDateTime(dtValue) {
+        if (!dtValue) return {
+            date: null,
+            time: null
+        };
+        const [date, time] = dtValue.split('T');
+        return {
+            date,
+            time
+        };
+    }
+
+    function updateEventUrl() {
+        const slug = document.getElementById('event_slug').value;
+        const startDate = document.getElementById('event_start_date').value;
+
+        if (!slug || !startDate) return;
+
+        const [year, month, day] = startDate.split('-');
+
+        const url = `https://mywebsite.com/events/${year}/${month}/${day}/${slug}`;
+        document.getElementById('event-url').innerText = url;
+    }
+
+    function checkDuplicateEvent() {
+        const slug = document.getElementById('event_slug').value;
+        const startDate = document.getElementById('event_start_date').value;
+        const startTime = document.getElementById('event_start_time').value;
+
+        if (!slug || !startDate) return;
+
+        fetch('ajax/check_event_duplicate.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: `slug=${slug}&start_date=${startDate}&start_time=${startTime}`
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.exists) {
+                    document.getElementById('event-url').style.color = "red";
+                } else {
+                    document.getElementById('event-url').style.color = "#6c757d";
+                }
+            });
+    }
+
+    // EVENT TITLE → SLUG + URL
+    document.querySelector('input[name="event_title"]').addEventListener('input', function() {
+        const slug = slugify(this.value);
+        document.getElementById('event_slug').value = slug;
+
+        updateEventUrl();
+        checkDuplicateEvent();
+    });
+
+    // START DATE/TIME → SPLIT + URL + DUPLICATE CHECK
+    document.querySelector('input[name="event_start_date_time"]').addEventListener('change', function() {
+        const {
+            date,
+            time
+        } = splitDateTime(this.value);
+
+        document.getElementById('event_start_date').value = date;
+        document.getElementById('event_start_time').value = time;
+
+        updateEventUrl();
+        checkDuplicateEvent();
+    });
+
+    // END DATE/TIME → SPLIT
+    document.querySelector('input[name="event_end_date_time"]').addEventListener('change', function() {
+        const {
+            date,
+            time
+        } = splitDateTime(this.value);
+
+        document.getElementById('event_end_date').value = date;
+        document.getElementById('event_end_time').value = time;
+    });
+    </script>
 
 </body>
 
