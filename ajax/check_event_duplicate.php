@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/../config/db.php'; // adjust path as needed
+require_once __DIR__ . '/../config/config.php';
+require_once __DIR__ . '/../config/helpers.php';
+secureSessionStart();
 
 header('Content-Type: application/json');
 
