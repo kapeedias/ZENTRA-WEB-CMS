@@ -11,23 +11,6 @@
     // ==== SECURE SESSION START ====
     secureSessionStart();
 
-    // ==== REQUEST CONTEXT (IP, AGENT, GEO, DEVICE) ====
-    $ip      = cleanIP(getClientIP());
-    $agent   = getUserAgent();
-    $browser = getBrowserName($agent);
-    $device  = getDeviceType($agent);
-    $geo     = getGeoLocation($ip);
-
-    $_SESSION['geo'] = [
-    'city'    => $geo['city'],
-    'region'  => $geo['region'],
-    'country' => $geo['country'],
-    'postal'  => $geo['postal'],
-    'raw'     => $geo['raw'],
-    ];
-
-    $_SESSION['user_timezone'] = $geo['timezone'];
-
     // ==== ERROR DISPLAY HANDLER ====
     $errors = $_SESSION['login_errors'] ?? [];
     unset($_SESSION['login_errors']);
@@ -115,6 +98,22 @@
 
                     session_regenerate_id(true); // Prevent session fixation
 
+                    // ==== REQUEST CONTEXT (IP, AGENT, GEO, DEVICE) ====
+                    $ip      = cleanIP(getClientIP());
+                    $agent   = getUserAgent();
+                    $browser = getBrowserName($agent);
+                    $device  = getDeviceType($agent);
+                    $geo     = getGeoLocation($ip);
+
+                    $_SESSION['geo'] = [
+                        'city'    => $geo['city'],
+                        'region'  => $geo['region'],
+                        'country' => $geo['country'],
+                        'postal'  => $geo['postal'],
+                        'raw'     => $geo['raw'],
+                    ];
+
+                    $_SESSION['user_timezone'] = $geo['timezone'];
                     $userId                    = (int) $user['id'];
                     $_SESSION['user_id']       = $user['id'];
                     $_SESSION['user_name']     = $user['first_name'];
