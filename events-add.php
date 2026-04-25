@@ -11,6 +11,7 @@
     require_once __DIR__ . '/classes/MenuManager.php';
     require_once __DIR__ . '/_include/nav_renderer.php';
     require_once __DIR__ . '/classes/ModuleManager.php';
+    require_once __DIR__ . '/classes/EventsModule.php';
 
     // ==== SESSION SECURITY ====
     enforceSessionSecurity();
@@ -31,6 +32,62 @@
     $settings = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
     $error[] = "Database query failed: " . $e->getMessage();
+    }
+
+    // ==== HANDLE FORM SUBMISSION ====
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    $title    = trim($_POST['event_title'] ?? '');
+    $startDT  = trim($_POST['event_start_date_time'] ?? '');
+    $endDT    = trim($_POST['event_end_date_time'] ?? '');
+    $location = trim($_POST['event_location'] ?? '');
+    $eventURL = trim($_POST['event_url'] ?? '');
+
+    if ($title === '' || $startDT === '' || $endDT === '') {
+        $error[] = "Please fill in all required fields.";
+    } else {
+
+        // Extract slug from generated URL
+        $slug = basename($eventURL);
+
+        // Split datetime-local
+        list($startDate, $startTime) = explode('T', $startDT);
+        list($endDate, $endTime)     = explode('T', $endDT);
+
+        // Load user
+        $user   = User::loadFromSession();
+        $userId = $user->id;
+
+                                             // Create module instance
+        $events = new EventsModule($pdo, 1); // object_id = 1 (or dynamic)
+
+        // Build data array for module
+        $data = [
+            'event_slug'        => $slug,
+            'title'             => $title,
+            'event_description' => '',
+            'event_location'    => $location,
+            'event_start_date'  => $startDate,
+            'event_end_date'    => $endDate,
+            'event_start_time'  => $startTime,
+            'event_end_time'    => $endTime,
+            'event_timezone'    => 'UTC',
+            'is_event_all_day'  => isset($_POST['all_day_event']) ? 1 : 0,
+        ];
+
+        // Context for logging
+        $context = [
+            'ip' => $ip,
+            'ua' => $_SERVER['HTTP_USER_AGENT'] ?? '',
+        ];
+
+        // Create event
+        $eventId = $events->create($data, $userId, $context);
+
+        // Redirect to event list or detail page
+        header("Location: events.php?created=1&id=" . $eventId);
+        exit;
+    }
     }
 
 ?>
@@ -75,6 +132,7 @@
                                     </div>
                                     <div class="card-body pt-2">
                                         <form method="POST" name="create-event" id="create-event">
+                                            <input type="hidden" name="event_url" id="event_url_hidden">
 
                                             <div class="mb-3"><span>Event Title</span> <span
                                                     class="text-danger">*</span><input
@@ -124,7 +182,7 @@
                                                 </div>
                                             </div>
                                             <div class="text-end my-3"><button class="btn btn-primary"
-                                                    type="button">Create
+                                                    type="submit">Create
                                                     Event</button></div>
                                         </form>
                                     </div>

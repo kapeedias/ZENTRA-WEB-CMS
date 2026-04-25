@@ -64,6 +64,7 @@ function updateEventURL() {
 // Fire on typing + date/time change
 document.getElementById('event_title').addEventListener('keyup', updateEventURL);
 document.getElementById('event_start_date_time').addEventListener('change', updateEventURL);
+document.getElementById('event_url_hidden').value = res.url;
 </script>
 
 <script>
