@@ -12,6 +12,7 @@
     require_once __DIR__ . '/_include/nav_renderer.php';
     require_once __DIR__ . '/classes/ModuleManager.php';
     require_once __DIR__ . '/classes/EventsModule.php';
+    require_once __DIR__ . '/classes/ActivityLogger.php';
 
     // ==== SESSION SECURITY ====
     enforceSessionSecurity();
@@ -26,13 +27,13 @@
     $error[] = "Database connection failed: " . $e->getMessage();
     return;
     }
-    $moduleManager = new ModuleManager($pdo); // ← REQUIRED
-    try {
-    $stmt     = $pdo->query("SELECT * FROM zentra_module_types");
-    $settings = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
-    $error[] = "Database query failed: " . $e->getMessage();
-    }
+
+    $moduleManager = new ModuleManager($pdo);
+
+    // ==== LOAD LOGGER + EVENTS MODULE ====
+    $logger = new ActivityLogger($pdo);
+    $events = new EventsModule($pdo, 1); // object_id = 1 (or dynamic)
+    $events->setLogger($logger);
 
     // ==== HANDLE FORM SUBMISSION ====
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -58,10 +59,7 @@
         $user   = User::loadFromSession();
         $userId = $user->id;
 
-                                             // Create module instance
-        $events = new EventsModule($pdo, 1); // object_id = 1 (or dynamic)
-
-        // Build data array for module
+        // Build data array for EventsModule
         $data = [
             'event_slug'        => $slug,
             'title'             => $title,
@@ -75,13 +73,13 @@
             'is_event_all_day'  => isset($_POST['all_day_event']) ? 1 : 0,
         ];
 
-        // Context for logging
+        // Logging context
         $context = [
             'ip' => $ip,
             'ua' => $_SERVER['HTTP_USER_AGENT'] ?? '',
         ];
 
-        // Create event
+        // Create event (this logs automatically)
         $eventId = $events->create($data, $userId, $context);
 
         // Redirect to event list or detail page
@@ -91,6 +89,7 @@
     }
 
 ?>
+
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
 
