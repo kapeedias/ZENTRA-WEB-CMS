@@ -76,7 +76,8 @@
                                     <div class="card-body pt-2">
                                         <form method="POST" name="create-event" id="create-event">
 
-                                            <div class="mb-3"><span>Event Title</span><input
+                                            <div class="mb-3"><span>Event Title</span> <span
+                                                    class="text-danger">*</span><input
                                                     class="fw-bold form-control-sm form-control" type="text"
                                                     autofocus="" required="" name="event_title" id="event_title"><span
                                                     class="text-secondary text-x-small"
@@ -85,7 +86,7 @@
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <div class="small text-muted mb-1"><span>Event Start Date &amp;
-                                                            Time</span></div>
+                                                            Time</span><span class="text-danger">*</span></div>
                                                     <div class="fw-semibold">
                                                         <input class="fw-bold form-control-sm form-control"
                                                             type="datetime-local" name="event_start_date_time"
@@ -94,7 +95,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="small text-muted mb-1"><span>Event End Date &amp;
-                                                            Time</span></div>
+                                                            Time</span><span class="text-danger">*</span></div>
                                                     <div class="fw-semibold"><input
                                                             class="fw-bold form-control-sm form-control"
                                                             type="datetime-local" name="event_end_date_time"
@@ -110,7 +111,8 @@
                                                 </div>
 
                                                 <div class="col-md-6">
-                                                    <div class="small text-muted mb-1"><span>Event Location</span></div>
+                                                    <div class="small text-muted mb-1"><span>Event Location</span><span
+                                                            class="text-danger">*</span></div>
                                                     <div class="fw-semibold"><select class="form-select-sm form-select"
                                                             name="event_location">
                                                             <optgroup label="This is a group">
