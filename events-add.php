@@ -65,7 +65,7 @@
                                 <div class="card mb-4">
                                     <div class="card-header d-flex justify-content-between align-items-center">
                                         <h5 class="fw-bold mb-0"></h5>
-                                        <div class="col-md-6">
+                                        <div class="col-md-6 text-end">
                                             <div class="small text-muted mb-1"><span>Event Status</span></div>
                                             <div class="fw-semibold"><span
                                                     class="badge fw-bold bg-light d-inline-flex gap-1"><i
@@ -101,7 +101,7 @@
                                                             id="event_end_date_time" required="">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 mt-2">
+                                                <div class="col-md-12 mt-2 mb-2">
                                                     <label class="form-check">
                                                         <input class="form-check-input" type="checkbox"
                                                             id="all_day_event" onchange="setAllDayEvent(this.checked)">
