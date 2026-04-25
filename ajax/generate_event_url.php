@@ -53,7 +53,7 @@ $stmt = $pdo->prepare("
     SELECT COUNT(*)
     FROM zentra_events
     WHERE event_slug = ?
-      AND event_start_date_time = ?
+      AND event_start_date = ?
 ");
 $stmt->execute([$slug, $startDT]);
 $count = $stmt->fetchColumn();
