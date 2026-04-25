@@ -83,7 +83,7 @@
         $eventId = $events->create($data, $userId, $context);
 
         // Redirect to event list or detail page
-        header("Location: events.php?created=1&id=" . $eventId);
+        header("Location: events-edit.php?created=1&id=" . $eventId);
         exit;
     }
     }
