@@ -129,34 +129,75 @@
         </div>
     </div>
     <?php include '_include/body_end_plugins.php'; ?>
-    <script>
-    function updateURLAjax() {
-        const title = document.getElementById('event_title').value;
-        const startDT = document.getElementById('event_start_date_time').value;
+    <?php
+        require_once __DIR__ . '/../config/config.php';
+        require_once __DIR__ . '/../config/helpers.php';
+        secureSessionStart();
 
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "ajax/generate_event_url.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        ob_clean();
+        header('Content-Type: application/json; charset=utf-8');
 
-        xhr.onload = function() {
-            if (this.status === 200) {
-                document.getElementById('event-url').innerText = this.responseText;
-            }
-        };
+        require_once __DIR__ . '/../config/init.php';
+        require_once __DIR__ . '/../config/db.php';
+        require_once __DIR__ . '/../classes/Database.php';
 
-        xhr.send(
-            "title=" + encodeURIComponent(title) +
-            "&start_dt=" + encodeURIComponent(startDT)
-        );
-    }
+        // Validate request
+        if (! isset($_POST['title']) || ! isset($_POST['start_dt'])) {
+            echo json_encode(['success' => false, 'message' => 'Invalid request']);
+            exit;
+        }
 
-    // Fire on typing + date/time change
-    document.getElementById('event_title').addEventListener('keyup', updateURLAjax);
-    document.getElementById('event_start_date_time').addEventListener('change', updateURLAjax);
-    </script>
+        $title   = trim($_POST['title']);
+        $startDT = trim($_POST['start_dt']);
 
+        if ($title === '' || $startDT === '') {
+            echo json_encode(['success' => false, 'message' => 'Missing data']);
+            exit;
+        }
 
+        // Connect to DB
+        try {
+            $pdo = Database::getInstance();
+        } catch (Exception $e) {
+            echo json_encode(['success' => false, 'message' => 'DB connection failed']);
+            exit;
+        }
 
-</body>
+        // Slugify
+        $slug = strtolower($title);
+        $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
+        $slug = trim($slug, '-');
 
-</html>
+        // Split datetime-local
+        list($date, $time) = explode('T', $startDT);
+
+        // Build date parts
+        $ts    = strtotime($date);
+        $year  = date("Y", $ts);
+        $month = date("m", $ts);
+        $day   = date("d", $ts);
+
+        // Duplicate check
+        $stmt = $pdo->prepare("
+    SELECT COUNT(*)
+    FROM zentra_events
+    WHERE event_slug = ?
+      AND event_start_date_time = ?
+");
+        $stmt->execute([$slug, $startDT]);
+        $count = $stmt->fetchColumn();
+
+        if ($count > 0) {
+            $slug .= "-" . ($count + 1);
+        }
+
+        $url = "http://mywebsite.com/events/$year/$month/$day/$slug";
+
+        echo json_encode([
+            'success' => true,
+            'url'     => $url,
+        ]);
+
+        <  / body >
+
+    <  / html >
