@@ -102,7 +102,7 @@
                                                             id="event_end_date_time" required="">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-12 mt-2 mb-2">
+                                                <div class="col-md-12 mt-2 mb-2 pt-3">
                                                     <label class="form-check">
                                                         <input class="form-check-input" type="checkbox"
                                                             id="all_day_event" onchange="setAllDayEvent(this.checked)">
