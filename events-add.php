@@ -130,75 +130,31 @@
     </div>
     <?php include '_include/body_end_plugins.php'; ?>
     <script>
-    function slugify(text) {
-        return text
-            .toLowerCase()
-            .trim()
-            .replace(/[^a-z0-9]+/g, '-')
-            .replace(/^-+|-+$/g, '');
-    }
-
-    function splitDateTime(dtValue) {
-        if (!dtValue) return {
-            date: "",
-            time: ""
-        };
-        const [date, time] = dtValue.split("T");
-        return {
-            date,
-            time
-        };
-    }
-
-    async function checkDuplicate(slug, date, time) {
-        const res = await fetch('ajax/check_event_duplicate.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            },
-            body: `slug=${slug}&start_date=${date}&start_time=${time}`
-        });
-
-        return res.json();
-    }
-
-    async function updateEventURL() {
+    function updateURLAjax() {
         const title = document.getElementById('event_title').value;
-        const dtValue = document.getElementById('event_start_date_time').value;
+        const startDT = document.getElementById('event_start_date_time').value;
 
-        if (!title) {
-            document.getElementById('event-url').innerText = "";
-            return;
-        }
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "ajax/generate_event_url.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-        let slug = slugify(title);
-
-        const {
-            date,
-            time
-        } = splitDateTime(dtValue);
-
-        if (date) {
-            const d = new Date(date);
-            const year = d.getFullYear();
-            const month = String(d.getMonth() + 1).padStart(2, '0');
-            const day = String(d.getDate()).padStart(2, '0');
-
-            let finalSlug = slug;
-
-            if (time) {
-                const dup = await checkDuplicate(slug, date, time);
-                if (dup.exists) finalSlug = dup.suggested_slug;
+        xhr.onload = function() {
+            if (this.status === 200) {
+                document.getElementById('event-url').innerText = this.responseText;
             }
+        };
 
-            const url = `http://mywebsite.com/events/${year}/${month}/${day}/${finalSlug}`;
-            document.getElementById('event-url').innerText = url;
-        }
+        xhr.send(
+            "title=" + encodeURIComponent(title) +
+            "&start_dt=" + encodeURIComponent(startDT)
+        );
     }
 
-    document.getElementById('event_title').addEventListener('input', updateEventURL);
-    document.getElementById('event_start_date_time').addEventListener('change', updateEventURL);
+    // Fire on typing + date/time change
+    document.getElementById('event_title').addEventListener('keyup', updateURLAjax);
+    document.getElementById('event_start_date_time').addEventListener('change', updateURLAjax);
     </script>
+
 
 
 </body>
