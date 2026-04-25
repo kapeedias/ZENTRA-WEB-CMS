@@ -65,6 +65,13 @@
                                 <div class="card mb-4">
                                     <div class="card-header d-flex justify-content-between align-items-center">
                                         <h5 class="fw-bold mb-0"></h5>
+                                        <div class="col-md-6">
+                                            <div class="small text-muted mb-1"><span>Event Status</span></div>
+                                            <div class="fw-semibold"><span
+                                                    class="badge fw-bold bg-light d-inline-flex gap-1"><i
+                                                        class="fa fa-hourglass-half text-info"></i>&nbsp;Draft</span>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="card-body pt-2">
                                         <form method="POST" name="create-event" id="create-event">
@@ -94,13 +101,14 @@
                                                             id="event_end_date_time" required="">
                                                     </div>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="small text-muted mb-1"><span>Event Status</span></div>
-                                                    <div class="fw-semibold"><span
-                                                            class="badge fw-bold bg-light d-inline-flex gap-1"><i
-                                                                class="fa fa-hourglass-half text-info"></i>&nbsp;Draft</span>
-                                                    </div>
+                                                <div class="col-md-12 mt-2">
+                                                    <label class="form-check">
+                                                        <input class="form-check-input" type="checkbox"
+                                                            id="all_day_event" onchange="setAllDayEvent(this.checked)">
+                                                        <span class="form-check-label">All Day Event</span>
+                                                    </label>
                                                 </div>
+
                                                 <div class="col-md-6">
                                                     <div class="small text-muted mb-1"><span>Event Location</span></div>
                                                     <div class="fw-semibold"><select class="form-select-sm form-select"
