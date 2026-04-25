@@ -6,9 +6,11 @@ secureSessionStart();
 ob_clean();
 header('Content-Type: application/json; charset=utf-8');
 
-require_once __DIR__ . '/../config/init.php';
+//error_log("AJAX SESSION: " . print_r($_SESSION, true));
+
 require_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/../classes/Database.php';
+require_once __DIR__ . '/../classes/User.php';
+require_once __DIR__ . '/../classes/ActivityLogger.php';
 
 // Validate request
 if (! isset($_POST['title']) || ! isset($_POST['start_dt'])) {
