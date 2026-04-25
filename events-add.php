@@ -68,6 +68,13 @@
                                     </div>
                                     <div class="card-body pt-2">
                                         <form method="POST" name="create-event" id="create-event">
+
+                                            <div class="mb-3"><span>Event Title</span><input
+                                                    class="fw-bold form-control-sm form-control" type="text"
+                                                    autofocus="" required="" name="event_title"><span
+                                                    class="text-secondary text-x-small"
+                                                    id="event-url">http://mywebsite.com/events/2026/04/23/navrathri-2026</span>
+                                            </div>
                                             <div class="row g-3">
                                                 <div class="col-md-6">
                                                     <div class="small text-muted mb-1"><span>Event Start Date &amp;
