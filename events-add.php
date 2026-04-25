@@ -71,7 +71,7 @@
 
                                             <div class="mb-3"><span>Event Title</span><input
                                                     class="fw-bold form-control-sm form-control" type="text"
-                                                    autofocus="" required="" name="event_title"><span
+                                                    autofocus="" required="" name="event_title" id="event_title"><span
                                                     class="text-secondary text-x-small"
                                                     id="event-url">http://mywebsite.com/events/2026/04/23/navrathri-2026</span>
                                             </div>
@@ -91,7 +91,7 @@
                                                     <div class="fw-semibold"><input
                                                             class="fw-bold form-control-sm form-control"
                                                             type="datetime-local" name="event_end_date_time"
-                                                            required="">
+                                                            id="event_end_date_time" required="">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
