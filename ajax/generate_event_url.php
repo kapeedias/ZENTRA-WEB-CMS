@@ -1,5 +1,8 @@
 <?php
-require_once "../config.php"; // adjust if needed
+require_once "../config/config.php";
+require_once "../config/db.php";
+
+$pdo = Database::getInstance();
 
 $title   = $_POST['title'] ?? '';
 $startDT = $_POST['start_dt'] ?? '';
@@ -24,7 +27,7 @@ $month = date("m", $ts);
 $day   = date("d", $ts);
 
 // Duplicate check
-$stmt = $db->prepare("SELECT COUNT(*) FROM events WHERE slug = ? AND event_start_date_time = ?");
+$stmt = $pdo->prepare("SELECT COUNT(*) FROM zentra_events WHERE event_slug = ? AND event_start_date_time = ?");
 $stmt->execute([$slug, $startDT]);
 $count = $stmt->fetchColumn();
 
