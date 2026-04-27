@@ -9,7 +9,7 @@ function renderMenu($items, $parentId = null)
 
             $children = array_filter($items, fn($child) => $child['parent_id'] == $item['id']);
 
-            echo ' <li class="nav-item">';
+            echo ' <li class="nav-item w-100">';
 
             if ($children) {
                 echo '
