@@ -13,8 +13,8 @@ function renderMenu($items, $parentId = null)
 
             if ($children) {
                 echo '
-                    <div><a class="nav-link" data-bs-toggle="collapse" href="#menu' . $item['id'] . '">
-                        <i class="fa fa-' . $item['icon'] . '"></i> ' . $item['title'] . '
+                    <div><a class="btn btn-link text-decoration-none d-flex justify-content-between align-items-center px-3" data-bs-toggle="collapse" href="#menu' . $item['id'] . '">
+                        <i class="fa fa-' . $item['icon'] . ' me-2"></i> ' . $item['title'] . '
                     </a>
                     <div class="collapse" id="menu' . $item['id'] . '">';
                 renderMenu($items, $item['id']);
