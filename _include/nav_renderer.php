@@ -23,7 +23,7 @@ function renderMenu($items, $parentId = null)
             } else {
                 echo '
                     <a class="nav-link" href="' . $item['url'] . '">
-                        <i class="fa fa-' . $item['icon'] . '"></i> ' . $item['title'] . '
+                        <i class="fa fa-' . $item['icon'] . ' me-2"></i> ' . $item['title'] . '
                     </a>';
             }
 
