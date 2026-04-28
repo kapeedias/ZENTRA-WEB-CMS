@@ -95,7 +95,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title><?php echo getenv('APP_NAME') ?> - Add Event</title>
+    <title><?php echo getenv('APP_NAME') ?> - Edit Event</title>
     <?php include '_include/head.php'; ?>
 </head>
 
@@ -612,26 +612,14 @@
                             </div>
                         </div>
                     </div><!-- Start: Footer Centered -->
-                    <footer class="text-center py-5"><a
-                            class="text-decoration-none link-body-emphasis d-inline-flex align-items-center"
-                            href="#"><span class="fs-4 fw-bold brand-primary">ZENTRA</span><span
-                                class="fs-4 brand-secondary">CMS</span></a>
-                        <div class="d-flex justify-content-center align-items-center flex-wrap mb-2"><a
-                                class="link-body-emphasis mx-2" href="#">Privacy Policy</a><a
-                                class="link-body-emphasis mx-2" href="#">Terms of Service</a><a
-                                class="link-body-emphasis mx-2" href="#">Cookie Policy</a></div>
-                        <p class="text-muted mb-2">© 2026 Brand. All rights reserved.</p>
-                    </footer><!-- End: Footer Centered -->
+                    <?php include '_include/inner-footer.php'; ?>
+                    <!-- End: Footer Centered -->
                 </main>
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/script.min.js?h=da74781f0d8a702dd153810a21ac1707"></script>
+
+    <?php include '_include/body_end_plugins.php'; ?>
 </body>
 
 </html>
