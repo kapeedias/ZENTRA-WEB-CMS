@@ -114,10 +114,19 @@
                     <div>
                         <div class="row">
                             <div class="col-xl-7 mb-4">
-                                <div class="alert alert-danger alert-dismissible" role="alert"><button
-                                        class="btn-close small" type="button" aria-label="Close"
-                                        data-bs-dismiss="alert"></button><span class="alert-text"><strong>Alert</strong>
-                                        text.</span></div>
+
+                                <!-- Start: alert -->
+                                <?php if (! empty($success)): ?>
+                                <div class="w-100 alert-success shadow alert-dismissible" role="alert">
+                                    <?php echo implode('<br>', $success) ?>
+                                </div>
+                                <?php endif; ?>
+
+                                <?php if (! empty($errors)): ?>
+                                <div class="w-100 alert-error shadow alert-dismissible" role="alert">
+                                    <?php echo implode('<br>', $errors) ?>
+                                </div>
+                                <?php endif; ?>
                                 <div class="card mb-4">
                                     <div class="card-header d-flex justify-content-between align-items-center">
                                         <h5 class="fw-bold mb-0"></h5>
