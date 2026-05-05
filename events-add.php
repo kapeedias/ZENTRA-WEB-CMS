@@ -32,7 +32,47 @@
 
     // ==== LOAD LOGGER + EVENTS MODULE ====
     $logger = new ActivityLogger($pdo);
-    $events = new EventsModule($pdo, 1); // object_id = 1 (or dynamic)
+    //$events = new EventsModule($pdo, 1); // object_id = 1 (or dynamic)
+    $tenantId = $_SESSION['tenant_id'] ?? null;
+    $objectId = 1; // Events module ID
+
+    if (! $tenantId) {
+    // 1. Show user-friendly error
+    $error[] = "Your session is missing tenant information. Please log in again.";
+
+    // 2. Log to PHP error log
+    error_log("ERROR: Missing tenant_id in session for user_id={$_SESSION['user_id']}");
+
+    // 3. Log to user activity audit
+    $logger->log(
+        $_SESSION['user_id'] ?? null,
+        "Missing tenant_id in session",
+        "System Error",
+        [
+            'ip'        => getClientIP(),
+            'browser'   => $_SERVER['HTTP_USER_AGENT'] ?? '',
+            'tenant_id' => null,
+            'context'   => 'events-add.php missing tenant_id',
+        ]
+    );
+    // 4. Destroy session safely
+    $_SESSION = [];
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(session_name(), '', time() - 42000,
+            $params["path"], $params["domain"],
+            $params["secure"], $params["httponly"]
+        );
+    }
+    session_destroy();
+
+    // 4. Redirect user to login
+    header("Location: login.php?session_error=1");
+    exit;
+    }
+
+    $events = new EventsModule($pdo, $tenantId, $objectId);
+
     $events->setLogger($logger);
 
     // ==== HANDLE FORM SUBMISSION ====

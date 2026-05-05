@@ -11,6 +11,10 @@
     // ==== SECURE SESSION START ====
     secureSessionStart();
 
+    if (isset($_GET['session_error'])) {
+    $errors[] = "Your session expired or became invalid. Please log in again.";
+    }
+
     // If user is already logged in, redirect to dashboard
     if (! empty($_SESSION['user_id'])) {
     header("Location: myaccount.php");
@@ -91,7 +95,7 @@
         // === DATABASE AUTH ===
         if (empty($errors)) {
             try {
-                $stmt = $pdo->prepare("SELECT id, first_name, pwd, approved, banned FROM zentra_users WHERE user_email = :email LIMIT 1");
+                $stmt = $pdo->prepare("SELECT id, tenant_id, first_name, pwd, approved, banned FROM zentra_users WHERE user_email = :email LIMIT 1");
                 $stmt->execute(['email' => $email]);
                 $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
@@ -118,7 +122,7 @@
                         'postal'  => $geo['postal'],
                         'raw'     => $geo['raw'],
                     ];
-
+                    $_SESSION['tenant_id']     = (int) $user['tenant_id'];
                     $_SESSION['user_timezone'] = $geo['timezone'];
                     $userId                    = (int) $user['id'];
                     $_SESSION['user_id']       = $user['id'];
