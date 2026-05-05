@@ -35,58 +35,35 @@
     $events = new EventsModule($pdo, 1); // object_id = 1 (or dynamic)
     $events->setLogger($logger);
 
-    // ==== HANDLE FORM SUBMISSION ====
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $hash = trim($_GET['e'] ?? '');
 
-    $title    = trim($_POST['event_title'] ?? '');
-    $startDT  = trim($_POST['event_start_date_time'] ?? '');
-    $endDT    = trim($_POST['event_end_date_time'] ?? '');
-    $location = trim($_POST['event_location'] ?? '');
-    $eventURL = trim($_POST['event_url'] ?? '');
-    $timezone = trim($_POST['event_timezone'] ?? 'America/Vancouver');
-
-    if ($title === '' || $startDT === '' || $endDT === '') {
-        $error[] = "Please fill in all required fields.";
-    } else {
-
-        // Extract slug from generated URL
-        $slug = basename($eventURL);
-
-        // Split datetime-local
-        list($startDate, $startTime) = explode('T', $startDT);
-        list($endDate, $endTime)     = explode('T', $endDT);
-
-        // Load user
-        $user   = User::loadFromSession();
-        $userId = $user->id;
-
-        // Build data array for EventsModule
-        $data = [
-            'event_slug'        => $slug,
-            'title'             => $title,
-            'event_description' => '',
-            'event_location'    => $location,
-            'event_start_date'  => $startDate,
-            'event_end_date'    => $endDate,
-            'event_start_time'  => $startTime,
-            'event_end_time'    => $endTime,
-            'event_timezone'    => $timezone,
-            'is_event_all_day'  => isset($_POST['all_day_event']) ? 1 : 0,
-        ];
-
-        // Logging context
-        $context = [
-            'ip' => $ip,
-            'ua' => $_SERVER['HTTP_USER_AGENT'] ?? '',
-        ];
-
-        // Create event (this logs automatically)
-        $eventId = $events->create($data, $userId, $context);
-
-        // Redirect to event list or detail page
-        header("Location: events-edit.php?created=1&id=" . $eventId . "&slug=" . urlencode($slug));
-        exit;
+    if ($hash === '' || ! preg_match('/^[A-Za-z0-9]{8,20}$/', $hash)) {
+    header("Location: /events-manage.php");
+    exit;
     }
+    if (! isset($_SESSION['tenant_id'])) {
+    header("Location: /events-manage.php");
+    exit;
+    }
+    if (! preg_match('/^[A-Za-z0-9]{12}$/', $hash)) {
+    header("Location: /events-manage.php");
+    exit;
+    }
+
+    $currentTenantId = (int) $_SESSION['tenant_id'];
+
+    $stmt = $pdo->prepare("
+    SELECT * FROM zentra_events
+    WHERE event_hash = ?
+    AND object_id = ?
+");
+    $stmt->execute([$hash, $currentTenantId]);
+
+    $event = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if (! $event) {
+    header("Location: /events-manage.php");
+    exit;
     }
 
 ?>

@@ -5,9 +5,12 @@ require_once __DIR__ . '/ActivityLogger.php';
 
 class EventsModule extends ModuleBase
 {
-    public function __construct($db, $object_id = null)
+    protected int $tenant_id;
+
+    public function __construct(PDO $db, int $tenant_id, ?int $object_id = null)
     {
         parent::__construct($db, 'events', $object_id);
+        $this->tenant_id = $tenant_id;
     }
 
     /* -----------------------------------------------------------
@@ -41,6 +44,7 @@ class EventsModule extends ModuleBase
         $sql = "
         INSERT INTO zentra_events
         (
+            tenant_id,
             object_id,
             event_slug,
             title,
@@ -65,6 +69,7 @@ class EventsModule extends ModuleBase
         $stmt = $this->db->prepare($sql);
 
         $stmt->execute([
+            $this->tenant_id,
             $this->object_id,
             $data['event_slug'],
             $this->sanitize($data['title']),
