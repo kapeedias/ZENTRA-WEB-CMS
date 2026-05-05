@@ -175,7 +175,22 @@
                                                         <span class="form-check-label">All Day Event</span>
                                                     </label>
                                                 </div>
-
+                                                <div class="col-md-6">
+                                                    <div class="small text-muted mb-1"><span>Event Timezone</span><span
+                                                            class="text-danger">*</span></div>
+                                                    <div class="fw-semibold">
+                                                        <select class="form-select-sm form-select"
+                                                            name="event_timezone">
+                                                            <?php
+                                                                $timezones = DateTimeZone::listIdentifiers();
+                                                                foreach ($timezones as $tz) {
+                                                                    $selected = ($tz === 'America/Vancouver') ? 'selected' : '';
+                                                                    echo "<option value=\"$tz\" $selected>$tz</option>";
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                                 <div class="col-md-6">
                                                     <div class="small text-muted mb-1"><span>Event Location</span><span
                                                             class="text-danger">*</span></div>
