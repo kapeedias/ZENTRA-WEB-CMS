@@ -43,6 +43,7 @@
     $endDT    = trim($_POST['event_end_date_time'] ?? '');
     $location = trim($_POST['event_location'] ?? '');
     $eventURL = trim($_POST['event_url'] ?? '');
+    $timezone = trim($_POST['event_timezone'] ?? 'America/Vancouver');
 
     if ($title === '' || $startDT === '' || $endDT === '') {
         $error[] = "Please fill in all required fields.";
@@ -69,7 +70,7 @@
             'event_end_date'    => $endDate,
             'event_start_time'  => $startTime,
             'event_end_time'    => $endTime,
-            'event_timezone'    => 'UTC',
+            'event_timezone'    => $timezone,
             'is_event_all_day'  => isset($_POST['all_day_event']) ? 1 : 0,
         ];
 
@@ -80,16 +81,16 @@
         ];
 
         // Create event (this logs automatically)
-        $eventId = $events->create($data, $userId, $context);
+        $eventHash = $events->create($data, $userId, $context);
 
-        // Redirect to event list or detail page
-        header("Location: events-edit.php?created=1&id=" . $eventId . "&slug=" . urlencode($slug));
+        // Redirect to clean URL
+        header("Location: /event/$eventHash/edit");
         exit;
+
     }
     }
 
 ?>
-
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
 

@@ -35,6 +35,8 @@ class EventsModule extends ModuleBase
     public function create(array $data, int $userId, array $context = [])
     {
         $this->validateRequired($data, ['title', 'event_start_date', 'event_start_time']);
+        // Generate a short, secure 12‑character hash
+        $eventHash = substr(bin2hex(random_bytes(16)), 0, 12);
 
         $sql = "
         INSERT INTO zentra_events
@@ -54,9 +56,10 @@ class EventsModule extends ModuleBase
             event_category,
             color_code,
             created_by,
-            created_on
+            created_on,
+            event_hash
         )
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(),?)
     ";
 
         $stmt = $this->db->prepare($sql);
@@ -77,9 +80,11 @@ class EventsModule extends ModuleBase
             $data['event_category'] ?? null,
             $data['color_code'] ?? null,
             $userId,
+            $eventHash,
         ]);
 
         $eventId = (int) $this->db->lastInsertId();
+        // Generate a short, secure 12‑character hash
 
         if ($this->logger) {
             $this->logger->log($userId, 'Event Created', 'create', array_merge($context, [
@@ -91,7 +96,7 @@ class EventsModule extends ModuleBase
             ]));
         }
 
-        return $eventId;
+        return $eventHash;
     }
 
     /* -----------------------------------------------------------
