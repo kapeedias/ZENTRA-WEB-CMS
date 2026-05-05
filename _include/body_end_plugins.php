@@ -48,6 +48,7 @@ function updateEventURL() {
                 const res = JSON.parse(this.responseText);
                 if (res.success && res.url) {
                     document.getElementById('event-url').innerText = res.url;
+                    document.getElementById('event_url_hidden').value = res.url;
                 }
             } catch (e) {
                 console.error("Invalid JSON from server:", this.responseText);
@@ -64,7 +65,6 @@ function updateEventURL() {
 // Fire on typing + date/time change
 document.getElementById('event_title').addEventListener('keyup', updateEventURL);
 document.getElementById('event_start_date_time').addEventListener('change', updateEventURL);
-document.getElementById('event_url').value = res.url;
 </script>
 
 <script>
