@@ -143,6 +143,7 @@
                         [
                             'user_name'     => $user['first_name'], // REQUIRED for ActivityLogger
                             'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+                            'tenant_id'     => $_SESSION['tenant_id'],
                             'ip'            => $ip,
                             'browser'       => $browser,
                             'device'        => $device,
