@@ -179,6 +179,7 @@
             'Login Error',
             [
                 'user_name'     => $safeEmail, // shows email for failed attempts
+                'tenant_id'     => $_SESSION['tenant_id'],
                 'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
                 'field_changed' => 'LOGIN_ATTEMPT',
                 'old_value'     => 'UNAUTHENTICATED',
