@@ -179,8 +179,8 @@
                                                     <div class="small text-muted mb-1"><span>Event Timezone</span><span
                                                             class="text-danger">*</span></div>
                                                     <div class="fw-semibold">
-                                                        <select class="form-select-sm form-select"
-                                                            name="event_timezone">
+                                                        <select class="form-select-sm form-select" name="event_timezone"
+                                                            id="event_timezone" required="yes">
                                                             <?php
                                                                 $timezones = DateTimeZone::listIdentifiers();
                                                                 foreach ($timezones as $tz) {
