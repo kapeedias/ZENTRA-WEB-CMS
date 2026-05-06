@@ -139,11 +139,19 @@ class EventsModule extends ModuleBase
 
         if ($this->logger) {
             $this->logger->log($userId, 'Event Created', 'create', array_merge($context, [
-                'event_id' => $eventId,
-                'title'    => $data['title'],
-                'slug'     => $data['event_slug'],
-                'start'    => $data['event_start_date'] . ' ' . $data['event_start_time'],
-                'end'      => $data['event_end_date'] . ' ' . $data['event_end_time'],
+                'event_id'  => $eventId,
+                'title'     => $data['title'],
+                'slug'      => $data['event_slug'],
+                'start'     => $data['event_start_date'] . ' ' . $data['event_start_time'],
+                'end'       => $data['event_end_date'] . ' ' . $data['event_end_time'],
+                'tenant_id' => $this->tenant_id, // REQUIRED
+                'ip'        => getClientIP(),
+                'browser'   => $_SERVER['HTTP_USER_AGENT'] ?? '',
+                'device'    => $_SERVER['HTTP_USER_AGENT'] ?? '',
+                'city'      => $geo['city'] ?? null,
+                'region'    => $geo['region'] ?? null,
+                'country'   => $geo['country'] ?? null,
+                'geo_raw'   => $geo['raw'] ?? null,
             ]));
         }
 
