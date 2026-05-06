@@ -90,7 +90,7 @@
                                                 <td>
 
                                                     <a class="text-decoration-none d-flex align-items-center gap-2"
-                                                        href="#">
+                                                        href="/event/<?php echo $row['event_hash']; ?>/edit">
                                                         <div>
                                                             <p class="fw-bold mb-0"><?php echo $row['title']; ?>
                                                             </p>
