@@ -1,4 +1,5 @@
 <?php
+declare (strict_types = 1);
 
 require_once __DIR__ . '/config/config.php'; // session already started here
 require_once __DIR__ . '/config/init.php';
@@ -18,10 +19,10 @@ if (
     exit;
 }
 
-$userId       = $_SESSION['user_id'];
-$userEmail    = $_SESSION['user_email'];
-$userFullName = $_SESSION['user_name'] ?? 'Unknown User';
-$userTimezone = $_SESSION['user_timezone'] ?? 'UTC';
+$userId       = (int) $_SESSION['user_id'];
+$userEmail    = (string) $_SESSION['user_email'];
+$userFullName = (string) ($_SESSION['user_name'] ?? 'Unknown User');
+$userTimezone = (string) ($_SESSION['user_timezone'] ?? 'UTC');
 $tenantId     = (int) ($_SESSION['tenant_id'] ?? 0);
 
 // ------------------------------------------------------------
@@ -32,7 +33,6 @@ $ua      = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
 $browser = getBrowserName($ua);
 $device  = getDeviceType($ua);
 
-// If you have geo lookup stored in session (recommended)
 $geo = $_SESSION['geo'] ?? [
     'city'    => null,
     'region'  => null,
@@ -44,14 +44,13 @@ $geo = $_SESSION['geo'] ?? [
 // Log logout activity (SOC2 audit)
 // ------------------------------------------------------------
 try {
-    $pdo     = Database::getInstance();
-    $logger  = new ActivityLogger($pdo, $tenantId);
-    $userObj = new User($pdo);
+    $pdo    = Database::getInstance();
+    $logger = new ActivityLogger($pdo, $tenantId);
 
     $logger->log(
         $userId,
         "User {$userFullName} logged out",
-        "Logout",
+        'Logout',
         [
             'user_name'     => $userFullName,
             'user_timezone' => $userTimezone,
@@ -73,16 +72,16 @@ try {
 // ------------------------------------------------------------
 $_SESSION = [];
 
-if (ini_get("session.use_cookies")) {
+if (ini_get('session.use_cookies')) {
     $params = session_get_cookie_params();
     setcookie(
         session_name(),
         '',
         time() - 42000,
-        $params["path"],
-        $params["domain"],
-        $params["secure"],
-        $params["httponly"]
+        $params['path'],
+        $params['domain'],
+        $params['secure'],
+        $params['httponly']
     );
 }
 
@@ -91,5 +90,5 @@ session_destroy();
 // ------------------------------------------------------------
 // Redirect to login
 // ------------------------------------------------------------
-header("Location: /login.php");
+header('Location: /login.php');
 exit;

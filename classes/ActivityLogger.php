@@ -1,10 +1,9 @@
 <?php
-
+declare (strict_types = 1);
 class ActivityLogger
 {
     protected PDO $pdo;
     protected $activityTable = "zentra_useractivityaudit";
-
     protected int $tenant_id;
 
     public function __construct(PDO $pdo, int $tenant_id)
