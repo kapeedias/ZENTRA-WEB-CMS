@@ -1,4 +1,5 @@
 <?php
+    declare (strict_types = 1);
 
     // ==== CONFIG FIRST (order matters) ====
     require_once __DIR__ . '/config/config.php';
@@ -31,13 +32,12 @@
     $moduleManager = new ModuleManager($pdo);
 
     // ==== LOAD LOGGER + EVENTS MODULE ====
-    $logger = new ActivityLogger($pdo, (int) ($_SESSION['tenant_id'] ?? 0));
-    //$events = new EventsModule($pdo, 1); // object_id = 1 (or dynamic)
+    $logger   = new ActivityLogger($pdo, (int) ($_SESSION['tenant_id'] ?? 0));
     $tenantId = $_SESSION['tenant_id'] ?? null;
-    $objectId = 1; // Events module ID
 
     if (! $tenantId) {
-    // 1. Show user-friendly error
+
+    // 1. User-friendly error
     $error[] = "Your session is missing tenant information. Please log in again.";
 
     // 2. Log to PHP error log
@@ -55,25 +55,29 @@
             'context'   => 'events-add.php missing tenant_id',
         ]
     );
+
     // 4. Destroy session safely
     $_SESSION = [];
     if (ini_get("session.use_cookies")) {
         $params = session_get_cookie_params();
-        setcookie(session_name(), '', time() - 42000,
-            $params["path"], $params["domain"],
-            $params["secure"], $params["httponly"]
+        setcookie(
+            session_name(),
+            '',
+            time() - 42000,
+            $params["path"],
+            $params["domain"],
+            $params["secure"],
+            $params["httponly"]
         );
     }
     session_destroy();
 
-    // 4. Redirect user to login
+    // 5. Redirect user to login
     header("Location: login.php?session_error=1");
     exit;
     }
 
-    $events = new EventsModule($pdo, $tenantId, $objectId);
-
-    $events->setLogger($logger);
+    $events = new EventsModule($pdo, $tenantId);
 
     // ==== HANDLE FORM SUBMISSION ====
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -103,7 +107,7 @@
         // Build data array for EventsModule
         $data = [
             'event_slug'        => $slug,
-            'title'             => $title,
+            'event_title'       => $title,
             'event_description' => '',
             'event_location'    => $location,
             'event_start_date'  => $startDate,
@@ -114,21 +118,15 @@
             'is_event_all_day'  => isset($_POST['all_day_event']) ? 1 : 0,
         ];
 
-        // Logging context
-        $context = [
-            'ip' => $ip,
-            'ua' => $_SERVER['HTTP_USER_AGENT'] ?? '',
-        ];
+        // Create event — returns event_hash
+        $eventHash = $events->saveEvent($data, null, $userId);
 
-        // Create event (this logs automatically)
-        $eventHash = $events->create($data, $userId, $context);
-
-        // Redirect to clean URL
-        header("Location: /event/$eventHash/edit");
+        // Redirect to clean URL using hash
+        header("Location: /event/{$eventHash}/edit");
         exit;
+    }
+    }
 
-    }
-    }
     $pageTitle   = "Add Event";
     $breadcrumbs = [
     ['label' => 'Home', 'url' => '/myaccount.php'],

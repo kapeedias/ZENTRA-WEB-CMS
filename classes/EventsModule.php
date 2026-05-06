@@ -43,15 +43,15 @@ class EventsModule
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
 
-    public function getEventById(int $id): ?array
+    public function getEventByHash(string $hash): ?array
     {
         $stmt = $this->pdo->prepare(
             "SELECT * FROM {$this->table}
-             WHERE id = :id AND tenant_id = :tenant_id
+             WHERE event_hash = :hash AND tenant_id = :tenant_id
              LIMIT 1"
         );
         $stmt->execute([
-            'id'        => $id,
+            'hash'      => $hash,
             'tenant_id' => $this->tenant_id,
         ]);
 
@@ -60,7 +60,7 @@ class EventsModule
         return $row ?: null;
     }
 
-    public function saveEvent(array $data, ?int $id = null, ?int $userId = null): int
+    public function saveEvent(array $data, ?string $hash = null, ?int $userId = null): string
     {
         $now = date('Y-m-d H:i:s');
 
@@ -74,7 +74,13 @@ class EventsModule
             'updated_at'        => $now,
         ];
 
-        if ($id === null) {
+        // CREATE MODE
+        if ($hash === null) {
+
+            // ⭐ Generate secure event hash
+            $eventHash = substr(bin2hex(random_bytes(16)), 0, 12);
+
+            $payload['event_hash'] = $eventHash;
             $payload['created_at'] = $now;
 
             $columns      = implode(', ', array_keys($payload));
@@ -85,25 +91,23 @@ class EventsModule
             );
             $stmt->execute($payload);
 
-            $eventId = (int) $this->pdo->lastInsertId();
-
             if ($userId !== null) {
                 $this->logEventActivity(
                     $userId,
-                    "Created event #{$eventId} ({$payload['event_title']})",
+                    "Created event ({$payload['event_title']})",
                     'Event Created'
                 );
             }
 
-            return $eventId;
+            return $eventHash;
         }
 
-        // update
-        $payload['id'] = $id;
+        // UPDATE MODE
+        $payload['event_hash'] = $hash;
 
         $setParts = [];
         foreach ($payload as $key => $value) {
-            if ($key === 'tenant_id' || $key === 'id') {
+            if ($key === 'tenant_id' || $key === 'event_hash') {
                 continue;
             }
             $setParts[] = "{$key} = :{$key}";
@@ -113,36 +117,36 @@ class EventsModule
         $stmt = $this->pdo->prepare(
             "UPDATE {$this->table}
              SET {$setQuery}
-             WHERE id = :id AND tenant_id = :tenant_id"
+             WHERE event_hash = :event_hash AND tenant_id = :tenant_id"
         );
         $stmt->execute($payload);
 
         if ($userId !== null) {
             $this->logEventActivity(
                 $userId,
-                "Updated event #{$id} ({$payload['event_title']})",
+                "Updated event ({$payload['event_title']})",
                 'Event Updated'
             );
         }
 
-        return $id;
+        return $hash;
     }
 
-    public function deleteEvent(int $id, ?int $userId = null): void
+    public function deleteEvent(string $hash, ?int $userId = null): void
     {
         $stmt = $this->pdo->prepare(
             "DELETE FROM {$this->table}
-             WHERE id = :id AND tenant_id = :tenant_id"
+             WHERE event_hash = :hash AND tenant_id = :tenant_id"
         );
         $stmt->execute([
-            'id'        => $id,
+            'hash'      => $hash,
             'tenant_id' => $this->tenant_id,
         ]);
 
         if ($userId !== null) {
             $this->logEventActivity(
                 $userId,
-                "Deleted event #{$id}",
+                "Deleted event ({$hash})",
                 'Event Deleted'
             );
         }
