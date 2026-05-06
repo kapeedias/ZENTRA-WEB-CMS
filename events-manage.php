@@ -112,7 +112,7 @@
                                                 <td><?php echo $row['event_location']; ?>
                                                 </td>
                                                 <td id="status_<?php echo $row['event_hash']; ?>">
-                                                    <?php if ($row['is_active'] == 1): ?>
+                                                    <?php if ($row['is_event_active'] == 1): ?>
                                                     <span class="badge bg-light d-inline-flex gap-1"><i
                                                             class="material-icons text-success">check_circle</i>&nbsp;Active</span>
                                                     <?php else: ?>
