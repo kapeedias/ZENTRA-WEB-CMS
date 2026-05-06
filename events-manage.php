@@ -106,18 +106,18 @@
                                                         </div>
                                                     </a>
                                                 </td>
-                                                <td class="text-secondary"><?php echo $row['event_start_date']; ?><p>
-                                                        <?php echo $row['event_start_time']; ?>
-                                                    </p>
+                                                <td><small><?php echo $row['event_start_date']; ?>><p>
+                                                            <?php echo $row['event_start_time']; ?>
+                                                        </p></small>
                                                 </td>
-                                                <td class="text-secondary"><?php echo $row['event_end_date']; ?><p>
-                                                        <?php echo $row['event_end_time']; ?>
-                                                    </p>
+                                                <td><small><?php echo $row['event_end_date']; ?><p>
+                                                            <?php echo $row['event_end_time']; ?>
+                                                        </p></small>
                                                 </td>
-                                                <td class="text-secondary"><?php echo $row['event_timezone']; ?>
+                                                <td><small><?php echo $row['event_timezone']; ?></small>
                                                 </td>
-                                                <td><span
-                                                        class="badge bg-light d-inline-flex gap-1"><?php echo $row['is_event_all_day'] ? 'Yes' : 'No'; ?></span>
+                                                <td><small><span
+                                                            class="badge bg-light d-inline-flex gap-1"><?php echo $row['is_event_all_day'] ? 'Yes' : 'No'; ?></span></small>
                                                 </td>
                                                 <td><?php echo $row['event_location']; ?>
                                                 </td>
