@@ -45,7 +45,7 @@ $geo = $_SESSION['geo'] ?? [
 // ------------------------------------------------------------
 try {
     $pdo     = Database::getInstance();
-    $logger  = new ActivityLogger($pdo);
+    $logger  = new ActivityLogger($pdo, (int) ($_SESSION['tenant_id'] ?? 0));
     $userObj = new User($pdo);
 
     $logger->log(

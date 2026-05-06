@@ -31,7 +31,7 @@
     $moduleManager = new ModuleManager($pdo);
 
     // ==== LOAD LOGGER + EVENTS MODULE ====
-    $logger = new ActivityLogger($pdo);
+    $logger = new ActivityLogger($pdo, (int) ($_SESSION['tenant_id'] ?? 0));
     $events = new EventsModule($pdo, 1); // object_id = 1 (or dynamic)
     $events->setLogger($logger);
 
