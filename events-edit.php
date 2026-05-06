@@ -35,12 +35,8 @@
     $events = new EventsModule($pdo, 1); // object_id = 1 (or dynamic)
     $events->setLogger($logger);
 
-    $hash = trim($_GET['e'] ?? '');
+    $hash = $_GET['e'] ?? null;
 
-    if ($hash === '' || ! preg_match('/^[A-Za-z0-9]{8,20}$/', $hash)) {
-    header("Location: /events-manage.php");
-    exit;
-    }
     if (! isset($_SESSION['tenant_id'])) {
     header("Location: /events-manage.php");
     exit;
@@ -55,9 +51,12 @@
     $stmt = $pdo->prepare("
     SELECT * FROM zentra_events
     WHERE event_hash = ?
-    AND object_id = ?
-");
-    $stmt->execute([$hash, $currentTenantId]);
+    AND tenant_id = ?
+    LIMIT 1");
+    $stmt->execute([
+    'hash'      => $hash,
+    'tenant_id' => $currentTenantId,
+    ]);
 
     $event = $stmt->fetch(PDO::FETCH_ASSOC);
 
