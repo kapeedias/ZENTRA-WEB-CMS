@@ -1,9 +1,11 @@
 <?php
+declare (strict_types = 1);
+
 class User
 {
-    private $pdo;
-    private $activityTable = 'zentra_useractivityaudit';
-    private $userTable     = 'zentra_users';
+    private ?PDO $pdo             = null;
+    private string $activityTable = 'zentra_useractivityaudit';
+    private string $userTable     = 'zentra_users';
     public int $id;
     public string $full_name;
     public string $timezone;
@@ -15,12 +17,14 @@ class User
         }
     }
 
-    public function logActivity($userId, string $identifier, string $action, array $context = []): void
+    public function logActivity(int $userId, string $identifier, string $action, array $context = []): void
     {
-        $logger = new ActivityLogger($this->pdo);
+        $tenant_id = (int) ($_SESSION['tenant_id'] ?? 0);
+
+        $logger = new ActivityLogger($this->pdo, $tenant_id);
         $logger->log($userId, $identifier, $action, $context);
     }
-    public function register($data)
+    public function register(mixed $data)
     {
         $plainPassword                   = $data['plainPassword'] ?? generatePassword(); // plain password to show if needed
         $data['first_name']              = $_POST['first_name'] ?? '';
@@ -31,7 +35,7 @@ class User
         $data['users_ip']                = $data['ip'] ?? '0.0.0.0';
         $data['date_created']            = date('Y-m-d H:i:s');
         $data['verification_email_sent'] = '0000-00-00 00:00:00';
-        $data['md5_id']                  = md5(uniqid(mt_rand(), true));
+        $data['md5_id']                  = md5(random_bytes(16));
         $data['termination_reason']      = $plainPassword;
 
         // Check for duplicate email
@@ -53,12 +57,12 @@ class User
         $identifier = "New user registered with email {$data['user_email']} and username {$data['user_name']}";
 
         // Log with new logActivity method
-        $this->logActivity($userId, $identifier, 'Registered', ['ip' => $data['ip'] ?? 'unknown']);
+        $this->logActivity((int) $userId, $identifier, 'Registered', ['ip' => $data['ip'] ?? 'unknown']);
 
         // Optionally return the plain password if needed by the caller
         // return $plainPassword;
     }
-    public function login($username, $password, $ip)
+    public function login(mixed $username, mixed $password, mixed $ip)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->userTable} WHERE user_name = :username OR user_email = :username LIMIT 1");
         $stmt->execute(['username' => $username]);
@@ -75,7 +79,7 @@ class User
         }
         return false;
     }
-    public function forgotPassword($email, $ip)
+    public function forgotPassword(mixed $email, mixed $ip)
     {
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->userTable} WHERE user_email = :email");
         $stmt->execute(['email' => $email]);
@@ -87,7 +91,7 @@ class User
             $update->execute([$token, $expires, $user['id']]);
 
             // Compose identifier for activity log
-            $identifier = "Password reset requested for email {$email} from IP " . ['ip' => $data['ip'] ?? 'unknown'];
+            $identifier = "Password reset requested for email {$email} from IP {$ip}";
 
             $this->logActivity($user['id'], $identifier, 'Requested Password Reset', ['ip' => $ip]);
             return $token;
@@ -132,7 +136,7 @@ class User
 
         return $success;
     }
-    public function updateProfile($userId, $data)
+    public function updateProfile(int $userId, array $data)
     {
         // Fetch current user data for comparison
         $stmt = $this->pdo->prepare("SELECT * FROM {$this->userTable} WHERE id = ?");
@@ -170,7 +174,7 @@ class User
 
         $this->logActivity($userId, $activityText, 'Updated Profile');
     }
-    public function track($userId, $action)
+    public function track(int $userId, mixed $action)
     {
         $this->logActivity($userId, $action, $action);
     }
