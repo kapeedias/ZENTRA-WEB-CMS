@@ -15,6 +15,12 @@
     enforceSessionSecurity();
     $ip            = getClientIP();
     $moduleManager = new ModuleManager($pdo); // ← REQUIRED
+
+    $pageTitle   = "My Account";
+    $breadcrumbs = [
+    ['label' => 'Home', 'url' => '/#'],
+    ];
+
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
