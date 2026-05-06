@@ -90,7 +90,7 @@
                 <div class="mt-4">
 
                     <ul class="nav flex-column">
-                        <li class="nav-item"><a class="nav-link" href="logout.php"><i
+                        <li class="nav-item"><a class="nav-link" href="/logout.php"><i
                                     class="icon ion-log-out-outline me-2"></i>
                                 Logout</a></li>
                     </ul>
