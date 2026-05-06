@@ -79,6 +79,13 @@
     } catch (PDOException $e) {
     $error[] = "Database query failed: " . $e->getMessage();
     }
+
+    $pageTitle   = "System Settings";
+    $breadcrumbs = [
+    ['label' => 'Home', 'url' => '/myaccount.php'],
+    ['label' => 'Admin Settings', 'url' => '#'],
+    ['label' => 'System Settings', 'url' => "#"],
+    ];
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
@@ -86,7 +93,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
-    <title><?php echo getenv('APP_NAME') ?> - App Configuration</title>
+    <title><?php echo getenv('APP_NAME') ?> - System Settings</title>
     <?php include '_include/head.php'; ?>
 </head>
 

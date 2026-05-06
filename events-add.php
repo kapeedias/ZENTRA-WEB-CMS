@@ -129,6 +129,12 @@
 
     }
     }
+    $pageTitle   = "Add Event";
+    $breadcrumbs = [
+    ['label' => 'Home', 'url' => '/myaccount.php'],
+    ['label' => 'Events', 'url' => '/events-manage.php'],
+    ['label' => 'Add Event', 'url' => "#"],
+    ];
 
 ?>
 <!DOCTYPE html>

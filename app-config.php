@@ -33,6 +33,13 @@
     $error[] = "Database query failed: " . $e->getMessage();
     }
 
+    $pageTitle   = "App Configuration";
+    $breadcrumbs = [
+    ['label' => 'Home', 'url' => '/myaccount.php'],
+    ['label' => 'Admin Settings', 'url' => '#'],
+    ['label' => 'App Configuration', 'url' => "#"],
+    ];
+
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
