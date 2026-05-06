@@ -1,5 +1,6 @@
 <?php
     declare (strict_types = 1);
+    var_dump($_GET);exit;
 
     // ==== CONFIG FIRST (order matters) ====
     require_once __DIR__ . '/config/config.php';
