@@ -92,7 +92,7 @@
                                                     <a class="text-decoration-none d-flex align-items-center gap-2"
                                                         href="#">
                                                         <div>
-                                                            <p class="fw-bold mb-0"><?php echo $row['event_title']; ?>
+                                                            <p class="fw-bold mb-0"><?php echo $row['title']; ?>
                                                             </p>
                                                             <small
                                                                 class="text-secondary d-block"><?php echo $row['event_slug']; ?></small>
@@ -106,6 +106,10 @@
                                                 <td><?php echo $row['event_end_date']; ?><p>
                                                         <?php echo $row['event_end_time']; ?>
                                                     </p>
+                                                </td>
+                                                <td><?php echo $row['event_timezone']; ?>
+                                                </td>
+                                                <td><?php echo $row['event_location']; ?>
                                                 </td>
                                                 <td id="status_<?php echo $row['event_hash']; ?>">
                                                     <?php if ($row['is_active'] == 1): ?>
