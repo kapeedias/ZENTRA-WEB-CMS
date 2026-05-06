@@ -56,9 +56,9 @@
     header("Location: /login.php?session_error=1");
     exit;
     }
-
-    $events = new EventsModule($pdo, (int) $tenantId);
-    $logger = new ActivityLogger($pdo, (int) $tenantId);
+    $moduleManager = new ModuleManager($pdo); // ← REQUIRED
+    $events        = new EventsModule($pdo, (int) $tenantId);
+    $logger        = new ActivityLogger($pdo, (int) $tenantId);
 
     // ==== GET EVENT HASH FROM ROUTE ====
     $eventHash = $_GET['e'] ?? null;
