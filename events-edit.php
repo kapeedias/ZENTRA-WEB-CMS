@@ -67,6 +67,14 @@
     exit;
     }
 
+    $pageTitle   = "Edit Event";
+    $breadcrumbs = [
+    ['label' => 'Home', 'url' => '/myaccount.php'],
+    ['label' => 'Events', 'url' => '/events-manage.php'],
+    ['label' => $event['title'], 'url' => "/event/{$event['event_hash']}/edit"],
+    ['label' => 'Edit Event', 'url' => '#'],
+    ];
+
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">

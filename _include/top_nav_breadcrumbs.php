@@ -1,10 +1,17 @@
 <div>
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#"><span>Home</span></a></li>
-        <li class="breadcrumb-item"><a href="#"><span>Admin
-                    Settings</span></a></li>
-        <li class="breadcrumb-item active"><span>App
-                Config</span></li>
+        <?php foreach ($breadcrumbs as $crumb): ?>
+        <li class="breadcrumb-item <?php echo $crumb['url'] === '#' ? 'active' : '' ?>">
+            <?php if ($crumb['url'] !== '#'): ?>
+            <a href="<?php echo htmlspecialchars($crumb['url']) ?>">
+                <span><?php echo htmlspecialchars($crumb['label']) ?></span>
+            </a>
+            <?php else: ?>
+            <span><?php echo htmlspecialchars($crumb['label']) ?></span>
+            <?php endif; ?>
+        </li>
+        <?php endforeach; ?>
     </ol>
-    <h1 class="h2">App Config</h1>
+
+    <h1 class="h2"><?php echo htmlspecialchars($pageTitle) ?></h1>
 </div>
