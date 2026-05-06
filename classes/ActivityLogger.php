@@ -2,18 +2,18 @@
 
 class ActivityLogger
 {
-    protected PDO $db;
+    protected PDO $pdo;
     protected $activityTable = "zentra_useractivityaudit";
 
     protected int $tenant_id;
 
-    public function __construct(PDO $db, int $tenant_id)
+    public function __construct(PDO $pdo, int $tenant_id)
     {
-        $this->db        = $db;
+        $this->pdo       = $pdo;
         $this->tenant_id = $tenant_id;
     }
 
-    public function log($userId, string $identifier, string $action, array $context = []): void
+    public function log(int $userId, string $identifier, string $action, array $context = []): void
     {
         $ip      = $context['ip'] ?? 'unknown';
         $city    = $context['city'] ?? null;
