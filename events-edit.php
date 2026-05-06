@@ -71,8 +71,7 @@
     $breadcrumbs = [
     ['label' => 'Home', 'url' => '/myaccount.php'],
     ['label' => 'Events', 'url' => '/events-manage.php'],
-    ['label' => $event['title'], 'url' => "/event/{$event['event_hash']}/edit"],
-    ['label' => 'Edit Event', 'url' => '#'],
+    ['label' => $event['title'], 'url' => "#"],
     ];
 
 ?>
