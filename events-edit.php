@@ -1,4 +1,5 @@
 <?php
+    declare (strict_types = 1);
 
     // ==== CONFIG FIRST (order matters) ====
     require_once __DIR__ . '/config/config.php';
@@ -17,9 +18,6 @@
     // ==== SESSION SECURITY ====
     enforceSessionSecurity();
 
-    // ==== GET CLIENT IP ====
-    $ip = getClientIP();
-
     // ==== DB CONNECTION ====
     try {
     $pdo = Database::getInstance();
@@ -28,41 +26,53 @@
     return;
     }
 
-    $moduleManager = new ModuleManager($pdo);
+    // ==== GET CLIENT IP ====
+    $ip = getClientIP();
 
-    // ==== LOAD LOGGER + EVENTS MODULE ====
-    $logger = new ActivityLogger($pdo, (int) ($_SESSION['tenant_id'] ?? 0));
-    $events = new EventsModule($pdo, 1); // object_id = 1 (or dynamic)
+    // ==== VALIDATE TENANT ====
+    $tenantId = $_SESSION['tenant_id'] ?? null;
 
-    $hash = $_GET['e'] ?? null;
+    if (! $tenantId) {
 
-    if (! isset($_SESSION['tenant_id'])) {
-    header("Location: /events-manage.php");
+    // Log incident
+    error_log("ERROR: Missing tenant_id in session for user_id=" . ($_SESSION['user_id'] ?? 'UNKNOWN'));
+
+    // Destroy session safely
+    $_SESSION = [];
+    if (ini_get("session.use_cookies")) {
+        $params = session_get_cookie_params();
+        setcookie(
+            session_name(),
+            '',
+            time() - 42000,
+            $params["path"],
+            $params["domain"],
+            $params["secure"],
+            $params["httponly"]
+        );
+    }
+    session_destroy();
+
+    header("Location: /login.php?session_error=1");
     exit;
     }
-    if (! preg_match('/^[A-Za-z0-9]{12}$/', $hash)) {
-    header("Location: /events-manage.php");
+
+    $events = new EventsModule($pdo, (int) $tenantId);
+    $logger = new ActivityLogger($pdo, (int) $tenantId);
+
+    // ==== GET EVENT HASH FROM ROUTE ====
+    $eventHash = $_GET['hash'] ?? null;
+
+    if (! $eventHash || ! preg_match('/^[a-f0-9]{12}$/i', $eventHash)) {
+    header("Location: /events-manage.php?invalid_hash=1");
     exit;
     }
 
-    $currentTenantId = (int) $_SESSION['tenant_id'];
-
-    $stmt = $pdo->prepare("
-    SELECT * FROM zentra_events
-    WHERE event_hash = :hash
-      AND tenant_id = :tenant_id
-    LIMIT 1
-    ");
-
-    $stmt->execute([
-    'hash'      => $hash,
-    'tenant_id' => $currentTenantId,
-    ]);
-
-    $event = $stmt->fetch(PDO::FETCH_ASSOC);
+    // ==== LOAD EVENT ====
+    $event = $events->getEventByHash($eventHash);
 
     if (! $event) {
-    header("Location: /events-manage.php");
+    header("Location: /events-manage.php?not_found=1");
     exit;
     }
 

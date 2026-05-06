@@ -106,7 +106,7 @@
                                                         </div>
                                                     </a>
                                                 </td>
-                                                <td><small><?php echo $row['event_start_date']; ?>><p>
+                                                <td><small><?php echo $row['event_start_date']; ?><p>
                                                             <?php echo $row['event_start_time']; ?>
                                                         </p></small>
                                                 </td>
@@ -124,7 +124,7 @@
                                                 <td id="status_<?php echo $row['event_hash']; ?>">
                                                     <?php if ($row['is_event_active'] == 1): ?>
                                                     <span class="badge bg-light d-inline-flex gap-1"><i
-                                                            class="material-icons text-success">check_circle</i>&nbsp;Active</span>
+                                                            class="fa fa-check-circle text-success"></i>&nbsp;Active</span>
                                                     <?php else: ?>
                                                     <span class="badge bg-light d-inline-flex gap-1"><i
                                                             class="material-icons text-danger">cancel</i>&nbsp;Inactive</span>
@@ -169,7 +169,7 @@
             const typeKey = this.id.replace('check_', '');
             const isEnabled = this.checked ? 1 : 0;
 
-            fetch('ajax/update_module_type.php', {
+            fetch('ajax/update_event_status.php', {
                     method: 'POST',
                     credentials: 'same-origin',
                     headers: {
@@ -185,7 +185,7 @@
                         if (isEnabled === 1) {
                             statusCell.innerHTML =
                                 `<span class="badge bg-light d-inline-flex gap-1"><i
-                                                            class="material-icons text-success">check_circle</i>&nbsp;Active</span>`;
+                                                            class="fa fa-check-circle text-success">check_circle</i>&nbsp;Active</span>`;
                         } else {
                             statusCell.innerHTML =
                                 `<span class="badge bg-light d-inline-flex gap-1"><i

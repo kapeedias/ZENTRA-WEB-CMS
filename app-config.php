@@ -106,7 +106,7 @@
                                                 <td id="status_<?php echo $row['type_key']; ?>">
                                                     <?php if ($row['is_enabled'] == 1): ?>
                                                     <span class="badge bg-light d-inline-flex gap-1"><i
-                                                            class="material-icons text-success">check_circle</i>&nbsp;Active</span>
+                                                            class="fa fa-check-circle text-success">check_circle</i>&nbsp;Active</span>
                                                     <?php else: ?>
                                                     <span class="badge bg-light d-inline-flex gap-1"><i
                                                             class="material-icons text-danger">cancel</i>&nbsp;Inactive</span>
@@ -167,7 +167,7 @@
                         if (isEnabled === 1) {
                             statusCell.innerHTML =
                                 `<span class="badge bg-light d-inline-flex gap-1"><i
-                                                            class="material-icons text-success">check_circle</i>&nbsp;Active</span>`;
+                                                            class="fa fa-check-circle text-success">check_circle</i>&nbsp;Active</span>`;
                         } else {
                             statusCell.innerHTML =
                                 `<span class="badge bg-light d-inline-flex gap-1"><i
