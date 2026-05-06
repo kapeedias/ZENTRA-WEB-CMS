@@ -39,30 +39,35 @@ $geo = $_SESSION['geo'] ?? [
     'country' => null,
     'raw'     => null,
 ];
-
 // ------------------------------------------------------------
 // Log logout activity (SOC2 audit)
 // ------------------------------------------------------------
 try {
-    $pdo    = Database::getInstance();
-    $logger = new ActivityLogger($pdo, $tenantId);
+    $pdo = Database::getInstance();
 
-    $logger->log(
-        $userId,
-        "User {$userFullName} logged out",
-        'Logout',
-        [
-            'user_name'     => $userFullName,
-            'user_timezone' => $userTimezone,
-            'ip'            => $ip,
-            'browser'       => $browser,
-            'device'        => $device,
-            'city'          => $geo['city'],
-            'region'        => $geo['region'],
-            'country'       => $geo['country'],
-            'geo_raw'       => $geo['raw'],
-        ]
-    );
+    if ($tenantId > 0) {
+        $logger = new ActivityLogger($pdo, $tenantId);
+
+        $logger->log(
+            $userId,
+            "User {$userFullName} logged out",
+            'Logout',
+            [
+                'user_name'     => $userFullName,
+                'user_timezone' => $userTimezone,
+                'ip'            => $ip,
+                'browser'       => $browser,
+                'device'        => $device,
+                'city'          => $geo['city'],
+                'region'        => $geo['region'],
+                'country'       => $geo['country'],
+                'geo_raw'       => $geo['raw'],
+            ]
+        );
+    } else {
+        error_log("Logout skipped: tenant_id missing for user {$userId}");
+    }
+
 } catch (Throwable $e) {
     error_log("Logout logging failed: " . $e->getMessage());
 }
