@@ -56,7 +56,7 @@ class ActivityLogger
 
         $stmt->execute([
             'user_id'       => $userId,
-            'tenant_id'     => $context['tenant_id'] ?? null,
+            'tenant_id'     => $this->tenant_id,
             'action'        => ucfirst($action),
             'field_changed' => $context['field_changed'] ?? null,
             'old_value'     => $context['old_value'] ?? null,
