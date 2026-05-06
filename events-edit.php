@@ -1,6 +1,5 @@
 <?php
     declare (strict_types = 1);
-    var_dump($_GET);exit;
 
     // ==== CONFIG FIRST (order matters) ====
     require_once __DIR__ . '/config/config.php';
@@ -62,7 +61,7 @@
     $logger = new ActivityLogger($pdo, (int) $tenantId);
 
     // ==== GET EVENT HASH FROM ROUTE ====
-    $eventHash = $_GET['hash'] ?? null;
+    $eventHash = $_GET['e'] ?? null;
 
     if (! $eventHash || ! preg_match('/^[a-f0-9]{12}$/i', $eventHash)) {
     header("Location: /events-manage.php?invalid_hash=1");
