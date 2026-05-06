@@ -84,6 +84,7 @@
                                                 <th>Event Start Date</th>
                                                 <th>Event End Date</th>
                                                 <th>Event TimeZone</th>
+                                                <th>All Day</th>
                                                 <th>Event Venue</th>
                                                 <th>Status</th>
                                                 <th></th>
@@ -105,15 +106,18 @@
                                                         </div>
                                                     </a>
                                                 </td>
-                                                <td><?php echo $row['event_start_date']; ?><p>
+                                                <td class="text-secondary"><?php echo $row['event_start_date']; ?><p>
                                                         <?php echo $row['event_start_time']; ?>
                                                     </p>
                                                 </td>
-                                                <td><?php echo $row['event_end_date']; ?><p>
+                                                <td class="text-secondary"><?php echo $row['event_end_date']; ?><p>
                                                         <?php echo $row['event_end_time']; ?>
                                                     </p>
                                                 </td>
-                                                <td><?php echo $row['event_timezone']; ?>
+                                                <td class="text-secondary"><?php echo $row['event_timezone']; ?>
+                                                </td>
+                                                <td><span
+                                                        class="badge bg-light d-inline-flex gap-1"><?php echo $row['is_event_all_day'] ? 'Yes' : 'No'; ?></span>
                                                 </td>
                                                 <td><?php echo $row['event_location']; ?>
                                                 </td>
