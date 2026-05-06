@@ -7,14 +7,12 @@ class EventsModule extends ModuleBase
 {
     protected PDO $pdo;
     protected int $tenant_id;
-    protected ?int $object_id;
 
     public function __construct(PDO $db, int $tenant_id, ?int $object_id = null)
     {
         parent::__construct($db, 'events', $object_id);
         $this->pdo       = $db;
         $this->tenant_id = $tenant_id;
-        $this->pdo       = $db;
     }
 
     /* -----------------------------------------------------------
