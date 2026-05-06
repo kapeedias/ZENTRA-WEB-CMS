@@ -6,13 +6,16 @@ require_once __DIR__ . '/ActivityLogger.php';
 class EventsModule extends ModuleBase
 {
     protected PDO $pdo;
+    protected int $object_id;
     protected int $tenant_id;
+    protected ?ActivityLogger $logger = null;
 
-    public function __construct(PDO $db, int $tenant_id, ?int $object_id = null)
+    public function __construct(PDO $db, int $tenant_id, ?int $object_id = 1)
     {
         parent::__construct($db, 'events', $object_id);
         $this->pdo       = $db;
         $this->tenant_id = $tenant_id;
+        $this->object_id = $object_id;
     }
 
     /* -----------------------------------------------------------
@@ -301,15 +304,16 @@ class EventsModule extends ModuleBase
     /* -----------------------------------------------------------
      * LIST EVENTS (WITH LOCAL DATES)
      * ----------------------------------------------------------- */
-    public function list(array $filters = [], ?string $userTimezone = null)
+    public function listEvents(array $filters = [], ?string $userTimezone = null)
     {
         $sql = "
-            SELECT *
-            FROM zentra_events
-            WHERE object_id = ?
-        ";
+        SELECT *
+        FROM zentra_events
+        WHERE object_id = ?
+          AND tenant_id = ?
+         ";
 
-        $params = [$this->object_id];
+        $params = [$this->object_id, $this->tenantId];
 
         if (! empty($filters['future_only'])) {
             $sql .= " AND start_date >= UTC_TIMESTAMP()";
