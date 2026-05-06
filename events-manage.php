@@ -33,6 +33,12 @@
     $error[] = "Database or Query Error - failed: " . $e->getMessage();
     }
 
+    $pageTitle   = "Manage Events";
+    $breadcrumbs = [
+    ['label' => 'Home', 'url' => '/myaccount.php'],
+    ['label' => 'Events', 'url' => '/events-manage.php'],
+    ['label' => 'Manage Events', 'url' => '#'],
+    ];
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
