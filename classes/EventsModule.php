@@ -6,7 +6,7 @@ require_once __DIR__ . '/ActivityLogger.php';
 class EventsModule extends ModuleBase
 {
     protected PDO $pdo;
-    protected int $object_id;
+    //protected int $object_id;
     protected int $tenant_id;
     protected ?ActivityLogger $logger = null;
 
