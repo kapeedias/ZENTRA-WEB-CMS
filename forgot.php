@@ -22,7 +22,7 @@
     $pdo     = Database::getInstance();
     $userObj = new User($pdo);
     $mailer  = new Mailer();
-    } catch (PDOException $e) {
+    } catch (Throwable $e) {
     die("Database error: " . htmlspecialchars($e->getMessage()));
     }
     $moduleManager = new ModuleManager($pdo); // ← REQUIRED
@@ -116,7 +116,7 @@
                     $errors[] = "Failed to send reset email. Please try again later.";
                 }
             }
-        } catch (PDOException $e) {
+        } catch (Throwable $e) {
             error_log("FORGOT PASSWORD ERROR: " . $e->getMessage());
             $errors[] = 'An error occurred. Please try again later.';
         }

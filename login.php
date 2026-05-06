@@ -35,7 +35,7 @@
     try {
     $pdo     = Database::getInstance();
     $userObj = new User($pdo);
-    } catch (PDOException $e) {
+    } catch (Throwable $e) {
     die("Database connection failed: " . $e->getMessage());
     }
 
@@ -157,7 +157,7 @@
                     header("Location: myaccount.php");
                     exit;
                 }
-            } catch (PDOException $e) {
+            } catch (Throwable $e) {
                 error_log("LOGIN ERROR: " . $e->getMessage());
                 $errors[] = 'Login failed. Please try again later.';
             }

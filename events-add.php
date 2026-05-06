@@ -23,7 +23,7 @@
     // ==== DB CONNECTION ====
     try {
     $pdo = Database::getInstance();
-    } catch (PDOException $e) {
+    } catch (Throwable $e) {
     $error[] = "Database connection failed: " . $e->getMessage();
     return;
     }

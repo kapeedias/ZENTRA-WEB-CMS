@@ -121,7 +121,7 @@ class EventsModule extends ModuleBase
                 $userId,
                 $eventHash,
             ]);
-        } catch (PDOException $e) {
+        } catch (Throwable $e) {
             error_log("EVENT INSERT ERROR: " . $e->getMessage());
 
             $this->logger?->log(

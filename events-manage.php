@@ -21,7 +21,7 @@
     // ==== DB CONNECTION ====
     try {
     $pdo = Database::getInstance();
-    } catch (PDOException $e) {
+    } catch (Throwable $e) {
     $error[] = "Database connection failed: " . $e->getMessage();
     return;
     }
@@ -29,7 +29,7 @@
     try {
     $stmt   = $pdo->query("SELECT * FROM zentra_events ORDER BY event_start_date DESC, event_start_time DESC");
     $events = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    } catch (PDOException $e) {
+    } catch (Throwable $e) {
     $error[] = "Database or Query Error - failed: " . $e->getMessage();
     }
 

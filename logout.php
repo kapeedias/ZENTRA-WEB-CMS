@@ -22,12 +22,12 @@ $userId       = $_SESSION['user_id'];
 $userEmail    = $_SESSION['user_email'];
 $userFullName = $_SESSION['user_name'] ?? 'Unknown User';
 $userTimezone = $_SESSION['user_timezone'] ?? 'UTC';
+$tenantId     = (int) ($_SESSION['tenant_id'] ?? 0);
 
 // ------------------------------------------------------------
 // Capture IP, Browser, Device, Geo
 // ------------------------------------------------------------
-$ip = cleanIP(getClientIP());
-
+$ip      = cleanIP(getClientIP());
 $ua      = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
 $browser = getBrowserName($ua);
 $device  = getDeviceType($ua);
@@ -45,7 +45,7 @@ $geo = $_SESSION['geo'] ?? [
 // ------------------------------------------------------------
 try {
     $pdo     = Database::getInstance();
-    $logger  = new ActivityLogger($pdo, (int) ($_SESSION['tenant_id'] ?? 0));
+    $logger  = new ActivityLogger($pdo, $tenantId);
     $userObj = new User($pdo);
 
     $logger->log(
@@ -64,7 +64,7 @@ try {
             'geo_raw'       => $geo['raw'],
         ]
     );
-} catch (Exception $e) {
+} catch (Throwable $e) {
     error_log("Logout logging failed: " . $e->getMessage());
 }
 
