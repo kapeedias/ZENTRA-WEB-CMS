@@ -1,5 +1,5 @@
 <?php
-
+declare (strict_types = 1);
 class MenuManager
 {
     private PDO $pdo;
@@ -11,7 +11,7 @@ class MenuManager
         $this->moduleManager = $moduleManager;
     }
 
-    public function getMenuItems($tenantId = null)
+    public function getMenuItems(?int $tenantId = null): array
     {
         $sql = "SELECT * FROM zentra_nav_menu
                 WHERE (tenant_id = :tenant_id OR tenant_id IS NULL)

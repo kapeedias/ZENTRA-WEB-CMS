@@ -7,7 +7,7 @@
             <div class="w-100 pt-3">
                 <div class="ps-3 navbar-brand"><a
                         class="text-decoration-none link-body-emphasis d-inline-flex mw-100 align-items-center"
-                        href="#"><span class="fs-4 fw-bold brand-primary">ZENTRA</span><span
+                        href="/myaccount.php"><span class="fs-4 fw-bold brand-primary">ZENTRA</span><span
                             class="fs-4 brand-secondary">CMS</span></a></div><a
                     class="btn btn-warning d-flex justify-content-center align-items-center m-3 text-light"
                     role="button"> <svg class="bi bi-plus-circle-fill me-2" xmlns="http://www.w3.org/2000/svg"
@@ -17,7 +17,7 @@
                         </path>
                     </svg>Quick Create </a>
                 <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link" href="myaccount.php"><i
+                    <li class="nav-item"><a class="nav-link" href="/myaccount.php"><i
                                 class="icon ion-speedometer me-2"></i>
                             Dashboard</a></li>
 
