@@ -2,10 +2,10 @@
 
 class MenuManager
 {
-    private $pdo;
-    private $moduleManager;
+    private PDO $pdo;
+    private ModuleManager $moduleManager;
 
-    public function __construct($pdo, $moduleManager)
+    public function __construct(PDO $pdo, ModuleManager $moduleManager)
     {
         $this->pdo           = $pdo;
         $this->moduleManager = $moduleManager;
