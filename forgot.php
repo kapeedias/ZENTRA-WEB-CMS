@@ -149,9 +149,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title><?php echo APP_NAME ?> - Forgot</title>
-    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css?h=283928673d7441cd64f1af3db9200eab">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css?h=283928673d7441cd64f1af3db9200eab">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Geist:400,700&amp;display=swap">
-    <link rel="stylesheet" href="assets/css/styles.min.css?h=6fca2a621bf969aa555e4e55be38144a">
+    <link rel="stylesheet" href="/assets/css/styles.min.css?h=6fca2a621bf969aa555e4e55be38144a">
 </head>
 
 <body>
@@ -206,13 +206,13 @@
                 </div>
             </div>
             <div class="col-lg-6 d-none d-lg-block p-0"><img class="img-fluid object-fit-cover w-100 h-100" width="6016"
-                    height="4016" src="assets/img/photos/cms-bg.jpg?h=dc8949afa519d8742dc2bc733c6edeea" alt="Image">
+                    height="4016" src="/assets/img/photos/cms-bg.jpg?h=dc8949afa519d8742dc2bc733c6edeea" alt="Image">
             </div>
         </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/4.0.0/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/script.min.js?h=76fb943b07981bddcd684084e3798cff"></script>
+    <script src="/assets/js/script.min.js?h=76fb943b07981bddcd684084e3798cff"></script>
 </body>
 
 </html>

@@ -8,7 +8,7 @@
                     class="fa fa-search"></i></button></form>
         <div class="dropdown"><button class="btn dropdown-toggle border-0 p-2" data-bs-toggle="dropdown"
                 aria-expanded="false" type="button"><img class="object-fit-cover border rounded-circle"
-                    src="assets/img/team/avatar2.jpg?h=7086b181e9fb853914a2cca97301c640" width="32"
+                    src="/assets/img/team/avatar2.jpg?h=7086b181e9fb853914a2cca97301c640" width="32"
                     height="32"></button>
             <div class="dropdown-menu dropdown-menu-end shadow"><a class="dropdown-item" href="#"><i
                         class="fa fa-user-o me-2"></i>&nbsp;Profile</a><a class="dropdown-item" href="profile.php"><i

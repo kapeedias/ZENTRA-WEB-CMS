@@ -434,7 +434,7 @@
                                                 <div class="swiper-slide"><img
                                                         class="img-fluid aspect-ratio-16x9 object-fit-cover rounded-4 w-100 mb-3"
                                                         alt="Slide Image" width="1080" height="720"
-                                                        src="assets/img/photos/photo-2.jpg?h=5188cdbb00c2a6bcb3044fdb0e23672e">
+                                                        src="/assets/img/photos/photo-2.jpg?h=5188cdbb00c2a6bcb3044fdb0e23672e">
                                                     <h4>Desert Sands</h4>
                                                     <p>Quam rutrum justo consectetur quam, sed congue cursus tincidunt
                                                         cursus ad. Ligula ante magna euismod, dui habitasse per etiam.
@@ -443,7 +443,7 @@
                                                 <div class="swiper-slide"><img
                                                         class="img-fluid aspect-ratio-16x9 object-fit-cover rounded-4 w-100 mb-3"
                                                         alt="Slide Image" width="1080" height="720"
-                                                        src="assets/img/photos/photo-1.jpg?h=94902987b50503cd580b482c806f9735">
+                                                        src="/assets/img/photos/photo-1.jpg?h=94902987b50503cd580b482c806f9735">
                                                     <h4>Beach Sunset</h4>
                                                     <p>Quam rutrum justo consectetur quam, sed congue cursus tincidunt
                                                         cursus ad. Ligula ante magna euismod, dui habitasse per etiam.
@@ -834,7 +834,7 @@
                                                         class="text-decoration-none d-flex align-items-center gap-2"
                                                         href="#"><img
                                                             class="img-fluid aspect-ratio-1x1 object-fit-cover rounded-circle shadow-sm"
-                                                            src="assets/img/team/avatar1.jpg?h=fc3130ca16c6d3ee2009fd4450b80205"
+                                                            src="/assets/img/team/avatar1.jpg?h=fc3130ca16c6d3ee2009fd4450b80205"
                                                             alt="Customer" width="40" height="40">
                                                         <div>
                                                             <p class="fw-bold mb-0">Joanna Prince</p><small
@@ -901,7 +901,7 @@
                                                         class="text-decoration-none d-flex align-items-center gap-2"
                                                         href="#"><img
                                                             class="img-fluid aspect-ratio-1x1 object-fit-cover rounded-circle shadow-sm"
-                                                            src="assets/img/team/avatar2.jpg?h=7086b181e9fb853914a2cca97301c640"
+                                                            src="/assets/img/team/avatar2.jpg?h=7086b181e9fb853914a2cca97301c640"
                                                             alt="Customer" width="40" height="40">
                                                         <div>
                                                             <p class="fw-bold mb-0">Mike Johnson</p><small
@@ -968,7 +968,7 @@
                                                         class="text-decoration-none d-flex align-items-center gap-2"
                                                         href="#"><img
                                                             class="img-fluid aspect-ratio-1x1 object-fit-cover rounded-circle shadow-sm"
-                                                            src="assets/img/team/avatar3.jpg?h=d00658bdbe17fa68ec776823ea82e9c1"
+                                                            src="/assets/img/team/avatar3.jpg?h=d00658bdbe17fa68ec776823ea82e9c1"
                                                             alt="Customer" width="40" height="40">
                                                         <div>
                                                             <p class="fw-bold mb-0">Joanna Prince</p><small
@@ -1035,7 +1035,7 @@
                                                         class="text-decoration-none d-flex align-items-center gap-2"
                                                         href="#"><img
                                                             class="img-fluid aspect-ratio-1x1 object-fit-cover rounded-circle shadow-sm"
-                                                            src="assets/img/team/avatar4.jpg?h=13fcb1a3bcb58463519bc5974513259b"
+                                                            src="/assets/img/team/avatar4.jpg?h=13fcb1a3bcb58463519bc5974513259b"
                                                             alt="Customer" width="40" height="40">
                                                         <div>
                                                             <p class="fw-bold mb-0">Mike Johnson</p><small
