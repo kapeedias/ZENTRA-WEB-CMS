@@ -5,12 +5,16 @@ require_once __DIR__ . '/ActivityLogger.php';
 
 class EventsModule extends ModuleBase
 {
+    protected PDO $pdo;
     protected int $tenant_id;
+    protected ?int $object_id;
 
     public function __construct(PDO $db, int $tenant_id, ?int $object_id = null)
     {
         parent::__construct($db, 'events', $object_id);
+        $this->pdo       = $db;
         $this->tenant_id = $tenant_id;
+        $this->pdo       = $db;
     }
 
     /* -----------------------------------------------------------
@@ -31,7 +35,33 @@ class EventsModule extends ModuleBase
     {
         return $this->getSetting('timezone', 'UTC');
     }
+    private function generateUniqueSlug(string $slug, string $date): string
+    {
+        $base = $slug;
+        $i    = 1;
 
+        while (true) {
+            $stmt = $this->pdo->prepare("
+            SELECT COUNT(*) FROM zentra_events
+            WHERE tenant_id = :tenant_id
+              AND event_slug = :slug
+              AND event_start_date = :date
+        ");
+            $stmt->execute([
+                'tenant_id' => $this->tenant_id,
+                'slug'      => $slug,
+                'date'      => $date,
+            ]);
+
+            if ($stmt->fetchColumn() == 0) {
+                return $slug; // unique
+            }
+
+            // Append -1, -2, -3, etc.
+            $slug = $base . '-' . $i;
+            $i++;
+        }
+    }
     /* -----------------------------------------------------------
      * CREATE EVENT (UTC + LOG)
      * ----------------------------------------------------------- */
@@ -66,27 +96,45 @@ class EventsModule extends ModuleBase
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(),?)
     ";
 
-        $stmt = $this->db->prepare($sql);
+        $stmt               = $this->db->prepare($sql);
+        $slug               = $this->generateUniqueSlug($data['event_slug'], $data['event_start_date']);
+        $data['event_slug'] = $slug;
+        try {
+            $stmt->execute([
+                $this->tenant_id,
+                $this->object_id,
+                $slug,
+                $this->sanitize($data['title']),
+                $this->sanitize($data['event_description'] ?? ''),
+                $this->sanitize($data['event_location'] ?? null),
+                $data['event_start_date'],
+                $data['event_end_date'],
+                $data['event_start_time'],
+                $data['event_end_time'],
+                $data['event_timezone'] ?? 'UTC',
+                isset($data['is_event_all_day']) ? (int) $data['is_event_all_day'] : 0,
+                1, // default active
+                $data['event_category'] ?? null,
+                $data['color_code'] ?? null,
+                $userId,
+                $eventHash,
+            ]);
+        } catch (PDOException $e) {
+            error_log("EVENT INSERT ERROR: " . $e->getMessage());
 
-        $stmt->execute([
-            $this->tenant_id,
-            $this->object_id,
-            $data['event_slug'],
-            $this->sanitize($data['title']),
-            $this->sanitize($data['event_description'] ?? ''),
-            $this->sanitize($data['event_location'] ?? null),
-            $data['event_start_date'],
-            $data['event_end_date'],
-            $data['event_start_time'],
-            $data['event_end_time'],
-            $data['event_timezone'] ?? 'UTC',
-            isset($data['is_event_all_day']) ? (int) $data['is_event_all_day'] : 0,
-            1, // default active
-            $data['event_category'] ?? null,
-            $data['color_code'] ?? null,
-            $userId,
-            $eventHash,
-        ]);
+            $this->logger?->log(
+                $userId,
+                "Event creation failed",
+                "DB Error",
+                [
+                    'tenant_id' => $this->tenant_id,
+                    'ip'        => getClientIP(),
+                    'error'     => $e->getMessage(),
+                ]
+            );
+
+            throw $e; // or return false
+        }
 
         $eventId = (int) $this->db->lastInsertId();
         // Generate a short, secure 12‑character hash
