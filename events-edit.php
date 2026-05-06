@@ -50,9 +50,11 @@
 
     $stmt = $pdo->prepare("
     SELECT * FROM zentra_events
-    WHERE event_hash = ?
-    AND tenant_id = ?
-    LIMIT 1");
+    WHERE event_hash = :hash
+      AND tenant_id = :tenant_id
+    LIMIT 1
+    ");
+
     $stmt->execute([
     'hash'      => $hash,
     'tenant_id' => $currentTenantId,
