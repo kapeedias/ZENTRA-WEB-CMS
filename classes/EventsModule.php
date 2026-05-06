@@ -16,8 +16,7 @@ class EventsModule extends ModuleBase
         $this->pdo       = $db;
         $this->tenant_id = $tenant_id;
         $this->object_id = $object_id;
-        $this->logger    = new ActivityLogger($db);
-
+        $this->logger    = new ActivityLogger($this->db, $this->tenant_id);
     }
 
     /* -----------------------------------------------------------
