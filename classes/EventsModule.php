@@ -8,7 +8,7 @@ class EventsModule extends ModuleBase
     protected PDO $pdo;
     //protected int $object_id;
     protected int $tenant_id;
-    protected ?ActivityLogger $logger = null;
+    //protected ?ActivityLogger $logger = null;
 
     public function __construct(PDO $db, int $tenant_id, ?int $object_id = 1)
     {
@@ -16,6 +16,8 @@ class EventsModule extends ModuleBase
         $this->pdo       = $db;
         $this->tenant_id = $tenant_id;
         $this->object_id = $object_id;
+        $this->logger    = new ActivityLogger($db);
+
     }
 
     /* -----------------------------------------------------------

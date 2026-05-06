@@ -10,13 +10,13 @@
 
 class ModuleBase
 {
-    protected $db;
-    protected $object_id;
-    protected $module_type;
-    protected $settings = [];
-    protected $logger; // <-- logger support
+    protected PDO $db;
+    protected ?int $object_id;
+    protected string $module_type;
+    protected array $settings         = [];
+    protected ?ActivityLogger $logger = null;
 
-    public function __construct($db, string $module_type, ?int $object_id = null)
+    public function __construct(PDO $db, string $module_type, ?int $object_id = null)
     {
         $this->db          = $db;
         $this->module_type = $module_type;
@@ -51,7 +51,7 @@ class ModuleBase
         return $this->settings[$key] ?? $default;
     }
 
-    public function saveSetting(string $key, $value)
+    public function saveSetting(string $key, mixed $value)
     {
         $stmt = $this->db->prepare("
             INSERT INTO zentra_object_settings (object_id, setting_key, setting_value)
@@ -61,7 +61,7 @@ class ModuleBase
         return $stmt->execute([$this->object_id, $key, $value]);
     }
 
-    public function setLogger($logger)
+    public function setLogger(ActivityLogger $logger)
     {
         $this->logger = $logger;
     }
