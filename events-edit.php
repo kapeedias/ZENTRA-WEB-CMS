@@ -79,9 +79,8 @@
 
     $startDT = $event['event_start_date'] . 'T' . ($event['event_start_time'] ?? '00:00');
     $endDT   = $event['event_end_date'] . 'T' . ($event['event_end_time'] ?? '00:00');
-    //$selected = ($tz === $event['event_timezone']) ? 'selected' : '';
-    $status = $event['event_status'];
-    $badge  = $events->getStatusBadge($status);
+    $status  = $event['event_status'];
+    $badge   = $events->getStatusBadge($status);
 
     $pageTitle   = "Edit Event";
     $breadcrumbs = [
@@ -116,6 +115,52 @@
                     <!-- End: top-nav-and-details -->
                     <div>
                         <div class="row">
+                            <div class="col-12 mb-4">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col"><input class="fw-bold form-control-lg form-control"
+                                                    type="text" name="event-title" autocomplete="off" required="">
+                                                <h3 class="fw-bold mb-1"></h3>
+                                                <p class="small text-muted mb-2" id="event-url-1">
+                                                    https://website.com/events/2026/04/23/shiva-ratri</p>
+                                                <div class="d-flex flex-wrap gap-2 my-3" mt-3=""><span
+                                                        class="badge bg-success">Active</span><span
+                                                        class="badge bg-light"> <i
+                                                            class="fa fa-repeat me-1"></i>&nbsp;Repeats every year on
+                                                        3rd Monday of May</span><span class="badge bg-light"> Marketing
+                                                        Team </span></div>
+                                                <div
+                                                    class="small text-muted d-flex flex-column gap-2 flex-xl-row mb-3 mb-xl-0">
+                                                    <ul class="list-inline">
+                                                        <li class="list-inline-item">Item 1</li>
+                                                        <li class="list-inline-item">Item 2</li>
+                                                        <li class="list-inline-item">Item 3</li>
+                                                        <li class="list-inline-item">Item 4</li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="col-auto col-xxl-4 text-center">
+                                                <div class="mb-4 storage-dropzone"><svg
+                                                        class="bi bi-cloud-arrow-up fs-1 mb-2"
+                                                        xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                        fill="currentColor" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                            d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708z">
+                                                        </path>
+                                                        <path
+                                                            d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383m.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z">
+                                                        </path>
+                                                    </svg>
+                                                    <h6 class="fw-bold mb-1">Click or drag event poster to upload</h6>
+                                                    <p class="small text-muted mb-0">PNG or JPG (max. 2 MB)</p><input
+                                                        class="d-none" type="file" id="fileInput-2">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-xl-8 mb-4">
                                 <div class="card mb-4">
                                     <div class="card-header d-flex justify-content-end align-items-center">
@@ -157,8 +202,8 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <label class="form-check">
-                                                    <input class="form-check-input" type="checkbox" id="all_day_event"
-                                                        onchange="setAllDayEvent(this.checked)">
+                                                    <input class="form-check-input text-warning" type="checkbox"
+                                                        id="all_day_event" onchange="setAllDayEvent(this.checked)">
                                                     <span class="form-check-label">All Day Event</span>
                                                 </label>
                                             </div>
@@ -167,10 +212,9 @@
                                                 <div class="small text-muted mb-1"><span>Event Timezone</span><span
                                                         class="text-danger">*</span></div>
                                                 <div class="fw-semibold">
-                                                    <select class="form-select-sm form-select" name="event_timezone"
-                                                        id="event_timezone" required="yes">
+                                                    <select class="form-select-sm form-select text-warning"
+                                                        name="event_timezone" id="event_timezone" required="yes">
                                                         <?php
-
                                                             foreach ($timezones as $tz) {
                                                                 $selected = ($tz === 'America/Vancouver') ? 'selected' : '';
                                                                 echo "<option value=\"$tz\" $selected>$tz</option>";
@@ -525,52 +569,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-12 mb-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col"><input class="fw-bold form-control-lg form-control"
-                                                    type="text" name="event-title" autocomplete="off" required="">
-                                                <h3 class="fw-bold mb-1"></h3>
-                                                <p class="small text-muted mb-2" id="event-url-1">
-                                                    https://website.com/events/2026/04/23/shiva-ratri</p>
-                                                <div class="d-flex flex-wrap gap-2 my-3" mt-3=""><span
-                                                        class="badge bg-success">Active</span><span
-                                                        class="badge bg-light"> <i
-                                                            class="fa fa-repeat me-1"></i>&nbsp;Repeats every year on
-                                                        3rd Monday of May</span><span class="badge bg-light"> Marketing
-                                                        Team </span></div>
-                                                <div
-                                                    class="small text-muted d-flex flex-column gap-2 flex-xl-row mb-3 mb-xl-0">
-                                                    <ul class="list-inline">
-                                                        <li class="list-inline-item">Item 1</li>
-                                                        <li class="list-inline-item">Item 2</li>
-                                                        <li class="list-inline-item">Item 3</li>
-                                                        <li class="list-inline-item">Item 4</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto col-xxl-4 text-center">
-                                                <div class="mb-4 storage-dropzone"><svg
-                                                        class="bi bi-cloud-arrow-up fs-1 mb-2"
-                                                        xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
-                                                        fill="currentColor" viewBox="0 0 16 16">
-                                                        <path fill-rule="evenodd"
-                                                            d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708z">
-                                                        </path>
-                                                        <path
-                                                            d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383m.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z">
-                                                        </path>
-                                                    </svg>
-                                                    <h6 class="fw-bold mb-1">Click or drag event poster to upload</h6>
-                                                    <p class="small text-muted mb-0">PNG or JPG (max. 2 MB)</p><input
-                                                        class="d-none" type="file" id="fileInput-2">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+
                             <div class="col-md-6 col-xl-3 mb-4">
                                 <div class="card h-100">
                                     <div class="card-body">
