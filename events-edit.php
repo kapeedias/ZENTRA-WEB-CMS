@@ -172,7 +172,7 @@
                                         </span>
                                     </div>
                                     <div class="card-body pt-2">
-                                        <div class="mb-3"><span class="fw-semibold">Event Title</span><input type="text"
+                                        <div class="mb-3"><span>Event Title</span><input type="text"
                                                 class="form-control fw-bold text-warning" autofocus=""
                                                 name="event_title" id="event_title"
                                                 value="<?php echo htmlspecialchars($event['title']); ?>"><span
@@ -201,10 +201,13 @@
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
+                                                <div class="small text-muted mb-1"><span
+                                                        class="small text-muted mb-1">Is this an all day
+                                                        event?</span></div>
                                                 <label class="form-check">
                                                     <input class="form-check-input text-warning" type="checkbox"
                                                         id="all_day_event" onchange="setAllDayEvent(this.checked)">
-                                                    <span class="form-check-label">All Day Event</span>
+                                                    <span class="form-check-label">Yes</span>
                                                 </label>
                                             </div>
 
@@ -226,7 +229,8 @@
                                             <div class="col-md-6">
                                                 <div class="small text-muted mb-1"><span>Event Location</span><span
                                                         class="text-danger">*</span></div>
-                                                <div class="fw-semibold"><select class="form-select-sm form-select"
+                                                <div class="fw-semibold"><select
+                                                        class="form-select-sm form-select text-warning"
                                                         name="event_location">
                                                         <optgroup label="This is a group">
                                                             <option value="12" selected="">This is item 1</option>
