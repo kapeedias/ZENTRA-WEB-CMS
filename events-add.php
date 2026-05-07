@@ -107,7 +107,7 @@
         $localStart = $startDate . ' ' . $startTime;
         $localEnd   = $endDate . ' ' . $endTime;
 
-        // Convert to UTC using ModuleBase helper
+        // Convert to UTC using timezone.php
         $startUTC = toUTC($localStart, $timezone);
         $endUTC   = toUTC($localEnd, $timezone);
 
