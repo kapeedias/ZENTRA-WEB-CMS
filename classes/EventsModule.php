@@ -188,7 +188,7 @@ class EventsModule
     {
         $map = [
             'Draft'     => [
-                'icon'  => 'fa-pencil-alt text-secondary',
+                'icon'  => 'fa-pencil text-secondary',
                 'label' => 'Draft',
                 'class' => 'bg-secondary-subtle text-secondary',
             ],
