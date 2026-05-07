@@ -77,6 +77,10 @@
     exit;
     }
 
+    $startDT = $event['event_start_date'] . 'T' . ($event['event_start_time'] ?? '00:00');
+    $endDT   = $event['event_end_date'] . 'T' . ($event['event_end_time'] ?? '00:00');
+    //$selected = ($tz === $event['event_timezone']) ? 'selected' : '';
+
     $pageTitle   = "Edit Event";
     $breadcrumbs = [
     ['label' => 'Home', 'url' => '/myaccount.php'],
@@ -134,12 +138,22 @@
                                             <div class="col-md-6">
                                                 <div class="small text-muted mb-1"><span>Event Start Date &amp;
                                                         Time</span></div>
-                                                <div class="fw-semibold"><span>Marketing</span></div>
+                                                <div class="fw-semibold">
+                                                    <input class="fw-bold form-control-sm form-control"
+                                                        type="datetime-local" name="event_start_date_time"
+                                                        id="event_start_date_time" required=""
+                                                        value="<?php echo $startDT; ?>">
+                                                </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="small text-muted mb-1"><span>Event End Date &amp;
                                                         Time</span></div>
-                                                <div class="fw-semibold"><span>EMP-2021-0342</span></div>
+                                                <div class="fw-semibold"><input
+                                                        class="fw-bold form-control-sm form-control"
+                                                        type="datetime-local" name="event_end_date_time"
+                                                        id="event_end_date_time" required=""
+                                                        value="<?php echo $endDT; ?>">
+                                                </div>
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="small text-muted mb-1"><span>Join Date</span></div>
