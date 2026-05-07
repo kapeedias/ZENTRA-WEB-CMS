@@ -50,8 +50,8 @@ class ActivityLogger
 
         $stmt = $this->pdo->prepare("
         INSERT INTO {$this->activityTable}
-        (user_id,tenant_id, action, field_changed, old_value, new_value, created_at, session_id, activity_text, geo_raw)
-        VALUES (:user_id, :tenant_id, :action, :field_changed, :old_value, :new_value, :created_at, :session_id, :activity_text, :geo_raw)
+        (user_id,tenant_id, action, field_changed, old_value, new_value, created_on, session_id, activity_text, geo_raw)
+        VALUES (:user_id, :tenant_id, :action, :field_changed, :old_value, :new_value, :created_on, :session_id, :activity_text, :geo_raw)
     ");
 
         $stmt->execute([
@@ -61,7 +61,7 @@ class ActivityLogger
             'field_changed' => $context['field_changed'] ?? null,
             'old_value'     => $context['old_value'] ?? null,
             'new_value'     => $context['new_value'] ?? null,
-            'created_at'    => $timestampUTC,
+            'created_on'    => $timestampUTC,
             'session_id'    => $sessionId,
             'activity_text' => $activity_text,
             'geo_raw'       => $context['geo_raw'] ?? null,
