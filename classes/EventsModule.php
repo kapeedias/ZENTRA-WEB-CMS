@@ -6,11 +6,13 @@ class EventsModule
     private PDO $pdo;
     private int $tenant_id;
     private string $table = 'zentra_events';
+    private int $object_id;
 
-    public function __construct(PDO $pdo, int $tenant_id)
+    public function __construct(PDO $pdo, int $tenant_id, int $object_id = 1)
     {
         $this->pdo       = $pdo;
         $this->tenant_id = $tenant_id;
+        $this->object_id = $object_id;
     }
 
     public function listEvents(
@@ -66,6 +68,7 @@ class EventsModule
 
         $payload = [
             'tenant_id'         => $this->tenant_id,
+            'object_id'         => $this->object_id, // ⭐ REQUIRED
             'event_title'       => $data['event_title'] ?? '',
             'event_description' => $data['event_description'] ?? '',
             'event_start_date'  => $data['event_start_date'] ?? null,
