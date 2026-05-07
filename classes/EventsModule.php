@@ -84,7 +84,7 @@ class EventsModule
             $eventHash = substr(bin2hex(random_bytes(16)), 0, 12);
 
             $payload['event_hash'] = $eventHash;
-            $payload['created_at'] = $now;
+            $payload['created_on'] = $now;
 
             $columns      = implode(', ', array_keys($payload));
             $placeholders = ':' . implode(', :', array_keys($payload));
