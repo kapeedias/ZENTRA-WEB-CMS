@@ -216,7 +216,8 @@
                                                 <div class="col-md-12 mt-2 mb-2 pt-3">
                                                     <label class="form-check">
                                                         <input class="form-check-input" type="checkbox"
-                                                            id="all_day_event" onchange="setAllDayEvent(this.checked)">
+                                                            id="all_day_event" name="all_day_event"
+                                                            onchange="setAllDayEvent(this.checked)">
                                                         <span class="form-check-label">All Day Event</span>
                                                     </label>
                                                 </div>
