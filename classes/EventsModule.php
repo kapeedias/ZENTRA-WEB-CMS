@@ -71,7 +71,7 @@ class EventsModule
             'event_start_date'  => $data['event_start_date'] ?? null,
             'event_end_date'    => $data['event_end_date'] ?? null,
             'event_status'      => $data['event_status'] ?? 'active',
-            'updated_at'        => $now,
+            'updated_on'        => $now,
         ];
 
         // CREATE MODE
