@@ -139,7 +139,7 @@
                                                 <div class="small text-muted mb-1"><span>Event Start Date &amp;
                                                         Time</span></div>
                                                 <div class="fw-semibold">
-                                                    <input class="fw-bold form-control-sm form-control"
+                                                    <input class="fw-bold form-control-sm form-control text-warning"
                                                         type="datetime-local" name="event_start_date_time"
                                                         id="event_start_date_time" required=""
                                                         value="<?php echo $startDT; ?>">
@@ -149,19 +149,47 @@
                                                 <div class="small text-muted mb-1"><span>Event End Date &amp;
                                                         Time</span></div>
                                                 <div class="fw-semibold"><input
-                                                        class="fw-bold form-control-sm form-control"
+                                                        class="fw-bold form-control-sm form-control text-warning"
                                                         type="datetime-local" name="event_end_date_time"
                                                         id="event_end_date_time" required=""
                                                         value="<?php echo $endDT; ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="small text-muted mb-1"><span>Join Date</span></div>
-                                                <div class="fw-semibold"><span>January 15, 2023</span></div>
+                                                <label class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="all_day_event"
+                                                        onchange="setAllDayEvent(this.checked)">
+                                                    <span class="form-check-label">All Day Event</span>
+                                                </label>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="small text-muted mb-1"><span>Event Timezone</span><span
+                                                        class="text-danger">*</span></div>
+                                                <div class="fw-semibold">
+                                                    <select class="form-select-sm form-select" name="event_timezone"
+                                                        id="event_timezone" required="yes">
+                                                        <?php
+                                                            $timezones = DateTimeZone::listIdentifiers();
+                                                            foreach ($timezones as $tz) {
+                                                                $selected = ($tz === 'America/Vancouver') ? 'selected' : '';
+                                                                echo "<option value=\"$tz\" $selected>$tz</option>";
+                                                            }
+                                                        ?>
+                                                    </select>
+                                                </div>
                                             </div>
                                             <div class="col-md-6">
-                                                <div class="small text-muted mb-1"><span>Reports To</span></div>
-                                                <div class="fw-semibold"><span>Michael Chen (VP Marketing)</span></div>
+                                                <div class="small text-muted mb-1"><span>Event Location</span><span
+                                                        class="text-danger">*</span></div>
+                                                <div class="fw-semibold"><select class="form-select-sm form-select"
+                                                        name="event_location">
+                                                        <optgroup label="This is a group">
+                                                            <option value="12" selected="">This is item 1</option>
+                                                            <option value="13">This is item 2</option>
+                                                            <option value="14">This is item 3</option>
+                                                        </optgroup>
+                                                    </select></div>
                                             </div>
                                         </div>
                                     </div>
