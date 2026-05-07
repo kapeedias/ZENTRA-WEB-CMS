@@ -1,4 +1,7 @@
 <?php
+
+require_once __DIR__ . '/timezone.php';
+
 // File: config/config.php
 date_default_timezone_set('UTC');
 
@@ -14,14 +17,12 @@ ini_set('error_log', __DIR__ . '/Zentra_App_Error_log');
 // Optionally set error reporting level (log everything)
 error_reporting(E_ALL);
 
-
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
 
-
 // Load flash messages from session if available
-$errors = $_SESSION['errors'] ?? [];
+$errors  = $_SESSION['errors'] ?? [];
 $success = $_SESSION['success'] ?? [];
 // Immediately unset to avoid persisting messages
 unset($_SESSION['errors'], $_SESSION['success']);
@@ -38,15 +39,15 @@ $allowed_domains = [
 ];
 
 $current_domain = $_SERVER['HTTP_HOST'] ?? '';
-$domain_clean = explode(':', $current_domain)[0];
+$domain_clean   = explode(':', $current_domain)[0];
 
-if (!in_array($domain_clean, $allowed_domains, true)) {
+if (! in_array($domain_clean, $allowed_domains, true)) {
     header('HTTP/1.1 403 Forbidden');
     exit('Access denied. Unauthorized domain.');
 }
 
 // Correct BASE_URL definition
-define('BASE_URL', (!empty($_SERVER['HTTPS']) ? 'https://' : 'http://') . $domain_clean);
+define('BASE_URL', (! empty($_SERVER['HTTPS']) ? 'https://' : 'http://') . $domain_clean);
 define('SITE_URL', BASE_URL . '/');
 
 define('APP_ROOT', dirname(__DIR__));
@@ -98,8 +99,8 @@ define('REMEMBER_ME_EXPIRY_DAYS', 7);
 define('DEFAULT_COUNTRY', 'Canada');
 
 // Password Settings
-define('PASSWORD_MIN_LENGTH', getenv('PASSWORD_MIN_LENGTH') ?: 8); // minimum length requirement
-define('PASSWORD_MAX_LENGTH', getenv('PASSWORD_MAX_LENGTH') ?: 20);  // optional max length, or you can skip it
+define('PASSWORD_MIN_LENGTH', getenv('PASSWORD_MIN_LENGTH') ?: 8);  // minimum length requirement
+define('PASSWORD_MAX_LENGTH', getenv('PASSWORD_MAX_LENGTH') ?: 20); // optional max length, or you can skip it
 
 // CDN Integration
 define('USE_CDN', getenv('USE_CDN') === 'true'); // Toggle CDN usage
@@ -134,19 +135,36 @@ function cdn_asset($path)
     return rtrim(getCdnBaseUrl(), '/') . '/' . ltrim($path, '/');
 }
 // Basic password complexity check
-function validatePasswordComplexity($password)
+function validatePasswordComplexity(string $password)
 {
     $errs = [];
-    if (strlen($password) < PASSWORD_MIN_LENGTH) $errs[] = "Password must be at least " . PASSWORD_MIN_LENGTH . " characters.";
-    if (defined('PASSWORD_MAX_LENGTH') && strlen($password) > PASSWORD_MAX_LENGTH) $errs[] = "Password must not exceed " . PASSWORD_MAX_LENGTH . " characters.";
-    if (!preg_match('/[A-Z]/', $password)) $errs[] = "Password must include an uppercase letter.";
-    if (!preg_match('/[a-z]/', $password)) $errs[] = "Password must include a lowercase letter.";
-    if (!preg_match('/[0-9]/', $password)) $errs[] = "Password must include a number.";
-    if (!preg_match('/[\W_]/', $password)) $errs[] = "Password must include a special character.";
+    if (strlen($password) < PASSWORD_MIN_LENGTH) {
+        $errs[] = "Password must be at least " . PASSWORD_MIN_LENGTH . " characters.";
+    }
+
+    if (defined('PASSWORD_MAX_LENGTH') && strlen($password) > PASSWORD_MAX_LENGTH) {
+        $errs[] = "Password must not exceed " . PASSWORD_MAX_LENGTH . " characters.";
+    }
+
+    if (! preg_match('/[A-Z]/', $password)) {
+        $errs[] = "Password must include an uppercase letter.";
+    }
+
+    if (! preg_match('/[a-z]/', $password)) {
+        $errs[] = "Password must include a lowercase letter.";
+    }
+
+    if (! preg_match('/[0-9]/', $password)) {
+        $errs[] = "Password must include a number.";
+    }
+
+    if (! preg_match('/[\W_]/', $password)) {
+        $errs[] = "Password must include a special character.";
+    }
+
     //if (preg_match('/(.)\\1/', $password)) $errs[] = "Password must not contain repeated characters next to each other.";
     return empty($errs) ? true : $errs;
 }
-
 
 function generatePassword(int $length = 20, string $complexity = 'strong', string $customChars = ''): string
 {
@@ -175,13 +193,13 @@ function generatePassword(int $length = 20, string $complexity = 'strong', strin
     }
 
     // Override with custom characters if provided
-    if (!empty($customChars)) {
+    if (! empty($customChars)) {
         $chars = $customChars;
     }
 
     // Shuffle and build password
     $password = '';
-    $max = strlen($chars) - 1;
+    $max      = strlen($chars) - 1;
     for ($i = 0; $i < $length; $i++) {
         $password .= $chars[random_int(0, $max)];
     }
@@ -191,11 +209,10 @@ function generatePassword(int $length = 20, string $complexity = 'strong', strin
 
 function logAppError($exception)
 {
-    $logFile = __DIR__ . '/Zentra_App_Error_log';
+    $logFile      = __DIR__ . '/Zentra_App_Error_log';
     $errorMessage = "[" . date('Y-m-d H:i:s') . "] " . $exception->getMessage() . "\n";
     file_put_contents($logFile, $errorMessage, FILE_APPEND);
 }
-
 
 $maxAttempts = 5;
 $lockoutTime = 15 * 60;

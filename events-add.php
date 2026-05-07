@@ -108,8 +108,8 @@
         $localEnd   = $endDate . ' ' . $endTime;
 
         // Convert to UTC using ModuleBase helper
-        $startUTC = $this->toUTC($localStart, $timezone);
-        $endUTC   = $this->toUTC($localEnd, $timezone);
+        $startUTC = toUTC($localStart, $timezone);
+        $endUTC   = toUTC($localEnd, $timezone);
 
         // Load user
         $user   = User::loadFromSession();
