@@ -29,43 +29,46 @@ $('input[name="searchAppConfig"]').on('input', function() {
 </script>
 
 <script>
-function updateEventURL() {
-    const title = document.getElementById('event_title').value.trim();
-    const startDT = document.getElementById('event_start_date_time').value.trim();
+document.addEventListener('DOMContentLoaded', function() {
 
-    // Do nothing if both fields are empty
-    if (title === "" && startDT === "") {
-        return;
+    function updateEventURL() {
+        const title = document.getElementById('event_title').value.trim();
+        const startDT = document.getElementById('event_start_date_time').value.trim();
+
+        if (title === "" && startDT === "") {
+            return;
+        }
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "ajax/generate_event_url.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onload = function() {
+            if (this.status === 200) {
+                try {
+                    const res = JSON.parse(this.responseText);
+                    if (res.success && res.url) {
+                        document.getElementById('event-url').innerText = res.url;
+                        document.getElementById('event_url_hidden').value = res.url;
+                    }
+                } catch (e) {
+                    console.error("Invalid JSON from server:", this.responseText);
+                }
+            }
+        };
+
+        xhr.send(
+            "title=" + encodeURIComponent(title) +
+            "&start_dt=" + encodeURIComponent(startDT)
+        );
     }
 
-    const xhr = new XMLHttpRequest();
-    xhr.open("POST", "ajax/generate_event_url.php", true);
-    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    document.getElementById('event_title').addEventListener('keyup', updateEventURL);
+    document.getElementById('event_start_date_time').addEventListener('change', updateEventURL);
 
-    xhr.onload = function() {
-        if (this.status === 200) {
-            try {
-                const res = JSON.parse(this.responseText);
-                if (res.success && res.url) {
-                    document.getElementById('event-url').innerText = res.url;
-                    document.getElementById('event_url_hidden').value = res.url;
-                }
-            } catch (e) {
-                console.error("Invalid JSON from server:", this.responseText);
-            }
-        }
-    };
-
-    xhr.send(
-        "title=" + encodeURIComponent(title) +
-        "&start_dt=" + encodeURIComponent(startDT)
-    );
-}
-
-// Fire on typing + date/time change
-document.getElementById('event_title').addEventListener('keyup', updateEventURL);
-document.getElementById('event_start_date_time').addEventListener('change', updateEventURL);
+});
 </script>
+
 
 <script>
 // Validate start/end datetime

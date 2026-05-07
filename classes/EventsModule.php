@@ -78,7 +78,7 @@ class EventsModule
             'event_start_time'  => $data['event_start_time'] ?? null,
             'event_end_time'    => $data['event_end_time'] ?? null,
             'event_timezone'    => $data['event_timezone'] ?? 'UTC',
-            'is_event_all_day'  => isset($_POST['all_day_event']) ? 1 : 0,
+            'is_event_all_day'  => $data['all_day_event'] ?? 0,
             'event_status'      => $data['event_status'] ?? 'Draft',
             'created_by'        => $userId,
             'created_on'        => $now,
