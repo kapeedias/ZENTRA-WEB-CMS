@@ -120,7 +120,7 @@
                                 <div class="card mb-4">
                                     <div class="card-header d-flex justify-content-between align-items-center">
                                         <h5 class="fw-bold mb-0"></h5>
-                                        <span class="badge d-inline-flex gap-1 <?php echo $badge['class']; ?>">
+                                        Status: <span class="badge d-inline-flex gap-1 <?php echo $badge['class']; ?>">
                                             <i class="fa <?php echo $badge['icon']; ?> me-1"></i>
                                             <?php echo $badge['label']; ?>
                                         </span>
