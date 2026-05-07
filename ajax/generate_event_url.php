@@ -13,12 +13,12 @@ require_once __DIR__ . '/../classes/User.php';
 require_once __DIR__ . '/../classes/ActivityLogger.php';
 
 // Validate request
-if (! isset($_POST['title']) || ! isset($_POST['start_dt'])) {
+if (! isset($_POST['event_title']) || ! isset($_POST['start_dt'])) {
     echo json_encode(['success' => false, 'message' => 'Invalid request']);
     exit;
 }
 
-$title   = trim($_POST['title']);
+$title   = trim($_POST['event_title']);
 $startDT = trim($_POST['start_dt']);
 
 if ($title === '' || $startDT === '') {

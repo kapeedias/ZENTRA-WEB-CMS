@@ -14,7 +14,7 @@ function renderMenu($items, $parentId = null)
             if ($children) {
                 echo '
                     <div><a class="btn btn-link text-decoration-none d-flex justify-content-between align-items-center px-3" data-bs-toggle="collapse" href="#menu' . $item['id'] . '">
-                        <span><i class="fa fa-' . $item['icon'] . ' me-2"></i> ' . $item['title'] . '</span><i class="icon ion-chevron-right arrow"></i>
+                        <span><i class="fa fa-' . $item['icon'] . ' me-2"></i> ' . $item['event_title'] . '</span><i class="icon ion-chevron-right arrow"></i>
                     </a>
                     <div class="collapse" id="menu' . $item['id'] . '"><ul class="nav ms-3">';
 
@@ -23,7 +23,7 @@ function renderMenu($items, $parentId = null)
             } else {
                 echo '
                     <a class="nav-link" href="' . $item['url'] . '">
-                        <i class="fa fa-' . $item['icon'] . ' me-2"></i> ' . $item['title'] . '
+                        <i class="fa fa-' . $item['icon'] . ' me-2"></i> ' . $item['event_title'] . '
                     </a>';
             }
 

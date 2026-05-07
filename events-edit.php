@@ -86,7 +86,7 @@
     $breadcrumbs = [
     ['label' => 'Home', 'url' => '/myaccount.php'],
     ['label' => 'Events', 'url' => '/events-manage.php'],
-    ['label' => $event['title'], 'url' => "#"],
+    ['label' => $event['event_title'], 'url' => "#"],
     ];
 
 ?>
@@ -175,7 +175,7 @@
                                         <div class="mb-3"><span>Event Title</span><input type="text"
                                                 class="form-control fw-bold text-warning" autofocus=""
                                                 name="event_title" id="event_title"
-                                                value="<?php echo htmlspecialchars($event['title']); ?>"><span
+                                                value="<?php echo htmlspecialchars($event['event_title']); ?>"><span
                                                 class="small text-secondary"
                                                 id="event-url"><?php echo htmlspecialchars($eventUrl); ?></span>
                                         </div>
