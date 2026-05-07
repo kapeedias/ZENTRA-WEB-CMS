@@ -184,4 +184,37 @@ class EventsModule
         return "{$baseUrl}/events/{$year}/{$month}/{$day}/{$slug}";
     }
 
+    public function getStatusBadge(string $status): array
+    {
+        $map = [
+            'Draft'     => [
+                'icon'  => 'fa-pencil-alt text-secondary',
+                'label' => 'Draft',
+                'class' => 'bg-secondary-subtle text-secondary',
+            ],
+            'Scheduled' => [
+                'icon'  => 'fa-clock text-info',
+                'label' => 'Scheduled',
+                'class' => 'bg-info-subtle text-info',
+            ],
+            'Published' => [
+                'icon'  => 'fa-check-circle text-success',
+                'label' => 'Published',
+                'class' => 'bg-success-subtle text-success',
+            ],
+            'Archived'  => [
+                'icon'  => 'fa-archive text-muted',
+                'label' => 'Archived',
+                'class' => 'bg-dark-subtle text-muted',
+            ],
+            'Deleted'   => [
+                'icon'  => 'fa-times-circle text-danger',
+                'label' => 'Deleted',
+                'class' => 'bg-danger-subtle text-danger',
+            ],
+        ];
+
+        return $map[$status] ?? $map['Draft'];
+    }
+
 }

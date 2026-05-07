@@ -80,6 +80,8 @@
     $startDT = $event['event_start_date'] . 'T' . ($event['event_start_time'] ?? '00:00');
     $endDT   = $event['event_end_date'] . 'T' . ($event['event_end_time'] ?? '00:00');
     //$selected = ($tz === $event['event_timezone']) ? 'selected' : '';
+    $status = $event['event_status'];
+    $badge  = $events->getStatusBadge($status);
 
     $pageTitle   = "Edit Event";
     $breadcrumbs = [
@@ -117,15 +119,11 @@
                             <div class="col-xl-8 mb-4">
                                 <div class="card mb-4">
                                     <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="fw-bold mb-0"></h5><span
-                                            class="badge bg-light d-inline-flex gap-1"><svg
-                                                class="bi bi-check-circle-fill text-success"
-                                                xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
-                                                fill="currentColor" viewBox="0 0 16 16">
-                                                <path
-                                                    d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z">
-                                                </path>
-                                            </svg>&nbsp;Done</span>
+                                        <h5 class="fw-bold mb-0"></h5>
+                                        <span class="badge d-inline-flex gap-1 <?php echo $badge['class']; ?>">
+                                            <i class="fa <?php echo $badge['icon']; ?> me-1"></i>
+                                            <?php echo $badge['label']; ?>
+                                        </span>
                                     </div>
                                     <div class="card-body pt-2">
                                         <div class="mb-3"><span class="fw-semibold">Event Title</span><input type="text"
