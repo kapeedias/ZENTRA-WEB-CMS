@@ -197,7 +197,7 @@
 
         // Save errors for display
         $_SESSION['login_errors'] = $errors;
-        header("Location: login.php");
+        header("Location: /login.php");
         exit;
     }
     }

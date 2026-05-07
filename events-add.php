@@ -73,7 +73,7 @@
     session_destroy();
 
     // 5. Redirect user to login
-    header("Location: login.php?session_error=1");
+    header("Location: /login.php?session_error=1");
     exit;
     }
 
