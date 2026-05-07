@@ -129,7 +129,8 @@
                                     </div>
                                     <div class="card-body pt-2">
                                         <div class="mb-3"><span class="fw-semibold">Event Title</span><input type="text"
-                                                class="form-control" autofocus="" name="event_title" id="event_title"
+                                                class="form-control fw-bold text-warning" autofocus=""
+                                                name="event_title" id="event_title"
                                                 value="<?php echo htmlspecialchars($event['title']); ?>"><span
                                                 class="small text-secondary"
                                                 id="event-url"><?php echo htmlspecialchars($eventUrl); ?></span>
