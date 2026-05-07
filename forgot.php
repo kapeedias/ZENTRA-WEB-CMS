@@ -6,8 +6,8 @@
     require_once __DIR__ . '/config/helpers.php';
     require_once __DIR__ . '/classes/User.php';
     require_once __DIR__ . '/classes/Mailer.php';
-    require_once __DIR__ . 'classes/MenuManager.php';
-    require_once __DIR__ . '_include/nav_renderer.php';
+    require_once __DIR__ . '/classes/MenuManager.php';
+    require_once __DIR__ . '/_include/nav_renderer.php';
 
     // ==== SECURE SESSION START ====
     secureSessionStart();
