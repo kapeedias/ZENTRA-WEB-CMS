@@ -59,7 +59,7 @@
     $moduleManager = new ModuleManager($pdo); // ← REQUIRED
     $events        = new EventsModule($pdo, (int) $tenantId);
     $logger        = new ActivityLogger($pdo, (int) $tenantId);
-
+    $timezones     = DateTimeZone::listIdentifiers();
     // ==== GET EVENT HASH FROM ROUTE ====
     $eventHash = $_GET['e'] ?? null;
 
@@ -170,7 +170,7 @@
                                                     <select class="form-select-sm form-select" name="event_timezone"
                                                         id="event_timezone" required="yes">
                                                         <?php
-                                                            $timezones = DateTimeZone::listIdentifiers();
+
                                                             foreach ($timezones as $tz) {
                                                                 $selected = ($tz === 'America/Vancouver') ? 'selected' : '';
                                                                 echo "<option value=\"$tz\" $selected>$tz</option>";
