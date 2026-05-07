@@ -69,7 +69,8 @@
     }
 
     // ==== LOAD EVENT ====
-    $event = $events->getEventByHash($eventHash);
+    $event    = $events->getEventByHash($eventHash);
+    $eventUrl = $events->getEventUrl($eventHash);
 
     if (! $event) {
     header("Location: /events-manage.php?not_found=1");
@@ -124,8 +125,10 @@
                                     </div>
                                     <div class="card-body pt-2">
                                         <div class="mb-3"><span>Event Title</span><input type="text"
-                                                class="form-control" autofocus=""><span class="small text-secondary"
-                                                id="event-url">http://mywebsite.com/events/2026/04/23/navrathri-2026</span>
+                                                class="form-control" autofocus="" name="event_title" id="event_title"
+                                                value="<?php echo htmlspecialchars($event['title']); ?>"><span
+                                                class="small text-secondary"
+                                                id="event-url"><?php echo htmlspecialchars($eventUrl); ?></span>
                                         </div>
                                         <div class="row g-3">
                                             <div class="col-md-6">

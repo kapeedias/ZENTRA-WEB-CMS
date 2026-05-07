@@ -163,4 +163,25 @@ class EventsModule
             error_log("Event logging failed: " . $e->getMessage());
         }
     }
+    public function getEventUrl(string $hash): ?string
+    {
+        $event = $this->getEventByHash($hash);
+        if (! $event) {
+            return null;
+        }
+
+        // Base URL (you can also load from config)
+        $baseUrl = rtrim(getenv('APP_URL') ?: 'https://mywebsite.com', '/');
+
+        // Extract date parts
+        $year  = date('Y', strtotime($event['event_start_date']));
+        $month = date('m', strtotime($event['event_start_date']));
+        $day   = date('d', strtotime($event['event_start_date']));
+
+        // Slug from DB
+        $slug = $event['event_slug'];
+
+        return "{$baseUrl}/events/{$year}/{$month}/{$day}/{$slug}";
+    }
+
 }
