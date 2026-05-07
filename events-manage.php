@@ -143,7 +143,7 @@
                                             <?php endforeach; ?>
                                             <?php else: ?>
                                             <tr>
-                                                <td colspan="7" class="text-center text-secondary py-4">No Events found.
+                                                <td colspan="8" class="text-center text-secondary py-4">No Events found.
                                                 </td>
                                             </tr>
                                             <?php endif; ?>
