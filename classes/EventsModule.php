@@ -68,13 +68,20 @@ class EventsModule
 
         $payload = [
             'tenant_id'         => $this->tenant_id,
-            'object_id'         => $this->object_id, // ⭐ REQUIRED
+            'object_id'         => $this->object_id,
+            'event_slug'        => $data['event_slug'] ?? null,
             'event_title'       => $data['event_title'] ?? '',
             'event_description' => $data['event_description'] ?? '',
+            'event_location'    => $data['event_location'] ?? null,
             'event_start_date'  => $data['event_start_date'] ?? null,
             'event_end_date'    => $data['event_end_date'] ?? null,
-            'event_status'      => $data['event_status'] ?? 'active',
-            'updated_on'        => $now,
+            'event_start_time'  => $data['event_start_time'] ?? null,
+            'event_end_time'    => $data['event_end_time'] ?? null,
+            'event_timezone'    => $data['event_timezone'] ?? 'UTC',
+            'is_event_all_day'  => isset($_POST['all_day_event']) ? 1 : 0,
+            'event_status'      => $data['event_status'] ?? 'Draft',
+            'created_by'        => $userId,
+            'created_on'        => $now,
         ];
 
         // CREATE MODE
