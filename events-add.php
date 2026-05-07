@@ -82,12 +82,14 @@
     // ==== HANDLE FORM SUBMISSION ====
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $title    = trim($_POST['event_title'] ?? '');
-    $startDT  = trim($_POST['event_start_date_time'] ?? '');
-    $endDT    = trim($_POST['event_end_date_time'] ?? '');
-    $location = trim($_POST['event_location'] ?? '');
-    $eventURL = trim($_POST['event_url'] ?? '');
-    $timezone = trim($_POST['event_timezone'] ?? 'America/Vancouver');
+    $title     = trim($_POST['event_title'] ?? '');
+    $startDT   = trim($_POST['event_start_date_time'] ?? '');
+    $endDT     = trim($_POST['event_end_date_time'] ?? '');
+    $location  = trim($_POST['event_location'] ?? '');
+    $eventURL  = trim($_POST['event_url'] ?? '');
+    $timezone  = trim($_POST['event_timezone'] ?? 'America/Vancouver');
+    $isAllDay  = isset($_POST['all_day_event']) ? 1 : 0;
+    $success[] = $isAllDay;
 
     if ($title === '' || $startDT === '' || $endDT === '') {
         $error[] = "Please fill in all required fields.";
@@ -130,7 +132,7 @@
             'start_date_utc'    => $startUTC,
             'end_date_utc'      => $endUTC,
             'event_timezone'    => $timezone,
-            'is_event_all_day'  => isset($_POST['all_day_event']) ? 1 : 0,
+            'is_event_all_day'  => $isAllDay,
         ];
 
         // Create event — returns event_hash

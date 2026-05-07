@@ -92,5 +92,4 @@ function setAllDayEvent(isAllDay) {
     }
 
     validateEventTimes();
-} <
-/>
+}
