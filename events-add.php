@@ -97,8 +97,19 @@
         $slug = basename($eventURL);
 
         // Split datetime-local
-        list($startDate, $startTime) = explode('T', $startDT);
-        list($endDate, $endTime)     = explode('T', $endDT);
+        list($startDate, $startTime)  = explode('T', $startDT);
+        list($endDate, $endTime)      = explode('T', $endDT);
+        // Normalize time format
+        $startTime .= ':00';
+        $endTime   .= ':00';
+
+        // Build local datetime strings
+        $localStart = $startDate . ' ' . $startTime;
+        $localEnd   = $endDate . ' ' . $endTime;
+
+        // Convert to UTC using ModuleBase helper
+        $startUTC = $this->toUTC($localStart, $timezone);
+        $endUTC   = $this->toUTC($localEnd, $timezone);
 
         // Load user
         $user   = User::loadFromSession();
@@ -110,10 +121,14 @@
             'event_title'       => $title,
             'event_description' => '',
             'event_location'    => $location,
+            // Local datetime components
             'event_start_date'  => $startDate,
-            'event_end_date'    => $endDate,
             'event_start_time'  => $startTime,
+            'event_end_date'    => $endDate,
             'event_end_time'    => $endTime,
+            // UTC datetime
+            'start_date_utc'    => $startUTC,
+            'end_date_utc'      => $endUTC,
             'event_timezone'    => $timezone,
             'is_event_all_day'  => isset($_POST['all_day_event']) ? 1 : 0,
         ];
