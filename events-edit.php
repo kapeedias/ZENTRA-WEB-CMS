@@ -72,7 +72,8 @@
     $event           = $events->getEventByHash($eventHash);
     $eventUrl        = $events->getEventUrl($eventHash);
     $locations       = $events->getEventLocations();
-    $currentLocation = $event['event_location']; // value stored in DB
+    $currentLocation = $event['event_location'];         // value stored in DB
+    $isAllDay        = (int) $event['is_event_all_day']; // value from DB
 
     if (! $event) {
     header("Location: /events-manage.php?not_found=1");
@@ -215,7 +216,8 @@
                                                         event?</span></div>
                                                 <label class="form-check">
                                                     <input class="form-check-input text-warning" type="checkbox"
-                                                        id="all_day_event" onchange="setAllDayEvent(this.checked)">
+                                                        id="all_day_event" onchange="setAllDayEvent(this.checked)"
+                                                        <?php echo $isAllDay ? 'checked' : '' ?>>
                                                     <span class="form-check-label">Yes</span>
                                                 </label>
                                             </div>
@@ -243,7 +245,7 @@
                                                         <option value="">-- Select Location --</option>
                                                         <?php foreach ($locations as $loc): ?>
                                                         <option value="<?php echo $loc['location_id'] ?>"
-                                                            <?php echo ($loc['location_id'] == $currentLocation) ? 'selected' : '' ?>>
+                                                            <?php echo($loc['location_id'] == $currentLocation) ? 'selected' : '' ?>>
                                                             <?php echo htmlspecialchars($loc['location_name']) ?>
                                                         </option>
                                                         <?php endforeach; ?>
