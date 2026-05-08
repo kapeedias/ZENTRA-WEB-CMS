@@ -127,9 +127,11 @@
                                                 <p class="small text-muted mb-2" id="event-url-1">
                                                     https://website.com/events/2026/04/23/shiva-ratri</p>
                                                 <div class="d-flex flex-wrap gap-2 my-3" mt-3="">
-                                                    <span class="badge"><?php echo $badge['class']; ?>">
+                                                    <span
+                                                        class="badge d-inline-flex gap-1 <?php echo $badge['class']; ?>">
                                                         <i class="fa <?php echo $badge['icon']; ?> me-1"></i>
-                                                        <?php echo $badge['label']; ?></span>
+                                                        <?php echo $badge['label']; ?>
+                                                    </span>
                                                     <span class="badge bg-light"> <i
                                                             class="fa fa-repeat me-1"></i>&nbsp;Repeats every year on
                                                         3rd Monday of May</span><span class="badge bg-light"> Marketing
