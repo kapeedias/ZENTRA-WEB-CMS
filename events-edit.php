@@ -69,8 +69,10 @@
     }
 
     // ==== LOAD EVENT ====
-    $event    = $events->getEventByHash($eventHash);
-    $eventUrl = $events->getEventUrl($eventHash);
+    $event           = $events->getEventByHash($eventHash);
+    $eventUrl        = $events->getEventUrl($eventHash);
+    $locations       = $events->getEventLocations();
+    $currentLocation = $event['event_location']; // value stored in DB
 
     if (! $event) {
     header("Location: /events-manage.php?not_found=1");
@@ -236,14 +238,15 @@
                                             <div class="col-md-6">
                                                 <div class="small text-muted mb-1"><span>Event Location</span><span
                                                         class="text-danger">*</span></div>
-                                                <div class="fw-semibold"><select
-                                                        class="form-select-sm form-select text-warning"
-                                                        name="event_location">
-                                                        <optgroup label="This is a group">
-                                                            <option value="12" selected="">This is item 1</option>
-                                                            <option value="13">This is item 2</option>
-                                                            <option value="14">This is item 3</option>
-                                                        </optgroup>
+                                                <div class="fw-semibold"><select class="form-select-sm form-select"
+                                                        name="event_location" required="yes">
+                                                        <option value="">-- Select Location --</option>
+                                                        <?php foreach ($locations as $loc): ?>
+                                                        <option value="<?php echo $loc['location_id'] ?>"
+                                                            <?php echo ($loc['location_id'] == $currentLocation) ? 'selected' : '' ?>>
+                                                            <?php echo htmlspecialchars($loc['location_name']) ?>
+                                                        </option>
+                                                        <?php endforeach; ?>
                                                     </select></div>
                                             </div>
                                         </div>
