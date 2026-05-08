@@ -616,58 +616,64 @@
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
     <script>
-    const fullToolbar = [
-        [{
-            header: [1, 2, 3, 4, 5, 6, false]
-        }],
-        ["bold", "italic", "underline", "strike"],
-        [{
-            color: []
-        }, {
-            background: []
-        }],
-        [{
-            script: "sub"
-        }, {
-            script: "super"
-        }],
-        [{
-            list: "ordered"
-        }, {
-            list: "bullet"
-        }],
-        [{
-            indent: "-1"
-        }, {
-            indent: "+1"
-        }],
-        [{
-            align: []
-        }],
-        ["blockquote", "code-block"],
-        ["link", "image", "video"],
-        ["clean"]
-    ];
+    document.addEventListener("DOMContentLoaded", function() {
+        const fullToolbar = [
+            [{
+                header: [1, 2, 3, 4, 5, 6, false]
+            }],
+            ["bold", "italic", "underline", "strike"],
+            [{
+                color: []
+            }, {
+                background: []
+            }],
+            [{
+                script: "sub"
+            }, {
+                script: "super"
+            }],
+            [{
+                list: "ordered"
+            }, {
+                list: "bullet"
+            }],
+            [{
+                indent: "-1"
+            }, {
+                indent: "+1"
+            }],
+            [{
+                align: []
+            }],
+            ["blockquote", "code-block"],
+            ["link", "image", "video"],
+            ["clean"]
+        ];
 
-    const quill = new Quill("#editor", {
-        theme: "snow",
-        modules: {
-            toolbar: fullToolbar
+        // 1️⃣ Initialize Quill
+        const quill = new Quill("#editor", {
+            theme: "snow",
+            modules: {
+                toolbar: fullToolbar
+            }
+        });
+
+        // 2️⃣ Override the image button to open your Media Library modal
+        const toolbar = quill.getModule("toolbar");
+        toolbar.addHandler("image", function() {
+            openZentraMediaLibraryModal(); // <-- your modal function
+        });
+
+        // 3️⃣ Sync Quill content before form submit
+        function syncQuillContent() {
+            const html = quill.root.innerHTML;
+            document.getElementById("event_description").value = html;
+            return true;
         }
     });
-
-    function syncQuillContent() {
-        const html = quill.root.innerHTML;
-        document.getElementById("event_description").value = html;
-        return true;
-    }
     </script>
+
     <?php include '_include/body_end_plugins.php'; ?>
-    <!-- Include Quill -->
-
-</body>
-
-
 </body>
 
 </html>
