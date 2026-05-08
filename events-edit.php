@@ -613,6 +613,48 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="zentraMediaModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Media Library</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- Filter row starts here -->
+                    <div class="d-flex align-items-center gap-2 mb-3">
+
+                        <input type="text" id="mediaSearch" class="form-control" placeholder="Search files..."
+                            style="max-width: 250px;">
+
+                        <button class="btn btn-sm btn-outline-secondary" data-filter="all">All</button>
+                        <button class="btn btn-sm btn-outline-secondary" data-filter="images">Images</button>
+                        <button class="btn btn-sm btn-outline-secondary" data-filter="documents">Documents</button>
+                        <button class="btn btn-sm btn-outline-secondary" data-filter="videos">Videos</button>
+
+                        <button id="uploadBtn" class="btn btn-sm btn-light border ms-auto">
+                            <i class="fa fa-upload"></i> Upload
+                        </button>
+
+                    </div>
+                    <!-- Filter row ends here -->
+
+                    <div id="mediaGrid"></div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="insertSelectedMedia">Insert</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
     <script>
