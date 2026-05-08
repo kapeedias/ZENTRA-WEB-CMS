@@ -106,11 +106,9 @@
                                                     </a>
                                                 </td>
                                                 <td><small><?php echo $row['event_start_date']; ?><p>
-                                                            <?php echo $row['event_start_time']; ?>
                                                         </p></small>
                                                 </td>
                                                 <td><small><?php echo $row['event_end_date']; ?><p>
-                                                            <?php echo $row['event_end_time']; ?>
                                                         </p></small>
                                                 </td>
                                                 <td><small><?php echo $row['event_timezone']; ?></small>
