@@ -85,7 +85,7 @@ class EventsModule
             'start_date_utc'       => $data['start_date_utc'] ?? null,
             'end_date_utc'         => $data['end_date_utc'] ?? null,
             'event_timezone'       => $data['event_timezone'] ?? 'UTC',
-            'is_event_all_day'     => $data['all_day_event'] ?? 0,
+            'is_event_all_day'     => $data['is_event_all_day'] ?? 0,
             'event_status'         => $data['event_status'] ?? 'Draft',
             'created_by'           => $userId,
             'created_on_utc'       => $nowUtc,
