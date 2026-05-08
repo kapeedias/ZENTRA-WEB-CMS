@@ -50,21 +50,22 @@ class ActivityLogger
 
         $stmt = $this->pdo->prepare("
         INSERT INTO {$this->activityTable}
-        (user_id,tenant_id, action, field_changed, old_value, new_value, created_on_utc, session_id, activity_text, geo_raw)
-        VALUES (:user_id, :tenant_id, :action, :field_changed, :old_value, :new_value, :created_on_utc, :session_id, :activity_text, :geo_raw)
+        (user_id,tenant_id, action, field_changed, old_value, new_value, created_on_utc, created_at_localtime, session_id, activity_text, geo_raw)
+        VALUES (:user_id, :tenant_id, :action, :field_changed, :old_value, :new_value, :created_on_utc,:created_at_localtime,  :session_id, :activity_text, :geo_raw)
     ");
 
         $stmt->execute([
-            'user_id'        => $userId,
-            'tenant_id'      => $this->tenant_id,
-            'action'         => ucfirst($action),
-            'field_changed'  => $context['field_changed'] ?? null,
-            'old_value'      => $context['old_value'] ?? null,
-            'new_value'      => $context['new_value'] ?? null,
-            'created_on_utc' => $timestampUTC,
-            'session_id'     => $sessionId,
-            'activity_text'  => $activity_text,
-            'geo_raw'        => $context['geo_raw'] ?? null,
+            'user_id'              => $userId,
+            'tenant_id'            => $this->tenant_id,
+            'action'               => ucfirst($action),
+            'field_changed'        => $context['field_changed'] ?? null,
+            'old_value'            => $context['old_value'] ?? null,
+            'new_value'            => $context['new_value'] ?? null,
+            'created_on_utc'       => $timestampUTC,
+            'created_at_localtime' => $timestampLocal,
+            'session_id'           => $sessionId,
+            'activity_text'        => $activity_text,
+            'geo_raw'              => $context['geo_raw'] ?? null,
         ]);
 
     }
