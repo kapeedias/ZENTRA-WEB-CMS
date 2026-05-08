@@ -134,9 +134,22 @@ class EventsModule
         if ($userId !== null) {
             $this->logEventActivity(
                 $userId,
-                "Updated event ({$payload['event_title']})",
-                'Event Updated'
+                "Created event ({$payload['event_title']})",
+                'Event Created',
+                [
+                    'user_name'     => $_SESSION['user_name'] ?? 'Unknown',
+                    'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+                    'tenant_id'     => $_SESSION['tenant_id'] ?? 0,
+                    'ip'            => $_SESSION['user_ip'] ?? null,
+                    'browser'       => getBrowserName($_SESSION['user_agent'] ?? ''),
+                    'device'        => getDeviceType($_SESSION['user_agent'] ?? ''),
+                    'city'          => $_SESSION['geo']['city'] ?? null,
+                    'region'        => $_SESSION['geo']['region'] ?? null,
+                    'country'       => $_SESSION['geo']['country'] ?? null,
+                    'geo_raw'       => $_SESSION['geo']['raw'] ?? null,
+                ]
             );
+
         }
 
         return $hash;
@@ -162,17 +175,41 @@ class EventsModule
         }
     }
 
-    private function logEventActivity(int $userId, string $identifier, string $action): void
-    {
+    private function logEventActivity(
+        int $userId,
+        string $identifier,
+        string $action,
+        array $context = []
+    ): void {
         try {
+            // Merge default context with passed context
+            $defaultContext = [
+                'user_name'     => $_SESSION['user_name'] ?? 'Unknown',
+                'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+                'tenant_id'     => $_SESSION['tenant_id'] ?? 0,
+                'ip'            => cleanIP(getClientIP()),
+                'browser'       => getBrowserName($_SESSION['user_agent'] ?? ''),
+                'device'        => getDeviceType($_SESSION['user_agent'] ?? ''),
+                'city'          => $_SESSION['geo']['city'] ?? null,
+                'region'        => $_SESSION['geo']['region'] ?? null,
+                'country'       => $_SESSION['geo']['country'] ?? null,
+                'geo_raw'       => $_SESSION['geo']['raw'] ?? null,
+            ];
+
             $logger = new ActivityLogger($this->pdo, $this->tenant_id);
-            $logger->log($userId, $identifier, $action, [
-                'ip' => cleanIP(getClientIP()),
-            ]);
+
+            $logger->log(
+                $userId,
+                $identifier,
+                $action,
+                array_merge($defaultContext, $context)
+            );
+
         } catch (Throwable $e) {
             error_log("Event logging failed: " . $e->getMessage());
         }
     }
+
     public function getEventUrl(string $hash): ?string
     {
         $event = $this->getEventByHash($hash);
