@@ -64,24 +64,31 @@ class EventsModule
 
     public function saveEvent(array $data, ?string $hash = null, ?int $userId = null): string
     {
-        $now = date('Y-m-d H:i:s');
+        $now    = date('Y-m-d H:i:s');
+        $nowUtc = gmdate('Y-m-d H:i:s');
+
+        $userTz   = $_SESSION['user_timezone'] ?? 'UTC';
+        $dt       = new DateTime('now', new DateTimeZone($userTz));
+        $nowLocal = $dt->format('Y-m-d H:i:s');
 
         $payload = [
-            'tenant_id'         => $this->tenant_id,
-            'object_id'         => $this->object_id,
-            'event_slug'        => $data['event_slug'] ?? null,
-            'event_title'       => $data['event_title'] ?? '',
-            'event_description' => $data['event_description'] ?? '',
-            'event_location'    => $data['event_location'] ?? null,
-            'event_start_date'  => $data['event_start_date'] ?? null,
-            'event_end_date'    => $data['event_end_date'] ?? null,
-            'event_start_time'  => $data['event_start_time'] ?? null,
-            'event_end_time'    => $data['event_end_time'] ?? null,
-            'event_timezone'    => $data['event_timezone'] ?? 'UTC',
-            'is_event_all_day'  => $data['all_day_event'] ?? 0,
-            'event_status'      => $data['event_status'] ?? 'Draft',
-            'created_by'        => $userId,
-            'created_on_utc'    => $now,
+            'tenant_id'            => $this->tenant_id,
+            'object_id'            => $this->object_id,
+            'event_slug'           => $data['event_slug'] ?? null,
+            'event_title'          => $data['event_title'] ?? '',
+            'event_description'    => $data['event_description'] ?? '',
+            'event_location'       => $data['event_location'] ?? null,
+            'event_start_date'     => $data['event_start_date'] ?? null,
+            'event_end_date'       => $data['event_end_date'] ?? null,
+            'event_start_time'     => $data['event_start_time'] ?? null,
+            'event_end_time'       => $data['event_end_time'] ?? null,
+            'event_timezone'       => $data['event_timezone'] ?? 'UTC',
+            'is_event_all_day'     => $data['all_day_event'] ?? 0,
+            'event_status'         => $data['event_status'] ?? 'Draft',
+            'created_by'           => $userId,
+            'created_on_utc'       => $nowUtc,
+            'created_at_localtime' => $nowLocal,
+
         ];
 
         // CREATE MODE
