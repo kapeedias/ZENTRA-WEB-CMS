@@ -124,8 +124,8 @@
                                                     required=""
                                                     value="<?php echo htmlspecialchars($event['event_title']); ?>">
                                                 <h3 class="fw-bold mb-1"></h3>
-                                                <p class="small text-muted mb-2" id="event-url-1">
-                                                    https://website.com/events/2026/04/23/shiva-ratri</p>
+                                                <p class="small text-muted mb-2" id="event-url">
+                                                    <?php echo htmlspecialchars($eventUrl); ?></p>
                                                 <div class="d-flex flex-wrap gap-2 my-3" mt-3="">
                                                     <span
                                                         class="badge d-inline-flex gap-1 <?php echo $badge['class']; ?>">
