@@ -138,7 +138,7 @@ function enforceSessionSecurity(): void
     $ip = cleanIP(getClientIP());
     // $ip is now available
     $timeout  = defined('SESSION_TIMEOUT_SECONDS') ? SESSION_TIMEOUT_SECONDS : 1800;
-    $redirect = defined('SESSION_REDIRECT_ON_TIMEOUT') ? SESSION_REDIRECT_ON_TIMEOUT : 'login.php?timeout=1';
+    $redirect = defined('SESSION_REDIRECT_ON_TIMEOUT') ? SESSION_REDIRECT_ON_TIMEOUT : '/login.php?timeout=1';
 
     $now = time();
 

@@ -58,7 +58,7 @@ define('RESET_URL', SITE_URL . 'reset_password.php');
 define('SESSION_TIMEOUT_SECONDS', 1800); // 30 minutes
 define('SESSION_ENFORCE_IP_CHECK', true);
 define('SESSION_ENFORCE_UA_CHECK', true);
-define('SESSION_REDIRECT_ON_TIMEOUT', 'login.php?timeout=1');
+define('SESSION_REDIRECT_ON_TIMEOUT', '/login.php?timeout=1');
 
 // SendGrid settings - AZURE
 define('SENDGRID_API_KEY', getenv('SENDGRID_API_KEY'));
