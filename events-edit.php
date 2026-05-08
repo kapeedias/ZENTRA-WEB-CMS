@@ -194,7 +194,7 @@
                                                     <input class="fw-bold form-control-sm form-control text-warning"
                                                         type="datetime-local" name="event_start_date_time"
                                                         id="event_start_date_time" required=""
-                                                        value="<?php echo $event['event_start_date_time']; ?>">
+                                                        value="<?php echo $event['event_start_date']; ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -204,7 +204,7 @@
                                                         class="fw-bold form-control-sm form-control text-warning"
                                                         type="datetime-local" name="event_end_date_time"
                                                         id="event_end_date_time" required=""
-                                                        value="<?php echo $event['event_end_date_time']; ?>">
+                                                        value="<?php echo $event['event_end_date']; ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
