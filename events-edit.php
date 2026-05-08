@@ -712,6 +712,11 @@
             document.getElementById("event_description").value = html;
             return true;
         }
+
+        function openZentraMediaLibraryModal() {
+            const modal = new bootstrap.Modal(document.getElementById('zentraMediaModal'));
+            modal.show();
+        }
     });
     </script>
 
