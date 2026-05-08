@@ -22,7 +22,7 @@ $data = json_decode($json, true);
 /*
 // Prepare insert statement
 $stmt = $pdo->prepare("
-    INSERT INTO zentra_icons (icon_class, icon_name, fa_version, category, is_enabled, created_on)
+    INSERT INTO zentra_icons (icon_class, icon_name, fa_version, category, is_enabled, created_on_utc)
     VALUES (:icon_class, :icon_name, :fa_version, :category, :is_enabled, CURRENT_TIMESTAMP)
 ");
 

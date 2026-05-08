@@ -81,7 +81,7 @@ class EventsModule
             'is_event_all_day'  => $data['all_day_event'] ?? 0,
             'event_status'      => $data['event_status'] ?? 'Draft',
             'created_by'        => $userId,
-            'created_on'        => $now,
+            'created_on_utc'    => $now,
         ];
 
         // CREATE MODE
@@ -90,8 +90,8 @@ class EventsModule
             // ⭐ Generate secure event hash
             $eventHash = substr(bin2hex(random_bytes(16)), 0, 12);
 
-            $payload['event_hash'] = $eventHash;
-            $payload['created_on'] = $now;
+            $payload['event_hash']     = $eventHash;
+            $payload['created_on_utc'] = $now;
 
             $columns      = implode(', ', array_keys($payload));
             $placeholders = ':' . implode(', :', array_keys($payload));
