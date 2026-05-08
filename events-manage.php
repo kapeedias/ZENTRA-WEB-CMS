@@ -105,11 +105,11 @@
                                                         </div>
                                                     </a>
                                                 </td>
-                                                <td><small><?php echo $row['event_start_date']; ?><p>
-                                                        </p></small>
+                                                <td><small><?php echo $row['event_start_date']; ?>
+                                                    </small>
                                                 </td>
-                                                <td><small><?php echo $row['event_end_date']; ?><p>
-                                                        </p></small>
+                                                <td><small><?php echo $row['event_end_date']; ?>
+                                                    </small>
                                                 </td>
                                                 <td><small><?php echo $row['event_timezone']; ?></small>
                                                 </td>
