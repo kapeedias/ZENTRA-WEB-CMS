@@ -82,6 +82,8 @@ class EventsModule
             'event_end_date'       => $data['event_end_date'] ?? null,
             'event_start_time'     => $data['event_start_time'] ?? null,
             'event_end_time'       => $data['event_end_time'] ?? null,
+            'start_date_utc'       => $data['start_date_utc'] ?? null,
+            'end_date_utc'         => $data['end_date_utc'] ?? null,
             'event_timezone'       => $data['event_timezone'] ?? 'UTC',
             'is_event_all_day'     => $data['all_day_event'] ?? 0,
             'event_status'         => $data['event_status'] ?? 'Draft',

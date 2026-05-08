@@ -82,14 +82,13 @@
     // ==== HANDLE FORM SUBMISSION ====
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $title     = trim($_POST['event_title'] ?? '');
-    $startDT   = trim($_POST['event_start_date_time'] ?? '');
-    $endDT     = trim($_POST['event_end_date_time'] ?? '');
-    $location  = trim($_POST['event_location'] ?? '');
-    $eventURL  = trim($_POST['event_url'] ?? '');
-    $timezone  = trim($_POST['event_timezone'] ?? 'America/Vancouver');
-    $isAllDay  = isset($_POST['all_day_event']) ? 1 : 0;
-    $success[] = $isAllDay;
+    $title    = trim($_POST['event_title'] ?? '');
+    $startDT  = trim($_POST['event_start_date_time'] ?? '');
+    $endDT    = trim($_POST['event_end_date_time'] ?? '');
+    $location = trim($_POST['event_location'] ?? '');
+    $eventURL = trim($_POST['event_url'] ?? '');
+    $timezone = trim($_POST['event_timezone'] ?? 'America/Vancouver');
+    $isAllDay = isset($_POST['all_day_event']) ? 1 : 0;
 
     if ($title === '' || $startDT === '' || $endDT === '') {
         $error[] = "Please fill in all required fields.";
@@ -99,11 +98,18 @@
         $slug = basename($eventURL);
 
         // Split datetime-local
-        list($startDate, $startTime)  = explode('T', $startDT);
-        list($endDate, $endTime)      = explode('T', $endDT);
+        list($startDate, $startTime) = explode('T', $startDT);
+        list($endDate, $endTime)     = explode('T', $endDT);
+
         // Normalize time format
         $startTime .= ':00';
         $endTime   .= ':00';
+
+        // All-day override
+        if ($isAllDay) {
+            $startTime = "00:00:00";
+            $endTime   = "23:59:00";
+        }
 
         // Build local datetime strings
         $localStart = $startDate . ' ' . $startTime;
@@ -124,9 +130,9 @@
             'event_description' => '',
             'event_location'    => $location,
             // Local datetime components
-            'event_start_date'  => $startDate,
+            'event_start_date'  => $localStart,
             'event_start_time'  => $startTime,
-            'event_end_date'    => $endDate,
+            'event_end_date'    => $localEnd,
             'event_end_time'    => $endTime,
             // UTC datetime
             'start_date_utc'    => $startUTC,
