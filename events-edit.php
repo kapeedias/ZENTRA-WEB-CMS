@@ -120,16 +120,21 @@
                                     <div class="card-body">
                                         <div class="row">
                                             <div class="col"><input class="fw-bold form-control-lg form-control"
-                                                    type="text" name="event-title" autocomplete="off" required="">
+                                                    type="text" name="event_title" id=event_title autocomplete="off"
+                                                    required=""
+                                                    value="<?php echo htmlspecialchars($event['event_title']); ?>">
                                                 <h3 class="fw-bold mb-1"></h3>
                                                 <p class="small text-muted mb-2" id="event-url-1">
                                                     https://website.com/events/2026/04/23/shiva-ratri</p>
-                                                <div class="d-flex flex-wrap gap-2 my-3" mt-3=""><span
-                                                        class="badge bg-success">Active</span><span
-                                                        class="badge bg-light"> <i
+                                                <div class="d-flex flex-wrap gap-2 my-3" mt-3="">
+                                                    <span class="badge"><?php echo $badge['class']; ?>">
+                                                        <i class="fa <?php echo $badge['icon']; ?> me-1"></i>
+                                                        <?php echo $badge['label']; ?></span>
+                                                    <span class="badge bg-light"> <i
                                                             class="fa fa-repeat me-1"></i>&nbsp;Repeats every year on
                                                         3rd Monday of May</span><span class="badge bg-light"> Marketing
-                                                        Team </span></div>
+                                                        Team </span>
+                                                </div>
                                                 <div
                                                     class="small text-muted d-flex flex-column gap-2 flex-xl-row mb-3 mb-xl-0">
                                                     <ul class="list-inline">
@@ -187,7 +192,7 @@
                                                     <input class="fw-bold form-control-sm form-control text-warning"
                                                         type="datetime-local" name="event_start_date_time"
                                                         id="event_start_date_time" required=""
-                                                        value="<?php echo $startDT; ?>">
+                                                        value="<?php echo $event['event_start_date_time']; ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -197,7 +202,7 @@
                                                         class="fw-bold form-control-sm form-control text-warning"
                                                         type="datetime-local" name="event_end_date_time"
                                                         id="event_end_date_time" required=""
-                                                        value="<?php echo $endDT; ?>">
+                                                        value="<?php echo $event['event_end_date_time']; ?>">
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
