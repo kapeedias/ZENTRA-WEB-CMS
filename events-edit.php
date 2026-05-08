@@ -74,6 +74,7 @@
     $locations       = $events->getEventLocations();
     $currentLocation = $event['event_location'];         // value stored in DB
     $isAllDay        = (int) $event['is_event_all_day']; // value from DB
+    $eventCategory   = $event['event_category'];         // value stored in DB
 
     if (! $event) {
     header("Location: /events-manage.php?not_found=1");
@@ -101,6 +102,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title><?php echo getenv('APP_NAME') ?> - Edit Event</title>
     <?php include '_include/head.php'; ?>
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+
 </head>
 
 <body>
@@ -190,7 +193,7 @@
                                                 id="event-url"><?php echo htmlspecialchars($eventUrl); ?></span>
                                         </div>
                                         <div class="row g-3">
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="small text-muted mb-1"><span>Event Start Date &amp;
                                                         Time</span></div>
                                                 <div class="fw-semibold">
@@ -200,7 +203,7 @@
                                                         value="<?php echo $event['event_start_date']; ?>">
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="small text-muted mb-1"><span>Event End Date &amp;
                                                         Time</span></div>
                                                 <div class="fw-semibold"><input
@@ -210,7 +213,7 @@
                                                         value="<?php echo $event['event_end_date']; ?>">
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="small text-muted mb-1"><span
                                                         class="small text-muted mb-1">Is this an all day
                                                         event?</span></div>
@@ -222,7 +225,7 @@
                                                 </label>
                                             </div>
 
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="small text-muted mb-1"><span>Event Timezone</span><span
                                                         class="text-danger">*</span></div>
                                                 <div class="fw-semibold">
@@ -237,7 +240,7 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
+                                            <div class="col-md-4">
                                                 <div class="small text-muted mb-1"><span>Event Location</span><span
                                                         class="text-danger">*</span></div>
                                                 <div class="fw-semibold"><select class="form-select-sm form-select"
@@ -249,6 +252,23 @@
                                                             <?php echo htmlspecialchars($loc['location_name']) ?>
                                                         </option>
                                                         <?php endforeach; ?>
+                                                    </select></div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="small text-muted mb-1"><span>Event Category</span><span
+                                                        class="text-danger">*</span></div>
+                                                <div class="fw-semibold"><select class="form-select-sm form-select"
+                                                        name="event_category" required="yes">
+                                                        <option value="">-- Select Event Category --</option>
+                                                        <option value="Event"
+                                                            <?php echo($eventCategory === 'Event') ? 'selected' : '' ?>>
+                                                            Event
+                                                        </option>
+
+                                                        <option value="Festival"
+                                                            <?php echo($eventCategory === 'Festival') ? 'selected' : '' ?>>
+                                                            Festival
+                                                        </option>
                                                     </select></div>
                                             </div>
                                         </div>
@@ -278,105 +298,25 @@
                                 </div>
                                 <div class="card">
                                     <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="fw-bold mb-0">Recent Projects</h5><a class="btn btn-primary btn-sm"
-                                            role="button" href="#">View All</a>
+                                        <h5 class="fw-bold mb-0">Event Details</h5><a class="btn btn-primary btn-sm"
+                                            role="button" href="#">Add Details</a>
                                     </div>
                                     <div class="card-body pt-0">
                                         <div class="list-group list-group-flush">
-                                            <div class="px-0 py-3 list-group-item">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div class="flex-grow-1">
-                                                        <div class="d-flex align-items-center mb-2">
-                                                            <h6 class="me-2 mb-0">Website Redesign</h6><span
-                                                                class="badge bg-light d-inline-flex gap-1"><svg
-                                                                    class="bi bi-check-circle-fill text-success"
-                                                                    xmlns="http://www.w3.org/2000/svg" width="1em"
-                                                                    height="1em" fill="currentColor"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z">
-                                                                    </path>
-                                                                </svg>&nbsp;Done</span>
-                                                        </div>
-                                                        <p class="small text-muted mb-2">Complete redesign of company
-                                                            website with modern UI/UX</p>
-                                                        <div class="progress mb-2">
-                                                            <div class="progress-bar bg-info" aria-valuenow="68"
-                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                style="width: 68%;"><span
-                                                                    class="visually-hidden">68%</span></div>
-                                                        </div>
-                                                        <div class="small text-muted d-flex gap-3"><span> Due: Mar 15,
-                                                                2026</span><span> 8 members</span><span> 68%
-                                                                complete</span></div>
-                                                    </div>
+                                            <form method="POST" action="your-handler.php"
+                                                onsubmit="return syncQuillContent()">
+
+                                                <!-- Quill Editor -->
+                                                <div id="editor" style="height: 300px;">
+                                                    <p>Hello World!</p>
+                                                    <p>Some initial <strong>bold</strong> text</p>
                                                 </div>
-                                            </div>
-                                            <div class="px-0 py-3 list-group-item">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div class="flex-grow-1">
-                                                        <div class="d-flex align-items-center mb-2">
-                                                            <h6 class="me-2 mb-0">Brand Identity Refresh</h6><span
-                                                                class="badge bg-light d-inline-flex gap-1"><svg
-                                                                    class="icon icon-tabler icon-tabler-loader"
-                                                                    xmlns="http://www.w3.org/2000/svg" width="1em"
-                                                                    height="1em" viewBox="0 0 24 24" stroke-width="2"
-                                                                    stroke="currentColor" fill="none"
-                                                                    stroke-linecap="round" stroke-linejoin="round">
-                                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none">
-                                                                    </path>
-                                                                    <path d="M12 6l0 -3"></path>
-                                                                    <path d="M16.25 7.75l2.15 -2.15"></path>
-                                                                    <path d="M18 12l3 0"></path>
-                                                                    <path d="M16.25 16.25l2.15 2.15"></path>
-                                                                    <path d="M12 18l0 3"></path>
-                                                                    <path d="M7.75 16.25l-2.15 2.15"></path>
-                                                                    <path d="M6 12l-3 0"></path>
-                                                                    <path d="M7.75 7.75l-2.15 -2.15"></path>
-                                                                </svg>&nbsp;In Progress</span>
-                                                        </div>
-                                                        <p class="small text-muted mb-2">Update brand guidelines and
-                                                            create new marketing materials</p>
-                                                        <div class="progress mb-2">
-                                                            <div class="progress-bar bg-info" aria-valuenow="85"
-                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                style="width: 85%;"><span
-                                                                    class="visually-hidden">85%</span></div>
-                                                        </div>
-                                                        <div class="small text-muted d-flex gap-3"><span> Due: Feb 28,
-                                                                2026</span><span> 5 members</span><span> 85%
-                                                                complete</span></div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="px-0 py-3 list-group-item">
-                                                <div class="d-flex justify-content-between align-items-start">
-                                                    <div class="flex-grow-1">
-                                                        <div class="d-flex align-items-center mb-2">
-                                                            <h6 class="me-2 mb-0">CRM Integration</h6><span
-                                                                class="badge bg-light d-inline-flex gap-1"><svg
-                                                                    class="bi bi-check-circle-fill text-success"
-                                                                    xmlns="http://www.w3.org/2000/svg" width="1em"
-                                                                    height="1em" fill="currentColor"
-                                                                    viewBox="0 0 16 16">
-                                                                    <path
-                                                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z">
-                                                                    </path>
-                                                                </svg>&nbsp;Done</span>
-                                                        </div>
-                                                        <p class="small text-muted mb-2">Integrate new CRM system with
-                                                            existing tools</p>
-                                                        <div class="progress mb-2">
-                                                            <div class="progress-bar bg-info" aria-valuenow="100"
-                                                                aria-valuemin="0" aria-valuemax="100"
-                                                                style="width: 100%;"><span
-                                                                    class="visually-hidden">100%</span></div>
-                                                        </div>
-                                                        <div class="small text-muted d-flex gap-3"><span> Completed: Jan
-                                                                10, 2026</span><span> 6 members</span></div>
-                                                    </div>
-                                                </div>
-                                            </div>
+
+                                                <!-- Hidden input that will store Quill HTML -->
+                                                <input type="hidden" name="event_description" id="event_description">
+
+                                                <button type="submit" class="btn btn-primary mt-3">Save</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>
@@ -675,6 +615,59 @@
     </div>
 
     <?php include '_include/body_end_plugins.php'; ?>
+    <!-- Include Quill -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <script>
+    const fullToolbar = [
+        [{
+            header: [1, 2, 3, 4, 5, 6, false]
+        }],
+        ["bold", "italic", "underline", "strike"],
+        [{
+            color: []
+        }, {
+            background: []
+        }],
+        [{
+            script: "sub"
+        }, {
+            script: "super"
+        }],
+        [{
+            list: "ordered"
+        }, {
+            list: "bullet"
+        }],
+        [{
+            indent: "-1"
+        }, {
+            indent: "+1"
+        }],
+        [{
+            align: []
+        }],
+        ["blockquote", "code-block"],
+        ["link", "image", "video"],
+        ["clean"]
+    ];
+
+    const quill = new Quill("#editor", {
+        theme: "snow",
+        modules: {
+            toolbar: fullToolbar
+        }
+    });
+
+    function syncQuillContent() {
+        const html = quill.root.innerHTML;
+        document.getElementById("event_description").value = html;
+        return true;
+    }
+    </script>
+</body>
+
+
 </body>
 
 </html>
