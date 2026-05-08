@@ -272,5 +272,28 @@ class EventsModule
 
         return $map[$status] ?? $map['Draft'];
     }
+    public function getEventLocations(): array
+    {
+        try {
+            $sql = "SELECT
+                    location_id,
+                    location_name
+                FROM zentra_event_locations
+                WHERE tenant_id = :tenant_id
+                  AND is_active = 1
+                ORDER BY location_name ASC";
+
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([
+                ':tenant_id' => $this->tenant_id,
+            ]);
+
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        } catch (Exception $e) {
+            error_log('Error in getEventLocations(): ' . $e->getMessage());
+            return [];
+        }
+    }
 
 }
