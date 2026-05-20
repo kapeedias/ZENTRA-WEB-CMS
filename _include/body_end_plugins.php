@@ -93,3 +93,4 @@ function setAllDayEvent(isAllDay) {
 
     validateEventTimes();
 }
+</script>
