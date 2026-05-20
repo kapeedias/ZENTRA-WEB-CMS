@@ -1,14 +1,14 @@
 <?php
 class Database
 {
-    private $host;
-    private $db;
-    private $user;
-    private $pass;
-    private $charset = 'utf8mb4';
+    private string $host;
+    private string $db;
+    private string $user;
+    private string $pass;
+    private string $charset = 'utf8mb4';
 
-    private $pdo;
-    private static $instance;
+    private PDO $pdo;
+    private static ?PDO $instance = null;
 
     private function __construct($host = '', $db = '', $user = '', $pass = '')
     {
