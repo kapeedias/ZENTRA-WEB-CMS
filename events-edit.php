@@ -106,230 +106,222 @@
 
 </head>
 
+
 <body>
-    <div class="container-fluid">
-        <div class="row min-vh-100">
-            <?php include '_include/nav_side.php'; ?>
+    <form id="eventEditForm" enctype="multipart/form-data">
+        <div class="container-fluid">
+            <div class="row min-vh-100">
+                <?php include '_include/nav_side.php'; ?>
 
-            <div class="col-md-9 col-xl-10 bg-body-tertiary px-0">
-                <div class="d-md-none p-2 sticky-top">
-                    <?php include '_include/nav_top_branding.php'; ?>
-                </div>
-                <main class="px-3 px-md-4">
-                    <!-- Start: top-nav-and-details -->
-                    <?php include '_include/nav_top.php'; ?>
-                    <!-- End: top-nav-and-details -->
-                    <div>
-                        <div class="row">
-                            <div class="col-12 mb-4">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <div class="col"><input class="fw-bold form-control-lg form-control"
-                                                    type="text" name="event_title" id=event_title autocomplete="off"
-                                                    required=""
-                                                    value="<?php echo htmlspecialchars($event['event_title']); ?>">
-                                                <h3 class="fw-bold mb-1"></h3>
-                                                <p class="small text-muted mb-2" id="event-url">
-                                                    <?php echo htmlspecialchars($eventUrl); ?></p>
-                                                <div class="d-flex flex-wrap gap-2 my-3" mt-3="">
-                                                    <span
-                                                        class="badge d-inline-flex gap-1 <?php echo $badge['class']; ?>">
-                                                        <i class="fa <?php echo $badge['icon']; ?> me-1"></i>
-                                                        <?php echo $badge['label']; ?>
-                                                    </span>
-                                                    <span class="badge bg-light"> <i
-                                                            class="fa fa-repeat me-1"></i>&nbsp;Repeats every year on
-                                                        3rd Monday of May</span><span class="badge bg-light"> Marketing
-                                                        Team </span>
+                <div class="col-md-9 col-xl-10 bg-body-tertiary px-0">
+                    <div class="d-md-none p-2 sticky-top">
+                        <?php include '_include/nav_top_branding.php'; ?>
+                    </div>
+                    <main class="px-3 px-md-4">
+                        <!-- Start: top-nav-and-details -->
+                        <?php include '_include/nav_top.php'; ?>
+                        <!-- End: top-nav-and-details -->
+                        <div>
+                            <div class="row">
+                                <div class="col-12 mb-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col"><input class="fw-bold form-control-lg form-control"
+                                                        type="text" name="event_title" id=event_title autocomplete="off"
+                                                        required=""
+                                                        value="<?php echo htmlspecialchars($event['event_title']); ?>">
+                                                    <h3 class="fw-bold mb-1"></h3>
+                                                    <p class="small text-muted mb-2" id="event-url">
+                                                        <?php echo htmlspecialchars($eventUrl); ?></p>
+                                                    <div class="d-flex flex-wrap gap-2 my-3" mt-3="">
+                                                        <span
+                                                            class="badge d-inline-flex gap-1 <?php echo $badge['class']; ?>">
+                                                            <i class="fa <?php echo $badge['icon']; ?> me-1"></i>
+                                                            <?php echo $badge['label']; ?>
+                                                        </span>
+                                                        <span class="badge bg-light"> <i
+                                                                class="fa fa-repeat me-1"></i>&nbsp;Repeats every year
+                                                            on
+                                                            3rd Monday of May</span><span class="badge bg-light">
+                                                            Marketing
+                                                            Team </span>
+                                                    </div>
+                                                    <div
+                                                        class="small text-muted d-flex flex-column gap-2 flex-xl-row mb-3 mb-xl-0">
+                                                        <ul class="list-inline">
+                                                            <li class="list-inline-item">Item 1</li>
+                                                            <li class="list-inline-item">Item 2</li>
+                                                            <li class="list-inline-item">Item 3</li>
+                                                            <li class="list-inline-item">Item 4</li>
+                                                        </ul>
+                                                    </div>
                                                 </div>
-                                                <div
-                                                    class="small text-muted d-flex flex-column gap-2 flex-xl-row mb-3 mb-xl-0">
-                                                    <ul class="list-inline">
-                                                        <li class="list-inline-item">Item 1</li>
-                                                        <li class="list-inline-item">Item 2</li>
-                                                        <li class="list-inline-item">Item 3</li>
-                                                        <li class="list-inline-item">Item 4</li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto col-xxl-4 text-center">
-                                                <div class="mb-4 storage-dropzone"><svg
-                                                        class="bi bi-cloud-arrow-up fs-1 mb-2"
-                                                        xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
-                                                        fill="currentColor" viewBox="0 0 16 16">
-                                                        <path fill-rule="evenodd"
-                                                            d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708z">
-                                                        </path>
-                                                        <path
-                                                            d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383m.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z">
-                                                        </path>
-                                                    </svg>
-                                                    <h6 class="fw-bold mb-1">Click or drag event poster to upload</h6>
-                                                    <p class="small text-muted mb-0">PNG or JPG (max. 2 MB)</p><input
-                                                        class="d-none" type="file" id="fileInput-2">
+                                                <div class="col-auto col-xxl-4 text-center">
+                                                    <div class="mb-4 storage-dropzone"><svg
+                                                            class="bi bi-cloud-arrow-up fs-1 mb-2"
+                                                            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                            fill="currentColor" viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd"
+                                                                d="M7.646 5.146a.5.5 0 0 1 .708 0l2 2a.5.5 0 0 1-.708.708L8.5 6.707V10.5a.5.5 0 0 1-1 0V6.707L6.354 7.854a.5.5 0 1 1-.708-.708z">
+                                                            </path>
+                                                            <path
+                                                                d="M4.406 3.342A5.53 5.53 0 0 1 8 2c2.69 0 4.923 2 5.166 4.579C14.758 6.804 16 8.137 16 9.773 16 11.569 14.502 13 12.687 13H3.781C1.708 13 0 11.366 0 9.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383m.653.757c-.757.653-1.153 1.44-1.153 2.056v.448l-.445.049C2.064 6.805 1 7.952 1 9.318 1 10.785 2.23 12 3.781 12h8.906C13.98 12 15 10.988 15 9.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 4.825 10.328 3 8 3a4.53 4.53 0 0 0-2.941 1.1z">
+                                                            </path>
+                                                        </svg>
+                                                        <h6 class="fw-bold mb-1">Click or drag event poster to upload
+                                                        </h6>
+                                                        <p class="small text-muted mb-0">PNG or JPG (max. 2 MB)</p>
+                                                        <input class="d-none" type="file" id="fileInput-2">
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-xl-8 mb-4">
-                                <div class="card mb-4">
-                                    <div class="card-header d-flex justify-content-end align-items-center">
-                                        <h5 class="fw-bold mb-0"></h5>
-                                        Status:&nbsp;<span
-                                            class="badge d-inline-flex gap-1 <?php echo $badge['class']; ?>">
-                                            <i class="fa <?php echo $badge['icon']; ?> me-1"></i>
-                                            <?php echo $badge['label']; ?>
-                                        </span>
-                                    </div>
-                                    <div class="card-body pt-2">
-                                        <div class="mb-3"><span>Event Title</span><input type="text"
-                                                class="form-control fw-bold text-warning" autofocus=""
-                                                name="event_title" id="event_title"
-                                                value="<?php echo htmlspecialchars($event['event_title']); ?>"><span
-                                                class="small text-secondary"
-                                                id="event-url"><?php echo htmlspecialchars($eventUrl); ?></span>
+                                <div class="col-xl-8 mb-4">
+                                    <div class="card mb-4">
+                                        <div class="card-header d-flex justify-content-end align-items-center">
+                                            <h5 class="fw-bold mb-0"></h5>
+                                            Status:&nbsp;<span
+                                                class="badge d-inline-flex gap-1 <?php echo $badge['class']; ?>">
+                                                <i class="fa <?php echo $badge['icon']; ?> me-1"></i>
+                                                <?php echo $badge['label']; ?>
+                                            </span>
                                         </div>
-                                        <div class="row g-3">
-                                            <div class="col-md-4">
-                                                <div class="small text-muted mb-1"><span>Event Start Date &amp;
-                                                        Time</span></div>
-                                                <div class="fw-semibold">
-                                                    <input class="fw-bold form-control-sm form-control text-warning"
-                                                        type="datetime-local" name="event_start_date_time"
-                                                        id="event_start_date_time" required=""
-                                                        value="<?php echo $event['event_start_date']; ?>">
+                                        <div class="card-body pt-2">
+                                            <div class="mb-3"><span>Event Title</span><input type="text"
+                                                    class="form-control fw-bold text-warning" autofocus=""
+                                                    name="event_title" id="event_title"
+                                                    value="<?php echo htmlspecialchars($event['event_title']); ?>"><span
+                                                    class="small text-secondary"
+                                                    id="event-url"><?php echo htmlspecialchars($eventUrl); ?></span>
+                                            </div>
+                                            <div class="row g-3">
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span>Event Start Date &amp;
+                                                            Time</span></div>
+                                                    <div class="fw-semibold">
+                                                        <input class="fw-bold form-control-sm form-control text-warning"
+                                                            type="datetime-local" name="event_start_date_time"
+                                                            id="event_start_date_time" required=""
+                                                            value="<?php echo $event['event_start_date']; ?>">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="small text-muted mb-1"><span>Event End Date &amp;
-                                                        Time</span></div>
-                                                <div class="fw-semibold"><input
-                                                        class="fw-bold form-control-sm form-control text-warning"
-                                                        type="datetime-local" name="event_end_date_time"
-                                                        id="event_end_date_time" required=""
-                                                        value="<?php echo $event['event_end_date']; ?>">
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span>Event End Date &amp;
+                                                            Time</span></div>
+                                                    <div class="fw-semibold"><input
+                                                            class="fw-bold form-control-sm form-control text-warning"
+                                                            type="datetime-local" name="event_end_date_time"
+                                                            id="event_end_date_time" required=""
+                                                            value="<?php echo $event['event_end_date']; ?>">
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="small text-muted mb-1"><span
-                                                        class="small text-muted mb-1">Is this an all day
-                                                        event?</span></div>
-                                                <label class="form-check">
-                                                    <input class="form-check-input text-warning" type="checkbox"
-                                                        id="all_day_event" onchange="setAllDayEvent(this.checked)"
-                                                        <?php echo $isAllDay ? 'checked' : '' ?>>
-                                                    <span class="form-check-label">Yes</span>
-                                                </label>
-                                            </div>
-
-                                            <div class="col-md-4">
-                                                <div class="small text-muted mb-1"><span>Event Timezone</span><span
-                                                        class="text-danger">*</span></div>
-                                                <div class="fw-semibold">
-                                                    <select class="form-select-sm form-select text-warning"
-                                                        name="event_timezone" id="event_timezone" required="yes">
-                                                        <?php
-                                                            foreach ($timezones as $tz) {
-                                                                $selected = ($tz === 'America/Vancouver') ? 'selected' : '';
-                                                                echo "<option value=\"$tz\" $selected>$tz</option>";
-                                                            }
-                                                        ?>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="small text-muted mb-1"><span>Event Location</span><span
-                                                        class="text-danger">*</span></div>
-                                                <div class="fw-semibold"><select class="form-select-sm form-select"
-                                                        name="event_location" required="yes">
-                                                        <option value="">-- Select Location --</option>
-                                                        <?php foreach ($locations as $loc): ?>
-                                                        <option value="<?php echo $loc['location_id'] ?>"
-                                                            <?php echo($loc['location_id'] == $currentLocation) ? 'selected' : '' ?>>
-                                                            <?php echo htmlspecialchars($loc['location_name']) ?>
-                                                        </option>
-                                                        <?php endforeach; ?>
-                                                    </select></div>
-                                            </div>
-                                            <div class="col-md-4">
-                                                <div class="small text-muted mb-1"><span>Event Category</span><span
-                                                        class="text-danger">*</span></div>
-                                                <div class="fw-semibold"><select class="form-select-sm form-select"
-                                                        name="event_category" required="yes">
-                                                        <option value="">-- Select Event Category --</option>
-                                                        <option value="Event"
-                                                            <?php echo($eventCategory === 'Event') ? 'selected' : '' ?>>
-                                                            Event
-                                                        </option>
-
-                                                        <option value="Festival"
-                                                            <?php echo($eventCategory === 'Festival') ? 'selected' : '' ?>>
-                                                            Festival
-                                                        </option>
-                                                    </select></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card mb-4">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="fw-bold mb-0">Event Tags</h5>
-                                        <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal"
-                                            data-bs-target="#tagPickerModal"> Add
-                                        </button>
-
-
-                                    </div>
-                                    <div class="card-body pt-2">
-
-                                        <div class="d-flex flex-wrap gap-2">
-                                            <div id="eventTagBadges" class="d-flex flex-wrap gap-2"></div>
-
-                                            <span class="badge bg-light d-inline-flex gap-1">&nbsp;Project
-                                                Management</span><span
-                                                class="badge bg-light d-inline-flex gap-1">Agile/Scrum</span><span
-                                                class="badge bg-light d-inline-flex gap-1">Leadership</span><span
-                                                class="badge bg-light d-inline-flex gap-1">Strategic
-                                                Planning</span><span
-                                                class="badge bg-light d-inline-flex gap-1">Stakeholder
-                                                Management</span><span
-                                                class="badge bg-light d-inline-flex gap-1">Jira</span><span
-                                                class="badge bg-light d-inline-flex gap-1">Microsoft Project</span><span
-                                                class="badge bg-light d-inline-flex gap-1">Risk Management</span><span
-                                                class="badge bg-light d-inline-flex gap-1">Budget Planning</span><span
-                                                class="badge bg-light d-inline-flex gap-1">Team Building</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="fw-bold mb-0">Event Details</h5><a class="btn btn-primary btn-sm"
-                                            role="button" href="#">Add Details</a>
-                                    </div>
-                                    <div class="card-body pt-0">
-                                        <div class="list-group list-group-flush">
-                                            <form method="POST" action="your-handler.php"
-                                                onsubmit="return syncQuillContent()">
-
-                                                <!-- Quill Editor -->
-                                                <div id="editor" style="height: 300px;">
-                                                    <p>Hello World!</p>
-                                                    <p>Some initial <strong>bold</strong> text</p>
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span
+                                                            class="small text-muted mb-1">Is this an all day
+                                                            event?</span></div>
+                                                    <label class="form-check">
+                                                        <input class="form-check-input text-warning" type="checkbox"
+                                                            id="all_day_event" onchange="setAllDayEvent(this.checked)"
+                                                            <?php echo $isAllDay ? 'checked' : '' ?>>
+                                                        <span class="form-check-label">Yes</span>
+                                                    </label>
                                                 </div>
 
-                                                <!-- Hidden input that will store Quill HTML -->
-                                                <input type="hidden" name="event_description" id="event_description">
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span>Event Timezone</span><span
+                                                            class="text-danger">*</span></div>
+                                                    <div class="fw-semibold">
+                                                        <select class="form-select-sm form-select text-warning"
+                                                            name="event_timezone" id="event_timezone" required="yes">
+                                                            <?php
+                                                                foreach ($timezones as $tz) {
+                                                                    $selected = ($tz === 'America/Vancouver') ? 'selected' : '';
+                                                                    echo "<option value=\"$tz\" $selected>$tz</option>";
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span>Event Location</span><span
+                                                            class="text-danger">*</span></div>
+                                                    <div class="fw-semibold"><select class="form-select-sm form-select"
+                                                            name="event_location" required="yes">
+                                                            <option value="">-- Select Location --</option>
+                                                            <?php foreach ($locations as $loc): ?>
+                                                            <option value="<?php echo $loc['location_id'] ?>"
+                                                                <?php echo($loc['location_id'] == $currentLocation) ? 'selected' : '' ?>>
+                                                                <?php echo htmlspecialchars($loc['location_name']) ?>
+                                                            </option>
+                                                            <?php endforeach; ?>
+                                                        </select></div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span>Event Category</span><span
+                                                            class="text-danger">*</span></div>
+                                                    <div class="fw-semibold"><select class="form-select-sm form-select"
+                                                            name="event_category" required="yes">
+                                                            <option value="">-- Select Event Category --</option>
+                                                            <option value="Event"
+                                                                <?php echo($eventCategory === 'Event') ? 'selected' : '' ?>>
+                                                                Event
+                                                            </option>
 
-                                                <button type="submit" class="btn btn-primary mt-3">Save</button>
-                                            </form>
+                                                            <option value="Festival"
+                                                                <?php echo($eventCategory === 'Festival') ? 'selected' : '' ?>>
+                                                                Festival
+                                                            </option>
+                                                        </select></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                            <!--
+                                    <div class="card mb-4">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="fw-bold mb-0">Event Tags</h5>
+                                            <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal"
+                                                data-bs-target="#tagPickerModal"> Add
+                                            </button>
+
+
+                                        </div>
+                                        <div class="card-body pt-2">
+
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <div id="eventTagBadges" class="d-flex flex-wrap gap-2"></div>
+                                            </div>
+                                        </div>
+                                        <div class="card">
+                                            <div class="card-header d-flex justify-content-between align-items-center">
+                                                <h5 class="fw-bold mb-0">Event Details</h5><a
+                                                    class="btn btn-primary btn-sm" role="button" href="#">Add
+                                                    Details</a>
+                                            </div>
+                                            <div class="card-body pt-0">
+                                                <div class="list-group list-group-flush">
+                                                    <!--  <form method="POST" action="your-handler.php"
+                                                    onsubmit="return syncQuillContent()">
+                                                        -->
+                                                    <!-- Quill Editor -->
+                                                    <div id="editor" style="height: 300px;">
+                                                        <p>Hello World!</p>
+                                                        <p>Some initial <strong>bold</strong> text</p>
+                                                    </div>
+
+                                                    <!-- Hidden input that will store Quill HTML -->
+                                                    <input type="hidden" name="event_description"
+                                                        id="event_description">
+
+                                                    <button type="submit" class="btn btn-primary mt-3">Save</button>
+                                                    <!--</form> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--
                                 <div class="col-xl-4 mb-4">
                                     <div class="card mb-4">
                                         <div class="card-header d-flex justify-content-between align-items-center">
@@ -616,83 +608,89 @@
                                 </div>
                               -->
 
-                        </div>
-                    </div><!-- Start: Footer Centered -->
-                    <?php include '_include/inner-footer.php'; ?>
-                    <!-- End: Footer Centered -->
-                </main>
+                                </div>
+                            </div><button type="submit" class="btn btn-primary mt-3">Save</button>
+                            <!-- Start: Footer Centered -->
+                            <?php include '_include/inner-footer.php'; ?>
+                            <!-- End: Footer Centered -->
+                    </main>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="zentraMediaModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
 
-                <div class="modal-header">
-                    <h5 class="modal-title">Media Library</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
 
-                <div class="modal-body">
+        <div class="modal fade" id="zentraMediaModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
 
-                    <!-- Filter row starts here -->
-                    <div class="d-flex align-items-center gap-2 mb-3">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Media Library</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
 
-                        <input type="text" id="mediaSearch" class="form-control" placeholder="Search files..."
-                            style="max-width: 250px;">
+                    <div class="modal-body">
 
-                        <button class="btn btn-sm btn-outline-secondary" data-filter="all">All</button>
-                        <button class="btn btn-sm btn-outline-secondary" data-filter="images">Images</button>
-                        <button class="btn btn-sm btn-outline-secondary" data-filter="documents">Documents</button>
-                        <button class="btn btn-sm btn-outline-secondary" data-filter="videos">Videos</button>
+                        <!-- Filter row starts here -->
+                        <div class="d-flex align-items-center gap-2 mb-3">
 
-                        <button id="uploadBtn" class="btn btn-sm btn-light border ms-auto">
-                            <i class="fa fa-upload"></i> Upload
-                        </button>
+                            <input type="text" id="mediaSearch" class="form-control" placeholder="Search files..."
+                                style="max-width: 250px;">
+
+                            <button class="btn btn-sm btn-outline-secondary" data-filter="all">All</button>
+                            <button class="btn btn-sm btn-outline-secondary" data-filter="images">Images</button>
+                            <button class="btn btn-sm btn-outline-secondary" data-filter="documents">Documents</button>
+                            <button class="btn btn-sm btn-outline-secondary" data-filter="videos">Videos</button>
+
+                            <button id="uploadBtn" class="btn btn-sm btn-light border ms-auto">
+                                <i class="fa fa-upload"></i> Upload
+                            </button>
+
+                        </div>
+                        <!-- Filter row ends here -->
+
+                        <div id="mediaGrid"></div>
 
                     </div>
-                    <!-- Filter row ends here -->
 
-                    <div id="mediaGrid"></div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary" id="insertSelectedMedia">Insert</button>
+                    </div>
 
                 </div>
-
-                <div class="modal-footer">
-                    <button class="btn btn-primary" id="insertSelectedMedia">Insert</button>
-                </div>
-
             </div>
         </div>
-    </div>
-    <div class="modal fade" id="tagPickerModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
+        <div class="modal fade" id="tagPickerModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
 
-                <div class="modal-header">
-                    <h5 class="modal-title fw-bold">Select Tags</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <div class="modal-header">
+                        <h5 class="modal-title fw-bold">Select Tags</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+
+                        <input type="text" id="tagSearchInput" class="form-control"
+                            placeholder="Search or create tags…">
+
+                        <div id="tagSearchResults" class="list-group mt-3"></div>
+
+                    </div>
+
+                    <div class="modal-footer">
+                        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="hidden" id="hiddenTags" name="tags">
+
+                    </div>
+
                 </div>
-
-                <div class="modal-body">
-
-                    <input type="text" id="tagSearchInput" class="form-control" placeholder="Search or create tags…">
-
-                    <div id="tagSearchResults" class="list-group mt-3"></div>
-
-                </div>
-
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <input type="hidden" id="hiddenTags" name="tags">
-
-                </div>
-
             </div>
         </div>
-    </div>
 
+    </form>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
-
     <script>
     document.addEventListener("DOMContentLoaded", function() {
         const fullToolbar = [
@@ -755,14 +753,11 @@
         }
     });
     </script>
-
     <script>
     let selectedTags = [];
-
     const badgeContainer = document.getElementById('eventTagBadges');
     const tagSearchInput = document.getElementById('tagSearchInput');
     const tagSearchResults = document.getElementById('tagSearchResults');
-
     // --- SEARCH TAGS ---
     tagSearchInput.addEventListener('input', function() {
         const q = this.value.trim();
@@ -796,7 +791,6 @@
                 </button>`;
         });
     }
-
     // --- ADD TAG ---
     function addTag(name, isNew, tagId = null) {
         const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
@@ -836,8 +830,6 @@
             renderBadges();
         }
     }
-
-
     // --- RENDER BADGES ---
     function renderBadges() {
         badgeContainer.innerHTML = '';
@@ -853,13 +845,11 @@
 
         document.getElementById('hiddenTags').value = JSON.stringify(selectedTags);
     }
-
     // --- REMOVE TAG ---
     function removeTag(index) {
         selectedTags.splice(index, 1);
         renderBadges();
     }
-
     // --- LOAD TAGS FOR EDIT MODE ---
     function loadEventTags(eventId) {
         fetch(`/api/v1/tags/event-tags.php?event_id=${eventId}`)
@@ -874,7 +864,6 @@
                 renderBadges();
             });
     }
-
     // Auto-run on page load (only if editing)
     <?php if (! empty($event_id)): ?>
     document.addEventListener("DOMContentLoaded", function() {
@@ -882,8 +871,6 @@
     });
     <?php endif; ?>
     </script>
-
-
     <?php include '_include/body_end_plugins.php'; ?>
 </body>
 
