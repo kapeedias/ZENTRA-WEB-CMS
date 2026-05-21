@@ -857,135 +857,87 @@
     </script>
 
     <script>
-    const dropzone = document.getElementById('posterDropzone');
-    const fileInput = document.getElementById('fileInput-2');
-    const preview = document.getElementById('posterPreview');
-    const previewImg = document.getElementById('posterPreviewImg');
-    const posterMediaIdInput = document.getElementById('poster_media_id');
+    (() => {
+        // Prevent double initialization
+        if (window.__posterUploaderInitialized) return;
+        window.__posterUploaderInitialized = true;
 
-    // Click to open file dialog
-    dropzone.addEventListener('click', () => fileInput.click());
+        const dropzone = document.querySelector('.storage-dropzone');
+        const fileInput = document.getElementById('fileInput-2');
+        const preview = document.getElementById('posterPreview');
+        const previewImg = document.getElementById('posterPreviewImg');
+        const posterMediaIdInput = document.getElementById('poster_media_id');
 
-    // When file selected
-    fileInput.addEventListener('change', () => {
-        if (fileInput.files.length > 0) {
-            uploadPoster(fileInput.files[0]);
+        if (!dropzone || !fileInput) return;
+
+        // CLICK → open file dialog
+        dropzone.addEventListener('click', () => fileInput.click());
+
+        // File selected
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                uploadPoster(fileInput.files[0]);
+            }
+        });
+
+        // DRAG OVER
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('drag-over');
+        });
+
+        // DRAG LEAVE
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('drag-over');
+        });
+
+        // DROP FILE
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('drag-over');
+
+            if (e.dataTransfer.files.length > 0) {
+                uploadPoster(e.dataTransfer.files[0]);
+            }
+        });
+
+        // UPLOAD FUNCTION
+        function uploadPoster(file) {
+            if (!file.type.match(/image\/(png|jpeg)/)) {
+                alert("Only PNG or JPG allowed");
+                return;
+            }
+
+            if (file.size > 2 * 1024 * 1024) {
+                alert("Max size is 2 MB");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/api/v1/media/upload.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        posterMediaIdInput.value = data.media_id;
+                        previewImg.src = data.url;
+                        preview.classList.remove('d-none');
+                    } else {
+                        alert(data.error || "Upload failed");
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Upload error");
+                });
         }
-    });
-
-    // Drag over
-    dropzone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropzone.classList.add('drag-over');
-    });
-
-    // Drag leave
-    dropzone.addEventListener('dragleave', () => {
-        dropzone.classList.remove('drag-over');
-    });
-
-    // Drop file
-    dropzone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropzone.classList.remove('drag-over');
-
-        if (e.dataTransfer.files.length > 0) {
-            uploadPoster(e.dataTransfer.files[0]);
-        }
-    });
-
-    function uploadPoster(file) {
-        if (!file.type.match(/image\/(png|jpeg)/)) {
-            alert("Only PNG or JPG allowed");
-            return;
-        }
-
-        if (file.size > 2 * 1024 * 1024) {
-            alert("Max size is 2 MB");
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('file', file);
-
-        fetch('/api/v1/media/upload.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    // Save media_id for event update
-                    posterMediaIdInput.value = data.media_id;
-
-                    // Show preview
-                    previewImg.src = data.url;
-                    preview.classList.remove('d-none');
-                } else {
-                    alert(data.error || "Upload failed");
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                alert("Upload error");
-            });
-    }
+    })();
     </script>
-    <script>
-    // Elements
-    const dropzone = document.querySelector('.storage-dropzone');
-    const fileInput = document.getElementById('fileInput-2');
 
-    // -----------------------------
-    // CLICK → OPEN FILE BROWSER
-    // -----------------------------
-    dropzone.addEventListener('click', () => {
-        fileInput.click();
-    });
-
-    // When file selected via click
-    fileInput.addEventListener('change', () => {
-        if (fileInput.files.length > 0) {
-            uploadPoster(fileInput.files[0]);
-        }
-    });
-
-    // -----------------------------
-    // DRAG & DROP SUPPORT
-    // -----------------------------
-
-    // Highlight dropzone on drag over
-    dropzone.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        dropzone.classList.add('drag-over');
-    });
-
-    // Remove highlight when leaving
-    dropzone.addEventListener('dragleave', () => {
-        dropzone.classList.remove('drag-over');
-    });
-
-    // Handle dropped file
-    dropzone.addEventListener('drop', (e) => {
-        e.preventDefault();
-        dropzone.classList.remove('drag-over');
-
-        if (e.dataTransfer.files.length > 0) {
-            const file = e.dataTransfer.files[0];
-            uploadPoster(file);
-        }
-    });
-
-    // -----------------------------
-    // OPTIONAL: Add CSS for drag-over
-    // -----------------------------
-    // Add this to your CSS:
-    //
-    // .storage-dropzone.drag-over {
-    //     border: 2px dashed #0d6efd;
-    //     background-color: #f0f8ff;
-    // }
-    </script>
     <?php include '_include/body_end_plugins.php'; ?>
 </body>
 
