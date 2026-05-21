@@ -40,6 +40,22 @@ try {
     echo json_encode(['success' => false, 'error' => 'DB connection failed']);
     exit;
 }
+$ip      = cleanIP(getClientIP());
+$agent   = getUserAgent();
+$browser = getBrowserName($agent);
+$device  = getDeviceType($agent);
+$geo     = getGeoLocation($ip);
+
+$_SESSION['geo'] = [
+    'city'    => $geo['city'],
+    'region'  => $geo['region'],
+    'country' => $geo['country'],
+    'postal'  => $geo['postal'],
+    'raw'     => $geo['raw'],
+];
+$_SESSION['user_ip']       = $ip;
+$_SESSION['user_agent']    = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+$_SESSION['user_timezone'] = $geo['timezone'];
 
 // ---- CHECK IF TAG ALREADY EXISTS ----
 $stmt = $pdo->prepare("
@@ -82,13 +98,13 @@ $logger->log(
         'user_name'     => $_SESSION['user_name'] ?? null,
         'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
         'tenant_id'     => (string) $tenantId,
-        'ip'            => $_SESSION['user_ip'] ?? null,
-        'browser'       => $_SESSION['user_agent'] ?? null,
-        'device'        => $_SESSION['device'] ?? null,
-        'city'          => $_SESSION['geo_city'] ?? null,
-        'region'        => $_SESSION['geo_region'] ?? null,
-        'country'       => $_SESSION['geo_country'] ?? null,
-        'geo_raw'       => $_SESSION['geo_raw'] ?? null,
+        'ip'            => $ip,
+        'browser'       => $browser,
+        'device'        => $device,
+        'city'          => $geo['city'] ?? null,
+        'region'        => $geo['region'] ?? null,
+        'country'       => $geo['country'] ?? null,
+        'geo_raw'       => $geo['raw'] ?? null,
     ]
 );
 
