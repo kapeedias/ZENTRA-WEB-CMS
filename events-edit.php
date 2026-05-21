@@ -159,8 +159,9 @@
                                                 </div>
                                                 <div class="col-auto col-xxl-4 text-center">
                                                     <div class="mb-4 storage-dropzone">
-                                                        <fa class="fa-solid fa-cloud-arrow-up fa-2x text-muted mb-3">
-                                                        </fa>
+                                                        <i class="fa fa-cloud-upload fa-3x text-muted mb-3"
+                                                            aria-hidden="true"></i>
+
                                                         <h6 class="fw-bold mb-1">Click or drag event poster to upload
                                                         </h6>
                                                         <p class="small text-muted mb-0">PNG or JPG (max. 2 MB)</p>
