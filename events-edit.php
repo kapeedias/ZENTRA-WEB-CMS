@@ -172,6 +172,9 @@
 
                                                     </div>
                                                 </div>
+                                                <div id="posterUploadError" class="w-100 alert-error d-none"></div>
+                                                <div id="posterUploadSuccess" class="w-100 alert-success d-none"></div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -904,12 +907,12 @@
         // UPLOAD FUNCTION
         function uploadPoster(file) {
             if (!file.type.match(/image\/(png|jpeg)/)) {
-                alert("Only PNG or JPG allowed");
+                showPosterError(data.error || "Upload failed - Invalid file type. Only PNG or JPG allowed");
                 return;
             }
 
             if (file.size > 2 * 1024 * 1024) {
-                alert("Max size is 2 MB");
+                showPosterError(data.error || "Upload failed - File too large. Max size is 2 MB");
                 return;
             }
 
@@ -926,16 +929,39 @@
                         posterMediaIdInput.value = data.media_id;
                         previewImg.src = data.url;
                         preview.classList.remove('d-none');
+                        showPosterSuccess("Poster Image uploaded successfully");
                     } else {
-                        alert(data.error || "Upload failed");
+                        showPosterError(data.error || "Upload failed");
+
                     }
                 })
                 .catch(err => {
                     console.error(err);
-                    alert("Upload error");
+                    showPosterError(data.error || "Upload error occurred");
                 });
         }
     })();
+    </script>
+    <script>
+    function showPosterError(msg) {
+        const box = document.getElementById('posterUploadError');
+        box.innerHTML = `<span>${msg}</span>`;
+        box.classList.remove('d-none');
+
+        setTimeout(() => {
+            box.classList.add('d-none');
+        }, 5000);
+    }
+
+    function showPosterSuccess(msg) {
+        const box = document.getElementById('posterUploadSuccess');
+        box.innerHTML = `<span>${msg}</span>`;
+        box.classList.remove('d-none');
+
+        setTimeout(() => {
+            box.classList.add('d-none');
+        }, 5000);
+    }
     </script>
 
     <?php include '_include/body_end_plugins.php'; ?>
