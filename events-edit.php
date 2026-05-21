@@ -931,6 +931,61 @@
             });
     }
     </script>
+    <script>
+    // Elements
+    const dropzone = document.querySelector('.storage-dropzone');
+    const fileInput = document.getElementById('fileInput-2');
+
+    // -----------------------------
+    // CLICK → OPEN FILE BROWSER
+    // -----------------------------
+    dropzone.addEventListener('click', () => {
+        fileInput.click();
+    });
+
+    // When file selected via click
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length > 0) {
+            uploadPoster(fileInput.files[0]);
+        }
+    });
+
+    // -----------------------------
+    // DRAG & DROP SUPPORT
+    // -----------------------------
+
+    // Highlight dropzone on drag over
+    dropzone.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        dropzone.classList.add('drag-over');
+    });
+
+    // Remove highlight when leaving
+    dropzone.addEventListener('dragleave', () => {
+        dropzone.classList.remove('drag-over');
+    });
+
+    // Handle dropped file
+    dropzone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropzone.classList.remove('drag-over');
+
+        if (e.dataTransfer.files.length > 0) {
+            const file = e.dataTransfer.files[0];
+            uploadPoster(file);
+        }
+    });
+
+    // -----------------------------
+    // OPTIONAL: Add CSS for drag-over
+    // -----------------------------
+    // Add this to your CSS:
+    //
+    // .storage-dropzone.drag-over {
+    //     border: 2px dashed #0d6efd;
+    //     background-color: #f0f8ff;
+    // }
+    </script>
     <?php include '_include/body_end_plugins.php'; ?>
 </body>
 
