@@ -277,37 +277,10 @@
                                 <div class="card mb-4">
                                     <div class="card-header d-flex justify-content-between align-items-center">
                                         <h5 class="fw-bold mb-0">Event Tags</h5>
-                                        <button class="btn btn-primary btn-sm" type="button" id="openTagPicker"> Add
+                                        <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal"
+                                            data-bs-target="#tagPickerModal"> Add
                                         </button>
-                                        <div class="modal fade" id="tagPickerModal" tabindex="-1" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg modal-dialog-centered">
-                                                <div class="modal-content">
 
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title fw-bold">Select Tags</h5>
-                                                        <button type="button" class="btn-close"
-                                                            data-bs-dismiss="modal"></button>
-                                                    </div>
-
-                                                    <div class="modal-body">
-
-                                                        <input type="text" id="tagSearchInput" class="form-control"
-                                                            placeholder="Search or create tags…">
-
-                                                        <div id="tagSearchResults" class="list-group mt-3"></div>
-
-                                                    </div>
-
-                                                    <div class="modal-footer">
-                                                        <button class="btn btn-secondary"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                        <input type="hidden" id="hiddenTags" name="tags">
-
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
 
                                     </div>
                                     <div class="card-body pt-2">
@@ -685,7 +658,32 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="tagPickerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
 
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Select Tags</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <input type="text" id="tagSearchInput" class="form-control" placeholder="Search or create tags…">
+
+                    <div id="tagSearchResults" class="list-group mt-3"></div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="hidden" id="hiddenTags" name="tags">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
