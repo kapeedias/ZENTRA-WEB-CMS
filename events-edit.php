@@ -608,8 +608,8 @@
                                 </div>
                               -->
 
-                                </div>
-                            </div><button type="submit" class="btn btn-primary mt-3">Save</button>
+                                </div><button type="submit" class="btn btn-primary mt-3">Save</button>
+                            </div>
                             <!-- Start: Footer Centered -->
                             <?php include '_include/inner-footer.php'; ?>
                             <!-- End: Footer Centered -->
