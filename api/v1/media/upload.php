@@ -98,19 +98,21 @@ $publicUrl = "/media/{$tenantId}/{$year}/{$month}/{$filename}";
 // -------------------------
 try {
     $stmt = $pdo->prepare("
-        INSERT INTO zentra_media
-        (tenant_id, file_name, file_path, file_type, file_size, uploaded_by, uploaded_on_utc)
-        VALUES
-        (:tenant_id, :file_name, :file_path, :file_type, :file_size, :uploaded_by, UTC_TIMESTAMP())
-    ");
+    INSERT INTO zentra_library
+    (tenant_id, file_name, file_extension, file_url, file_type, file_size, uploaded_by, uploaded_from, uploaded_at)
+    VALUES
+    (:tenant_id, :file_name, :file_extension, :file_url, :file_type, :file_size, :uploaded_by, :uploaded_from, UTC_TIMESTAMP())
+");
 
     $stmt->execute([
-        ':tenant_id'   => $tenantId,
-        ':file_name'   => $filename,
-        ':file_path'   => $publicUrl,
-        ':file_type'   => $file['type'],
-        ':file_size'   => $file['size'],
-        ':uploaded_by' => $userId,
+        ':tenant_id'      => $tenantId,
+        ':file_name'      => $filename,
+        ':file_extension' => strtolower(pathinfo($filename, PATHINFO_EXTENSION)),
+        ':file_url'       => $publicUrl,
+        ':file_type'      => $file['type'],
+        ':file_size'      => $file['size'],
+        ':uploaded_by'    => $userId,
+        ':uploaded_from'  => 'event-poster',
     ]);
 
     $mediaId = $pdo->lastInsertId();
