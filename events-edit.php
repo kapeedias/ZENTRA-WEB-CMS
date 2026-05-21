@@ -819,10 +819,11 @@
 
         selectedTags.forEach((tag, index) => {
             badgeContainer.innerHTML += `
-                <span class="tag-badge">
-                    ${tag.name}
-                    <span class="remove-tag" onclick="removeTag(${index})">&times;</span>
-                </span>`;
+            <span class="badge bg-light d-inline-flex gap-1 align-items-center">
+                ${tag.name}
+                <span class="remove-tag text-muted" onclick="removeTag(${index})">&times;</span>
+            </span>`;
+
         });
 
         document.getElementById('hiddenTags').value = JSON.stringify(selectedTags);
