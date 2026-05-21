@@ -609,16 +609,13 @@
                               -->
 
                                 </div>
-                            </div>
-                            <!-- Start: Footer Centered -->
+                            </div><!-- Start: Footer Centered -->
                             <?php include '_include/inner-footer.php'; ?>
                             <!-- End: Footer Centered -->
                     </main>
                 </div>
             </div>
         </div>
-
-
         <div class="modal fade" id="zentraMediaModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false"
             aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -688,7 +685,6 @@
                 </div>
             </div>
         </div>
-
     </form>
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     <script>
