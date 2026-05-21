@@ -40,22 +40,21 @@ try {
     echo json_encode(['success' => false, 'error' => 'DB connection failed']);
     exit;
 }
-$ip      = cleanIP(getClientIP());
-$agent   = getUserAgent();
+// Use session values set at login
+$ip      = $_SESSION['user_ip'] ?? cleanIP(getClientIP());
+$agent   = $_SESSION['user_agent'] ?? ($_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
 $browser = getBrowserName($agent);
 $device  = getDeviceType($agent);
-$geo     = getGeoLocation($ip);
 
-$_SESSION['geo'] = [
-    'city'    => $geo['city'],
-    'region'  => $geo['region'],
-    'country' => $geo['country'],
-    'postal'  => $geo['postal'],
-    'raw'     => $geo['raw'],
+$geo = $_SESSION['geo'] ?? [
+    'city'    => null,
+    'region'  => null,
+    'country' => null,
+    'postal'  => null,
+    'raw'     => null,
 ];
-$_SESSION['user_ip']       = $ip;
-$_SESSION['user_agent']    = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
-$_SESSION['user_timezone'] = $geo['timezone'];
+
+$timezone = $_SESSION['user_timezone'] ?? 'UTC';
 
 // ---- CHECK IF TAG ALREADY EXISTS ----
 $stmt = $pdo->prepare("
