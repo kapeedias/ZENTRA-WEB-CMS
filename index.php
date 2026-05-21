@@ -11,3 +11,4 @@ if (isset($_SESSION['user_id'])) {
 // Redirect to login.php
 header("Location: /login.php");
 exit; // Always call exit after redirect to stop further execution
+//End
