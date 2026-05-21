@@ -286,11 +286,12 @@
                                                 data-bs-target="#tagPickerModal"> Add
                                             </button>
                                         </div>
-                                    </div>
-                                    <div class="card-body pt-2">
 
-                                        <div class="d-flex flex-wrap gap-2">
-                                            <div id="eventTagBadges" class="d-flex flex-wrap gap-2"></div>
+                                        <div class="card-body pt-2">
+
+                                            <div class="d-flex flex-wrap gap-2">
+                                                <div id="eventTagBadges" class="d-flex flex-wrap gap-2"></div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="card">
