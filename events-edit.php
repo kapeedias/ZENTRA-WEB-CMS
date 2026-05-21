@@ -282,8 +282,8 @@
                                     <div class="card mb-4">
                                         <div class="card-header d-flex justify-content-between align-items-center">
                                             <h5 class="fw-bold mb-0">Event Tags</h5>
-                                            <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal"
-                                                data-bs-target="#tagPickerModal"> Add Event Tags
+                                            <button class="btn btn-warning text-white btn-sm" type="button"
+                                                data-bs-toggle="modal" data-bs-target="#tagPickerModal"> Add Event Tags
                                             </button>
                                         </div>
 
