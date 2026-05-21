@@ -61,10 +61,10 @@ if ($existingId) {
 
 // ---- INSERT NEW TAG ----
 $stmt = $pdo->prepare("
-    INSERT INTO zentra_event_tags (tenant_id, tag_name, tag_slug)
-    VALUES (?, ?, ?)
+    INSERT INTO zentra_event_tags (tenant_id, tag_name, tag_slug, created_by)
+    VALUES (?, ?, ?, ?)
 ");
-$stmt->execute([$tenantId, $name, $slug]);
+$stmt->execute([$tenantId, $name, $slug, $userId]);
 
 $newTagId = (int) $pdo->lastInsertId();
 
