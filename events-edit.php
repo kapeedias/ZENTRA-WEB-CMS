@@ -285,42 +285,40 @@
                                             <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal"
                                                 data-bs-target="#tagPickerModal"> Add
                                             </button>
-
-
                                         </div>
-                                        <div class="card-body pt-2">
+                                    </div>
+                                    <div class="card-body pt-2">
 
-                                            <div class="d-flex flex-wrap gap-2">
-                                                <div id="eventTagBadges" class="d-flex flex-wrap gap-2"></div>
-                                            </div>
+                                        <div class="d-flex flex-wrap gap-2">
+                                            <div id="eventTagBadges" class="d-flex flex-wrap gap-2"></div>
                                         </div>
-                                        <div class="card">
-                                            <div class="card-header d-flex justify-content-between align-items-center">
-                                                <h5 class="fw-bold mb-0">Event Details</h5><a
-                                                    class="btn btn-primary btn-sm" role="button" href="#">Add
-                                                    Details</a>
-                                            </div>
-                                            <div class="card-body pt-0">
-                                                <div class="list-group list-group-flush">
-                                                    <!--  <form method="POST" action="your-handler.php"
+                                    </div>
+                                    <div class="card">
+                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                            <h5 class="fw-bold mb-0">Event Details</h5><a class="btn btn-primary btn-sm"
+                                                role="button" href="#">Add
+                                                Details</a>
+                                        </div>
+                                        <div class="card-body pt-0">
+                                            <div class="list-group list-group-flush">
+                                                <!--  <form method="POST" action="your-handler.php"
                                                     onsubmit="return syncQuillContent()">
                                                         -->
-                                                    <!-- Quill Editor -->
-                                                    <div id="editor" style="height: 300px;">
-                                                        <p>Hello World!</p>
-                                                        <p>Some initial <strong>bold</strong> text</p>
-                                                    </div>
-
-                                                    <!-- Hidden input that will store Quill HTML -->
-                                                    <input type="hidden" name="event_description"
-                                                        id="event_description">
-
-                                                    <button type="submit" class="btn btn-primary mt-3">Save</button>
-                                                    <!--</form> -->
+                                                <!-- Quill Editor -->
+                                                <div id="editor" style="height: 300px;">
+                                                    <p>Hello World!</p>
+                                                    <p>Some initial <strong>bold</strong> text</p>
                                                 </div>
+
+                                                <!-- Hidden input that will store Quill HTML -->
+                                                <input type="hidden" name="event_description" id="event_description">
+
+                                                <button type="submit" class="btn btn-primary mt-3">Save</button>
+                                                <!--</form> -->
                                             </div>
                                         </div>
                                     </div>
+
                                     <!--
                                 <div class="col-xl-4 mb-4">
                                     <div class="card mb-4">
