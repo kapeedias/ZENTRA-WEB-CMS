@@ -763,6 +763,7 @@
     const tagSearchInput = document.getElementById('tagSearchInput');
     const tagSearchResults = document.getElementById('tagSearchResults');
 
+    // --- SEARCH TAGS ---
     tagSearchInput.addEventListener('input', function() {
         const q = this.value.trim();
         if (!q) {
@@ -770,7 +771,7 @@
             return;
         }
 
-        fetch(`/api/tags/search?q=${encodeURIComponent(q)}`)
+        fetch(`/api/v1/tags/search.php?q=${encodeURIComponent(q)}`)
             .then(r => r.json())
             .then(tags => renderTagSearch(tags, q));
     });
@@ -780,22 +781,23 @@
 
         if (tags.length === 0) {
             tagSearchResults.innerHTML = `
-            <button class="list-group-item list-group-item-action"
-                    onclick="addTag('${query}', true)">
-                Create tag: <strong>${query}</strong>
-            </button>`;
+                <button class="list-group-item list-group-item-action"
+                        onclick="addTag('${query}', true)">
+                    Create tag: <strong>${query}</strong>
+                </button>`;
             return;
         }
 
         tags.forEach(tag => {
             tagSearchResults.innerHTML += `
-            <button class="list-group-item list-group-item-action"
-                    onclick="addTag('${tag.tag_name}', false, ${tag.tag_id})">
-                ${tag.tag_name}
-            </button>`;
+                <button class="list-group-item list-group-item-action"
+                        onclick="addTag('${tag.tag_name}', false, ${tag.tag_id})">
+                    ${tag.tag_name}
+                </button>`;
         });
     }
 
+    // --- ADD TAG ---
     function addTag(name, isNew, tagId = null) {
         const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
@@ -807,28 +809,55 @@
             tagId,
             isNew
         });
+
         renderBadges();
     }
 
+    // --- RENDER BADGES ---
     function renderBadges() {
         badgeContainer.innerHTML = '';
 
         selectedTags.forEach((tag, index) => {
             badgeContainer.innerHTML += `
-            <span class="tag-badge">
-                ${tag.name}
-                <span class="remove-tag" onclick="removeTag(${index})">&times;</span>
-            </span>`;
+                <span class="tag-badge">
+                    ${tag.name}
+                    <span class="remove-tag" onclick="removeTag(${index})">&times;</span>
+                </span>`;
         });
 
         document.getElementById('hiddenTags').value = JSON.stringify(selectedTags);
     }
 
+    // --- REMOVE TAG ---
     function removeTag(index) {
         selectedTags.splice(index, 1);
         renderBadges();
     }
+
+    // --- LOAD TAGS FOR EDIT MODE ---
+    function loadEventTags(eventId) {
+        fetch(`/api/v1/tags/event-tags.php?event_id=${eventId}`)
+            .then(r => r.json())
+            .then(tags => {
+                selectedTags = tags.map(t => ({
+                    name: t.tag_name,
+                    slug: t.tag_slug,
+                    tagId: t.tag_id,
+                    isNew: false
+                }));
+                renderBadges();
+            });
+    }
+
+    // Auto-run on page load (only if editing)
+    <?php if (! empty($event_id)): ?>
+    document.addEventListener("DOMContentLoaded", function() {
+        loadEventTags(<?php echo $event_id ?>);
+    });
+    <?php endif; ?>
     </script>
+
+
     <?php include '_include/body_end_plugins.php'; ?>
 </body>
 
