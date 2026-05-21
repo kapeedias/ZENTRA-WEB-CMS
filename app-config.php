@@ -167,11 +167,11 @@
                         if (isEnabled === 1) {
                             statusCell.innerHTML =
                                 `<span class="badge bg-light d-inline-flex gap-1"><i
-                                                            class="fa fa-check-circle text-success">check_circle</i>&nbsp;Active</span>`;
+                                                            class="fa fa-check-circle text-success"></i>&nbsp;Active</span>`;
                         } else {
                             statusCell.innerHTML =
                                 `<span class="badge bg-light d-inline-flex gap-1"><i
-                                                            class="material-icons text-danger">cancel</i>&nbsp;Inactive</span>`;
+                                                            class="fa fa-times-circle text-danger"></i>&nbsp;Inactive</span>`;
                         }
                     } else {
                         alert("Error: " + data.message);
