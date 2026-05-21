@@ -9,6 +9,7 @@ require_once __DIR__ . '/../../../config/db.php';
 require_once __DIR__ . '/../../../classes/User.php';
 require_once __DIR__ . '/../../../classes/ModuleManager.php';
 require_once __DIR__ . '/../../../classes/ActivityLogger.php';
+secureSessionStart();
 
 header('Content-Type: application/json');
 
@@ -73,8 +74,8 @@ $logger = new ActivityLogger($pdo, $tenantId);
 
 $logger->log(
     (int) $userId,
-    "Created new tag",
-    (string) $newTagId,
+    "Tag Created",
+    "Created",
     [
         'tag_name'      => $name,
         'tag_slug'      => $slug,
