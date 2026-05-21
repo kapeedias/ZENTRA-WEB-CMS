@@ -2,10 +2,12 @@
 <div
     class="d-flex flex-column justify-content-between flex-xl-row-reverse align-items-xl-start pt-3 mb-3 border-bottom">
     <div class="d-flex align-items-center mb-3 mb-xl-0">
-        <form class="position-relative flex-grow-1 me-1"><input class="form-control pe-4" type="search"
-                placeholder="Search" name="search"><button
-                class="btn border-0 position-absolute top-50 end-0 translate-middle-y" type="submit"><i
-                    class="fa fa-search"></i></button></form>
+        <div class="position-relative flex-grow-1 me-1">
+            <input class="form-control pe-5" type="search" placeholder="Search" name="search">
+            <button class="btn border-0 position-absolute top-50 end-0 translate-middle-y px-2" type="submit">
+                <i class="fa fa-search"></i>
+            </button>
+        </div>
         <div class="dropdown"><button class="btn dropdown-toggle border-0 p-2" data-bs-toggle="dropdown"
                 aria-expanded="false" type="button"><img class="object-fit-cover border rounded-circle"
                     src="/assets/img/team/avatar2.jpg?h=7086b181e9fb853914a2cca97301c640" width="32"
