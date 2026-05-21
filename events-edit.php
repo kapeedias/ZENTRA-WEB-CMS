@@ -227,8 +227,88 @@
                                                 </span>
                                             </div>
 
-                                            <!-- Your date/time/location fields remain unchanged -->
-                                            <!-- (Not repeating them here for brevity) -->
+                                            <div class="row g-3">
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span>Event Start Date &amp;
+                                                            Time</span></div>
+                                                    <div class="fw-semibold">
+                                                        <input class="fw-bold form-control-sm form-control text-warning"
+                                                            type="datetime-local" name="event_start_date_time"
+                                                            id="event_start_date_time" required=""
+                                                            value="<?php echo $event['event_start_date']; ?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span>Event End Date &amp;
+                                                            Time</span></div>
+                                                    <div class="fw-semibold"><input
+                                                            class="fw-bold form-control-sm form-control text-warning"
+                                                            type="datetime-local" name="event_end_date_time"
+                                                            id="event_end_date_time" required=""
+                                                            value="<?php echo $event['event_end_date']; ?>">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span
+                                                            class="small text-muted mb-1">Is this an all day
+                                                            event?</span></div>
+                                                    <label class="form-check">
+                                                        <input class="form-check-input text-warning" type="checkbox"
+                                                            id="all_day_event" onchange="setAllDayEvent(this.checked)"
+                                                            <?php echo $isAllDay ? 'checked' : '' ?>>
+                                                        <span class="form-check-label">Yes</span>
+                                                    </label>
+                                                </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span>Event Timezone</span><span
+                                                            class="text-danger">*</span></div>
+                                                    <div class="fw-semibold">
+                                                        <select class="form-select-sm form-select text-warning"
+                                                            name="event_timezone" id="event_timezone" required="yes">
+                                                            <?php
+                                                                foreach ($timezones as $tz) {
+                                                                    $selected = ($tz === 'America/Vancouver') ? 'selected' : '';
+                                                                    echo "<option value=\"$tz\" $selected>$tz</option>";
+                                                                }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span>Event Location</span><span
+                                                            class="text-danger">*</span></div>
+                                                    <div class="fw-semibold"><select
+                                                            class="form-select-sm form-select text-warning"
+                                                            name="event_location" required="yes">
+                                                            <option value="">-- Select Location --</option>
+                                                            <?php foreach ($locations as $loc): ?>
+                                                            <option value="<?php echo $loc['location_id'] ?>"
+                                                                <?php echo($loc['location_id'] == $currentLocation) ? 'selected' : '' ?>>
+                                                                <?php echo htmlspecialchars($loc['location_name']) ?>
+                                                            </option>
+                                                            <?php endforeach; ?>
+                                                        </select></div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span>Event Category</span><span
+                                                            class="text-danger">*</span></div>
+                                                    <div class="fw-semibold"><select
+                                                            class="form-select-sm form-select text-warning"
+                                                            name="event_category" required="yes">
+                                                            <option value="">-- Select Event Category --</option>
+                                                            <option value="Event"
+                                                                <?php echo($eventCategory === 'Event') ? 'selected' : '' ?>>
+                                                                Event
+                                                            </option>
+
+                                                            <option value="Festival"
+                                                                <?php echo($eventCategory === 'Festival') ? 'selected' : '' ?>>
+                                                                Festival
+                                                            </option>
+                                                        </select></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
