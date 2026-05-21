@@ -283,7 +283,7 @@
                                         <div class="card-header d-flex justify-content-between align-items-center">
                                             <h5 class="fw-bold mb-0">Event Tags</h5>
                                             <button class="btn btn-primary btn-sm" type="button" data-bs-toggle="modal"
-                                                data-bs-target="#tagPickerModal"> Add
+                                                data-bs-target="#tagPickerModal"> Add Event Tags
                                             </button>
                                         </div>
 
@@ -296,9 +296,7 @@
                                     </div>
                                     <div class="card">
                                         <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="fw-bold mb-0">Event Details</h5><a class="btn btn-primary btn-sm"
-                                                role="button" href="#">Add
-                                                Details</a>
+                                            <h5 class="fw-bold mb-0">Event Details</h5>
                                         </div>
                                         <div class="card-body pt-0">
                                             <div class="list-group list-group-flush">
@@ -313,8 +311,6 @@
 
                                                 <!-- Hidden input that will store Quill HTML -->
                                                 <input type="hidden" name="event_description" id="event_description">
-
-                                                <button type="submit" class="btn btn-primary mt-3">Save</button>
                                                 <!--</form> -->
                                             </div>
                                         </div>
@@ -608,7 +604,13 @@
                               -->
 
                                 </div>
-                            </div><!-- Start: Footer Centered -->
+                            </div>
+                            <div class="row">
+                                <div class="col-12 d-flex justify-content-center">
+                                    <button type="submit" class="btn btn-primary mt-3">Save Event</button>
+                                </div>
+                            </div>
+                            <!-- Start: Footer Centered -->
                             <?php include '_include/inner-footer.php'; ?>
                             <!-- End: Footer Centered -->
                     </main>
