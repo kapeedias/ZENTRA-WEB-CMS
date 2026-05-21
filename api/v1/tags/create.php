@@ -74,8 +74,8 @@ $logger = new ActivityLogger($pdo, $tenantId);
 
 $logger->log(
     (int) $userId,
+    "Created new Tag (tag id: {$newTagId}) with slug '{$slug}' and name '{$name}'",
     "Tag Created",
-    "Created",
     [
         'tag_name'      => $name,
         'tag_slug'      => $slug,
