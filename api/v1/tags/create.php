@@ -7,25 +7,16 @@ require_once __DIR__ . '/../../../config/helpers.php';
 require_once __DIR__ . '/../../../config/init.php';
 require_once __DIR__ . '/../../../config/db.php';
 require_once __DIR__ . '/../../../classes/User.php';
-require_once __DIR__ . '/../../../classes/MenuManager.php';
-require_once __DIR__ . '/../../../_include/nav_renderer.php';
 require_once __DIR__ . '/../../../classes/ModuleManager.php';
-require_once __DIR__ . '/../../../classes/EventsModule.php';
 require_once __DIR__ . '/../../../classes/ActivityLogger.php';
-
-try {
-    $pdo = Database::getInstance();
-} catch (Exception $e) {
-    echo json_encode(['success' => false, 'message' => 'DB connection failed']);
-    exit;
-}
 
 header('Content-Type: application/json');
 
 // ---- AUTH CHECK ----
 $tenantId = $_SESSION['tenant_id'] ?? null;
+$userId   = $_SESSION['user_id'] ?? null;
 
-if (! $tenantId) {
+if (! $tenantId || ! $userId) {
     echo json_encode(['success' => false, 'error' => 'Unauthorized']);
     exit;
 }
@@ -41,6 +32,7 @@ if ($name === '' || $slug === '') {
     exit;
 }
 
+// ---- DB CONNECTION ----
 try {
     $pdo = Database::getInstance();
 } catch (Exception $e) {
@@ -61,7 +53,7 @@ $existingId = $stmt->fetchColumn();
 if ($existingId) {
     echo json_encode([
         'success'  => true,
-        'tag_id'   => $existingId,
+        'tag_id'   => (int) $existingId,
         'existing' => true,
     ]);
     exit;
@@ -76,13 +68,30 @@ $stmt->execute([$tenantId, $name, $slug]);
 
 $newTagId = (int) $pdo->lastInsertId();
 
-// ---- OPTIONAL: LOG ACTIVITY ----
-ActivityLogger::log(
-    $tenantId,
-    $_SESSION['user_id'] ?? null,
-    "Created new tag: {$name}"
+// ---- LOG ACTIVITY (INSTANCE-BASED, TYPE-SAFE) ----
+$logger = new ActivityLogger($pdo, $tenantId);
+
+$logger->log(
+    (int) $userId,
+    "Created new tag",
+    (string) $newTagId,
+    [
+        'tag_name'      => $name,
+        'tag_slug'      => $slug,
+        'user_name'     => $_SESSION['user_name'] ?? null,
+        'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+        'tenant_id'     => (string) $tenantId,
+        'ip'            => $_SESSION['user_ip'] ?? null,
+        'browser'       => $_SESSION['user_agent'] ?? null,
+        'device'        => $_SESSION['device'] ?? null,
+        'city'          => $_SESSION['geo_city'] ?? null,
+        'region'        => $_SESSION['geo_region'] ?? null,
+        'country'       => $_SESSION['geo_country'] ?? null,
+        'geo_raw'       => $_SESSION['geo_raw'] ?? null,
+    ]
 );
 
+// ---- RESPONSE ----
 echo json_encode([
     'success'  => true,
     'tag_id'   => $newTagId,
