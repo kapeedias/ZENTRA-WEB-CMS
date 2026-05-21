@@ -803,15 +803,40 @@
 
         if (selectedTags.some(t => t.slug === slug)) return;
 
-        selectedTags.push({
-            name,
-            slug,
-            tagId,
-            isNew
-        });
-
-        renderBadges();
+        // If it's a new tag, create it in DB first
+        if (isNew) {
+            fetch('/api/v1/tags/create.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        slug
+                    })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    selectedTags.push({
+                        name,
+                        slug,
+                        tagId: data.tag_id,
+                        isNew: false
+                    });
+                    renderBadges();
+                });
+        } else {
+            // Existing tag
+            selectedTags.push({
+                name,
+                slug,
+                tagId,
+                isNew: false
+            });
+            renderBadges();
+        }
     }
+
 
     // --- RENDER BADGES ---
     function renderBadges() {
