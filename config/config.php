@@ -6,7 +6,7 @@ require_once __DIR__ . '/timezone.php';
 date_default_timezone_set('UTC');
 
 // Turn off displaying errors to users
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 
 // Enable logging
 ini_set('log_errors', 1);
