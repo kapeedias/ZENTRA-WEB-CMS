@@ -319,7 +319,7 @@
                                                     <!--</form> -->
                                                 </div>
                                             </div>
-                                        </div><button type="submit" class="btn btn-primary mt-3">Save</button>
+                                        </div>
                                     </div>
                                     <!--
                                 <div class="col-xl-4 mb-4">
@@ -614,6 +614,11 @@
                             <?php include '_include/inner-footer.php'; ?>
                             <!-- End: Footer Centered -->
                     </main>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary mt-3">Save</button>
                 </div>
             </div>
         </div>
