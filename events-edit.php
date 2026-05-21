@@ -276,10 +276,42 @@
                                 </div>
                                 <div class="card mb-4">
                                     <div class="card-header d-flex justify-content-between align-items-center">
-                                        <h5 class="fw-bold mb-0">Skills &amp; Expertise</h5><button
-                                            class="btn btn-primary btn-sm" type="button"> Add </button>
+                                        <h5 class="fw-bold mb-0">Event Tags</h5>
+                                        <button class="btn btn-primary btn-sm" type="button" id="openTagPicker"> Add
+                                        </button>
+                                        <div class="modal fade" id="tagPickerModal" tabindex="-1" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg modal-dialog-centered">
+                                                <div class="modal-content">
+
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title fw-bold">Select Tags</h5>
+                                                        <button type="button" class="btn-close"
+                                                            data-bs-dismiss="modal"></button>
+                                                    </div>
+
+                                                    <div class="modal-body">
+
+                                                        <input type="text" id="tagSearchInput" class="form-control"
+                                                            placeholder="Search or create tags…">
+
+                                                        <div id="tagSearchResults" class="list-group mt-3"></div>
+
+                                                    </div>
+
+                                                    <div class="modal-footer">
+                                                        <button class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <input type="hidden" id="hiddenTags" name="tags">
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     </div>
                                     <div class="card-body pt-2">
+
                                         <div class="d-flex flex-wrap gap-2"><span
                                                 class="badge bg-light d-inline-flex gap-1">&nbsp;Project
                                                 Management</span><span
@@ -720,6 +752,85 @@
     });
     </script>
 
+    <script>
+    let selectedTags = window.preloadedTags || [];
+    // [{tag_id:12, name:'Urgent', slug:'urgent'}]
+
+    const badgeContainer = document.getElementById('eventTagBadges');
+    const tagSearchInput = document.getElementById('tagSearchInput');
+    const tagSearchResults = document.getElementById('tagSearchResults');
+    const tagPickerModal = new bootstrap.Modal(document.getElementById('tagPickerModal'));
+
+    document.getElementById('openTagPicker').addEventListener('click', () => {
+        tagPickerModal.show();
+    });
+
+    tagSearchInput.addEventListener('input', function() {
+        const q = this.value.trim();
+        if (!q) {
+            tagSearchResults.innerHTML = '';
+            return;
+        }
+
+        fetch(`/api/tags/search?q=${encodeURIComponent(q)}`)
+            .then(r => r.json())
+            .then(tags => renderTagSearch(tags, q));
+    });
+
+    function renderTagSearch(tags, query) {
+        tagSearchResults.innerHTML = '';
+
+        if (tags.length === 0) {
+            tagSearchResults.innerHTML = `
+            <button class="list-group-item list-group-item-action"
+                    onclick="addTag('${query}', true)">
+                Create tag: <strong>${query}</strong>
+            </button>`;
+            return;
+        }
+
+        tags.forEach(tag => {
+            tagSearchResults.innerHTML += `
+            <button class="list-group-item list-group-item-action"
+                    onclick="addTag('${tag.tag_name}', false, ${tag.tag_id})">
+                ${tag.tag_name}
+            </button>`;
+        });
+    }
+
+    function addTag(name, isNew, tagId = null) {
+        const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+        if (selectedTags.some(t => t.slug === slug)) return;
+
+        selectedTags.push({
+            name,
+            slug,
+            tagId,
+            isNew
+        });
+        renderBadges();
+    }
+
+    function renderBadges() {
+        badgeContainer.innerHTML = '';
+
+        selectedTags.forEach((tag, index) => {
+            badgeContainer.innerHTML += `
+            <span class="tag-badge">
+                ${tag.name}
+                <span class="remove-tag" onclick="removeTag(${index})">&times;</span>
+            </span>`;
+        });
+
+        document.getElementById('hiddenTags').value = JSON.stringify(selectedTags);
+    }
+
+    function removeTag(index) {
+        selectedTags.splice(index, 1);
+        renderBadges();
+    }
+    </script>
     <?php include '_include/body_end_plugins.php'; ?>
 </body>
 
