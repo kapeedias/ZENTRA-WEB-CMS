@@ -616,11 +616,6 @@
                     </main>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary mt-3">Save</button>
-                </div>
-            </div>
         </div>
 
 
