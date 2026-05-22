@@ -125,215 +125,102 @@
                                 </div>
                                 <div class="col-xl-8 mb-4">
                                     <div class="card mb-4">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="fw-bold mb-0"></h5><span
-                                                class="badge bg-light d-inline-flex gap-1"><svg
-                                                    class="bi bi-check-circle-fill text-success"
-                                                    xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
-                                                    fill="currentColor" viewBox="0 0 16 16">
-                                                    <path
-                                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z">
-                                                    </path>
-                                                </svg>&nbsp;Done</span>
+                                        <div class="card-header d-flex justify-content-end align-items-center">
+                                            <h5 class="fw-bold mb-0"></h5>
+                                            Status:&nbsp;<span
+                                                class="badge d-inline-flex gap-1 <?php echo $badge['class']; ?>">
+                                                <i class="fa <?php echo $badge['icon']; ?> me-1"></i>
+                                                <?php echo $badge['label']; ?>
+                                            </span>
                                         </div>
                                         <div class="card-body pt-2">
-                                            <div class="mb-3"><span>Event
-                                                    Title</span><input type="text" class="form-control" autofocus><span
+                                            <div class="mb-3"><span>Event Title</span><input type="text"
+                                                    class="form-control fw-bold text-warning" autofocus=""
+                                                    name="event_title" id="event_title"
+                                                    value="<?php echo htmlspecialchars($event['event_title']); ?>"><span
                                                     class="small text-secondary"
-                                                    id="event-url">http://mywebsite.com/events/2026/04/23/navrathri-2026</span>
+                                                    id="event-url"><?php echo htmlspecialchars($eventUrl); ?></span>
                                             </div>
                                             <div class="row g-3">
                                                 <div class="col-md-4">
-                                                    <div class="small text-muted mb-1"><span>Event
-                                                            Start Date &amp;
+                                                    <div class="small text-muted mb-1"><span>Event Start Date &amp;
                                                             Time</span></div>
-                                                    <div class="fw-semibold"><span></span><input class="form-control"
-                                                            type="datetime-local"></div>
+                                                    <div class="fw-semibold">
+                                                        <input class="fw-bold form-control-sm form-control text-warning"
+                                                            type="datetime-local" name="event_start_date_time"
+                                                            id="event_start_date_time" required=""
+                                                            value="<?php echo $event['event_start_date']; ?>">
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <div class="small text-muted mb-1"><span>Event
-                                                            End Date &amp;
+                                                    <div class="small text-muted mb-1"><span>Event End Date &amp;
                                                             Time</span></div>
-                                                    <div class="fw-semibold"><input class="form-control"
-                                                            type="datetime-local"></div>
+                                                    <div class="fw-semibold"><input
+                                                            class="fw-bold form-control-sm form-control text-warning"
+                                                            type="datetime-local" name="event_end_date_time"
+                                                            id="event_end_date_time" required=""
+                                                            value="<?php echo $event['event_end_date']; ?>">
+                                                    </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <div class="small text-muted mb-1"><span>Is
-                                                            this an all day
+                                                    <div class="small text-muted mb-1"><span
+                                                            class="small text-muted mb-1">Is this an all day
                                                             event?</span></div>
-                                                    <div class="fw-semibold"><input class="form-control"
-                                                            type="datetime-local"></div>
+                                                    <label class="form-check">
+                                                        <input class="form-check-input text-warning" type="checkbox"
+                                                            id="all_day_event" onchange="setAllDayEvent(this.checked)"
+                                                            <?php echo $isAllDay ? 'checked' : '' ?>>
+                                                        <span class="form-check-label">Yes</span>
+                                                    </label>
                                                 </div>
-                                                <div class="col-md-6">
-                                                    <div class="small text-muted mb-1"><span>Join
-                                                            Date</span></div>
-                                                    <div class="fw-semibold"><span>January
-                                                            15,
-                                                            2023</span></div>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    <div class="small text-muted mb-1"><span>Reports
-                                                            To</span></div>
-                                                    <div class="fw-semibold"><span>Michael
-                                                            Chen (VP
-                                                            Marketing)</span></div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="card mb-4">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="fw-bold mb-0">Skills
-                                                &amp; Expertise</h5><button class="btn btn-primary btn-sm"
-                                                type="button"> Add </button>
-                                        </div>
-                                        <div class="card-body pt-2">
-                                            <div class="d-flex flex-wrap gap-2"><span
-                                                    class="badge bg-light d-inline-flex gap-1">&nbsp;Project
-                                                    Management</span><span
-                                                    class="badge bg-light d-inline-flex gap-1">Agile/Scrum</span><span
-                                                    class="badge bg-light d-inline-flex gap-1">Leadership</span><span
-                                                    class="badge bg-light d-inline-flex gap-1">Strategic
-                                                    Planning</span><span
-                                                    class="badge bg-light d-inline-flex gap-1">Stakeholder
-                                                    Management</span><span
-                                                    class="badge bg-light d-inline-flex gap-1">Jira</span><span
-                                                    class="badge bg-light d-inline-flex gap-1">Microsoft
-                                                    Project</span><span class="badge bg-light d-inline-flex gap-1">Risk
-                                                    Management</span><span
-                                                    class="badge bg-light d-inline-flex gap-1">Budget
-                                                    Planning</span><span class="badge bg-light d-inline-flex gap-1">Team
-                                                    Building</span></div>
-                                        </div>
-                                    </div>
-                                    <div class="card">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="fw-bold mb-0">Recent
-                                                Projects</h5><a class="btn btn-primary btn-sm" role="button"
-                                                href="#">View
-                                                All</a>
-                                        </div>
-                                        <div class="card-body pt-0">
-                                            <div class="list-group list-group-flush">
-                                                <div class="px-0 py-3 list-group-item">
-                                                    <div class="d-flex justify-content-between align-items-start">
-                                                        <div class="flex-grow-1">
-                                                            <div class="d-flex align-items-center mb-2">
-                                                                <h6 class="me-2 mb-0">Website
-                                                                    Redesign</h6><span
-                                                                    class="badge bg-light d-inline-flex gap-1"><svg
-                                                                        class="bi bi-check-circle-fill text-success"
-                                                                        xmlns="http://www.w3.org/2000/svg" width="1em"
-                                                                        height="1em" fill="currentColor"
-                                                                        viewBox="0 0 16 16">
-                                                                        <path
-                                                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z">
-                                                                        </path>
-                                                                    </svg>&nbsp;Done</span>
-                                                            </div>
-                                                            <p class="small text-muted mb-2">Complete
-                                                                redesign of
-                                                                company website
-                                                                with modern
-                                                                UI/UX</p>
-                                                            <div class="progress mb-2">
-                                                                <div class="progress-bar bg-info" aria-valuenow="68"
-                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                    style="width: 68%;"><span
-                                                                        class="visually-hidden">68%</span></div>
-                                                            </div>
-                                                            <div class="small text-muted d-flex gap-3"><span>
-                                                                    Due: Mar 15,
-                                                                    2026</span><span>
-                                                                    8
-                                                                    members</span><span>
-                                                                    68%
-                                                                    complete</span></div>
-                                                        </div>
+
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span>Event Timezone</span><span
+                                                            class="text-danger">*</span></div>
+                                                    <div class="fw-semibold">
+                                                        <select class="form-select-sm form-select text-warning"
+                                                            name="event_timezone" id="event_timezone" required="yes">
+                                                            <?php
+                                                                foreach ($timezones as $tz) {
+                                                                    $selected = ($tz === 'America/Vancouver') ? 'selected' : '';
+                                                                    echo "<option value=\"$tz\" $selected>$tz</option>";
+                                                                }
+                                                            ?>
+                                                        </select>
                                                     </div>
                                                 </div>
-                                                <div class="px-0 py-3 list-group-item">
-                                                    <div class="d-flex justify-content-between align-items-start">
-                                                        <div class="flex-grow-1">
-                                                            <div class="d-flex align-items-center mb-2">
-                                                                <h6 class="me-2 mb-0">Brand
-                                                                    Identity
-                                                                    Refresh</h6><span
-                                                                    class="badge bg-light d-inline-flex gap-1"><svg
-                                                                        class="icon icon-tabler icon-tabler-loader"
-                                                                        xmlns="http://www.w3.org/2000/svg" width="1em"
-                                                                        height="1em" viewBox="0 0 24 24"
-                                                                        stroke-width="2" stroke="currentColor"
-                                                                        fill="none" stroke-linecap="round"
-                                                                        stroke-linejoin="round">
-                                                                        <path stroke="none" d="M0 0h24v24H0z"
-                                                                            fill="none"></path>
-                                                                        <path d="M12 6l0 -3"></path>
-                                                                        <path d="M16.25 7.75l2.15 -2.15"></path>
-                                                                        <path d="M18 12l3 0"></path>
-                                                                        <path d="M16.25 16.25l2.15 2.15"></path>
-                                                                        <path d="M12 18l0 3"></path>
-                                                                        <path d="M7.75 16.25l-2.15 2.15"></path>
-                                                                        <path d="M6 12l-3 0"></path>
-                                                                        <path d="M7.75 7.75l-2.15 -2.15"></path>
-                                                                    </svg>&nbsp;In
-                                                                    Progress</span>
-                                                            </div>
-                                                            <p class="small text-muted mb-2">Update
-                                                                brand guidelines
-                                                                and create new
-                                                                marketing
-                                                                materials</p>
-                                                            <div class="progress mb-2">
-                                                                <div class="progress-bar bg-info" aria-valuenow="85"
-                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                    style="width: 85%;"><span
-                                                                        class="visually-hidden">85%</span></div>
-                                                            </div>
-                                                            <div class="small text-muted d-flex gap-3"><span>
-                                                                    Due: Feb 28,
-                                                                    2026</span><span>
-                                                                    5
-                                                                    members</span><span>
-                                                                    85%
-                                                                    complete</span></div>
-                                                        </div>
-                                                    </div>
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span>Event Location</span><span
+                                                            class="text-danger">*</span></div>
+                                                    <div class="fw-semibold"><select
+                                                            class="form-select-sm form-select text-warning"
+                                                            name="event_location" required="yes">
+                                                            <option value="">-- Select Location --</option>
+                                                            <?php foreach ($locations as $loc): ?>
+                                                            <option value="<?php echo $loc['location_id'] ?>"
+                                                                <?php echo($loc['location_id'] == $currentLocation) ? 'selected' : '' ?>>
+                                                                <?php echo htmlspecialchars($loc['location_name']) ?>
+                                                            </option>
+                                                            <?php endforeach; ?>
+                                                        </select></div>
                                                 </div>
-                                                <div class="px-0 py-3 list-group-item">
-                                                    <div class="d-flex justify-content-between align-items-start">
-                                                        <div class="flex-grow-1">
-                                                            <div class="d-flex align-items-center mb-2">
-                                                                <h6 class="me-2 mb-0">CRM
-                                                                    Integration</h6><span
-                                                                    class="badge bg-light d-inline-flex gap-1"><svg
-                                                                        class="bi bi-check-circle-fill text-success"
-                                                                        xmlns="http://www.w3.org/2000/svg" width="1em"
-                                                                        height="1em" fill="currentColor"
-                                                                        viewBox="0 0 16 16">
-                                                                        <path
-                                                                            d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z">
-                                                                        </path>
-                                                                    </svg>&nbsp;Done</span>
-                                                            </div>
-                                                            <p class="small text-muted mb-2">Integrate
-                                                                new CRM system
-                                                                with existing
-                                                                tools</p>
-                                                            <div class="progress mb-2">
-                                                                <div class="progress-bar bg-info" aria-valuenow="100"
-                                                                    aria-valuemin="0" aria-valuemax="100"
-                                                                    style="width: 100%;"><span
-                                                                        class="visually-hidden">100%</span></div>
-                                                            </div>
-                                                            <div class="small text-muted d-flex gap-3"><span>
-                                                                    Completed:
-                                                                    Jan 10,
-                                                                    2026</span><span>
-                                                                    6
-                                                                    members</span></div>
-                                                        </div>
-                                                    </div>
+                                                <div class="col-md-4">
+                                                    <div class="small text-muted mb-1"><span>Event Category</span><span
+                                                            class="text-danger">*</span></div>
+                                                    <div class="fw-semibold"><select
+                                                            class="form-select-sm form-select text-warning"
+                                                            name="event_category" required="yes">
+                                                            <option value="">-- Select Event Category --</option>
+                                                            <option value="Event"
+                                                                <?php echo($eventCategory === 'Event') ? 'selected' : '' ?>>
+                                                                Event
+                                                            </option>
+
+                                                            <option value="Festival"
+                                                                <?php echo($eventCategory === 'Festival') ? 'selected' : '' ?>>
+                                                                Festival
+                                                            </option>
+                                                        </select></div>
                                                 </div>
                                             </div>
                                         </div>
