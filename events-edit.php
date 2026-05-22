@@ -287,8 +287,8 @@
 
                                         </div>
                                         <div class="col-12">
-                                            <div id="posterUploadError" class="w-100 alert-error d-none"></div>
-                                            <div id="posterUploadSuccess" class="w-100 alert-success d-none">
+                                            <div id="posterUploadError" class="w-100 alert-error"></div>
+                                            <div id="posterUploadSuccess" class="w-100 alert-success">
                                             </div>
                                         </div>
                                     </div><!-- End: event-poster -->
