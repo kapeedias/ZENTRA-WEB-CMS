@@ -629,6 +629,11 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="row">
+                            <div class="col-12 d-flex justify-content-center">
+                                <button type="submit" class="btn btn-primary mt-3">Save Event</button>
+                            </div>
+                        </div>
                         <!-- Start: Footer Centered -->
                         <?php include '_include/inner-footer.php'; ?>
                         <!-- End: Footer Centered -->
