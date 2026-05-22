@@ -122,8 +122,7 @@
                             <div class="row">
                                 <div class="col-12 mb-4">
                                     <div class="card">
-                                        <div id="posterUploadError" class="w-100 alert-error d-none"></div>
-                                        <div id="posterUploadSuccess" class="w-100 alert-success d-none"></div>
+
                                     </div>
                                     <div class="col-xl-8 mb-4">
                                         <div class="card mb-4">
@@ -289,6 +288,11 @@
                                                     <input type="hidden" name="poster_media_id" id="poster_media_id">
                                                 </div>
                                             </div>
+                                            <!-- INLINE MESSAGES (correctly wrapped in col-12) -->
+
+                                            <div id="posterUploadError" class="w-100 alert-error d-none"></div>
+                                            <div id="posterUploadSuccess" class="w-100 alert-success d-none"></div>
+
                                         </div><!-- End: event-poster -->
                                         <!-- Start: event-poster -->
                                         <div class="card mb-4">
