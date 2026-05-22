@@ -295,8 +295,8 @@
                                         <div class="card-body pt-2">
 
 
-                                            <img class="img-fluid rounded w-100 h-100" width="590" height="393"
-                                                id="posterPreviewImg" src="/assets/img/1200x600.jpg">
+                                            <img class="img-fluid rounded w-100" id="posterPreviewImg"
+                                                src="/assets/img/1200x600.jpg">
                                             <hr>
                                             <div class="small text-muted mb-2"><span>Social
                                                     Links</span></div>
