@@ -301,9 +301,10 @@
                                         </div>
                                         <div class="card-body pt-2">
 
-
-                                            <img class="img-fluid rounded w-100" id="posterPreviewImg"
-                                                src="/assets/img/1200x600.jpg">
+                                            <div id="posterPreview" class="d-none mt-3">
+                                                <img class="img-fluid rounded w-100" id="posterPreviewImg"
+                                                    src="/assets/img/1200x600.jpg">
+                                            </div>
                                             <hr>
                                             <div class="small text-muted mb-2"><span>Social
                                                     Links</span></div>
@@ -968,9 +969,9 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        // posterMediaIdInput.value = data.media_id;
-                        // previewImg.src = data.url;
-                        // preview.classList.remove('d-none');
+                        posterMediaIdInput.value = data.media_id;
+                        previewImg.src = data.url;
+                        preview.classList.remove('d-none');
                         showPosterSuccess("Poster Image uploaded successfully");
                         console.log("SUCCESS ALERT SHOWN");
 
