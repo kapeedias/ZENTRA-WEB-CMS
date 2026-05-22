@@ -972,6 +972,8 @@
                         previewImg.src = data.url;
                         preview.classList.remove('d-none');
                         showPosterSuccess("Poster Image uploaded successfully");
+                        console.log("SUCCESS ALERT SHOWN");
+
                     } else {
                         showPosterError(data.error || "Upload failed");
 
