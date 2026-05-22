@@ -281,6 +281,9 @@
                                                     accept="image/png, image/jpeg">
                                                 <input type="hidden" name="poster_media_id" id="poster_media_id">
                                             </div>
+                                            <div id="posterUploadError" class="w-100 alert-error d-none"></div>
+                                            <div id="posterUploadSuccess" class="w-100 alert-success d-none">
+                                            </div>
                                         </div>
                                     </div><!-- End: event-poster -->
                                     <!-- Start: event-poster -->
