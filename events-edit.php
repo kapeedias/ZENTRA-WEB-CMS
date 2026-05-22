@@ -289,12 +289,7 @@
                                     </div><!-- End: event-poster -->
 
                                 </div>
-                                <div class="col-12 my-4">
-                                    <div id="posterUploadError" class="alert alert-danger d-none w-100 mt-2">
-                                    </div>
-                                    <div id="posterUploadSuccess" class="alert alert-success d-none w-100 mt-2">
-                                    </div>
-                                </div>
+
 
                                 <!-- Start: event-poster -->
                                 <div class="card mb-4">
