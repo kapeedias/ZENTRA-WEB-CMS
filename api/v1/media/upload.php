@@ -77,8 +77,8 @@ if (! is_dir($storageDir)) {
 }
 
 // Generate safe filename
-$ext      = pathinfo($file['name'], PATHINFO_EXTENSION);
-$filename = uniqid('media_', true) . '.' . strtolower($ext);
+$ext      = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+$filename = uuidv4() . "." . $ext;
 
 $fullPath = $storageDir . $filename;
 
