@@ -270,10 +270,7 @@
                                                 Poster Upload</h5>
                                         </div>
                                         <div class="card-body pt-2">
-                                            <div id="posterUploadError" class="alert alert-danger d-none w-100 mt-2">
-                                            </div>
-                                            <div id="posterUploadSuccess" class="alert alert-success d-none w-100 mt-2">
-                                            </div>
+
                                             <div class="mb-4 storage-dropzone">
                                                 <i class="fa fa-cloud-upload fa-3x text-muted mb-3"></i>
 
@@ -292,6 +289,13 @@
                                     </div><!-- End: event-poster -->
 
                                 </div>
+                                <div class="col-12 my-4">
+                                    <div id="posterUploadError" class="alert alert-danger d-none w-100 mt-2">
+                                    </div>
+                                    <div id="posterUploadSuccess" class="alert alert-success d-none w-100 mt-2">
+                                    </div>
+                                </div>
+
                                 <!-- Start: event-poster -->
                                 <div class="card mb-4">
                                     <div class="card-header d-flex justify-content-between align-items-center">
