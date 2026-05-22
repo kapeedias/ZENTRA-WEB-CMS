@@ -270,14 +270,16 @@
                                                 Poster Upload</h5>
                                         </div>
                                         <div class="card-body pt-2">
-                                            <div class="mb-4 storage-dropzone"><i
-                                                    class="fa fa-cloud-upload fs-1 text-dark mb-2"></i>
-                                                <h6 class="fw-bold">Click or
-                                                    drag event poster to
-                                                    upload</h6>
-                                                <p class="small text-muted mb-0">PNG
-                                                    or JPG (max. 2 MB)</p><input class="d-none" type="file"
-                                                    id="fileInput-1">
+                                            <div class="mb-4 storage-dropzone">
+                                                <i class="fa fa-cloud-upload fa-3x text-muted mb-3"></i>
+
+                                                <h6 class="fw-bold mb-1">Click or drag event poster to upload
+                                                </h6>
+                                                <p class="small text-muted mb-0">PNG or JPG (max. 2 MB)</p>
+
+                                                <input class="d-none" type="file" id="fileInput-2"
+                                                    accept="image/png, image/jpeg">
+                                                <input type="hidden" name="poster_media_id" id="poster_media_id">
                                             </div>
                                         </div>
                                     </div><!-- End: event-poster -->
@@ -288,8 +290,7 @@
                                                 Poster</h5>
                                         </div>
                                         <div class="card-body pt-2"><img class="img-fluid rounded w-100 h-100"
-                                                width="590" height="393"
-                                                src="assets/img/0266554465.jpeg?h=e1c28da37aa8eafb31964ed6d6771feb">
+                                                width="590" height="393" src="assets/img/1200x600.jpg">
                                             <hr>
                                             <div class="small text-muted mb-2"><span>Social
                                                     Links</span></div>
