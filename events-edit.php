@@ -270,6 +270,10 @@
                                                 Poster Upload</h5>
                                         </div>
                                         <div class="card-body pt-2">
+                                            <div id="posterUploadError" class="alert alert-danger d-none w-100 mt-2">
+                                            </div>
+                                            <div id="posterUploadSuccess" class="alert alert-success d-none w-100 mt-2">
+                                            </div>
                                             <div class="mb-4 storage-dropzone">
                                                 <i class="fa fa-cloud-upload fa-3x text-muted mb-3"></i>
 
@@ -286,366 +290,361 @@
 
                                         </div>
                                     </div><!-- End: event-poster -->
-                                    <div id="posterUploadError" class="alert alert-danger d-none w-100"></div>
-                                    <div id="posterUploadSuccess" class="alert alert-success d-none w-100">
+
+                                </div>
+                                <!-- Start: event-poster -->
+                                <div class="card mb-4">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="fw-bold mb-0">Event
+                                            Poster</h5>
                                     </div>
-                                    <!-- Start: event-poster -->
-                                    <div class="card mb-4">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="fw-bold mb-0">Event
-                                                Poster</h5>
-                                        </div>
-                                        <div class="card-body pt-2">
+                                    <div class="card-body pt-2">
 
 
-                                            <img class="img-fluid rounded w-100" id="posterPreviewImg"
-                                                src="/assets/img/1200x600.jpg">
-                                            <hr>
-                                            <div class="small text-muted mb-2"><span>Social
-                                                    Links</span></div>
-                                            <div class="d-flex gap-2"><a class="btn btn-outline-primary btn-sm"
-                                                    role="button" href="#"><i class="fa fa-linkedin-square"></i></a><a
-                                                    class="btn btn-outline-primary btn-sm" role="button" href="#"><i
-                                                        class="fa fa-instagram"></i></a><a
-                                                    class="btn btn-outline-primary btn-sm" role="button" href="#"><svg
-                                                        class="bi bi-whatsapp" xmlns="http://www.w3.org/2000/svg"
-                                                        width="1em" height="1em" fill="currentColor"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232">
-                                                        </path>
-                                                    </svg></a><a class="btn btn-outline-primary btn-sm" role="button"
-                                                    href="#"><i class="fa fa-facebook-square"></i></a></div>
-                                        </div>
-                                    </div><!-- End: event-poster -->
-                                    <!-- Start: location-details -->
-                                    <div class="card mb-4">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
-                                            <h5 class="fw-bold mb-0">Contact
-                                                Info</h5><button class="btn btn-primary btn-sm" type="button"> Edit
-                                            </button>
-                                        </div>
-                                        <div class="card-body pt-2">
-                                            <div class="mb-3">
-                                                <div class="small text-muted mb-1"><span>Email</span></div>
-                                                <div class="d-flex align-items-center"><a class="text-decoration-none"
-                                                        href="mailto:sarah.johnson@company.com">sarah.johnson@company.com</a>
-                                                </div>
+                                        <img class="img-fluid rounded w-100" id="posterPreviewImg"
+                                            src="/assets/img/1200x600.jpg">
+                                        <hr>
+                                        <div class="small text-muted mb-2"><span>Social
+                                                Links</span></div>
+                                        <div class="d-flex gap-2"><a class="btn btn-outline-primary btn-sm"
+                                                role="button" href="#"><i class="fa fa-linkedin-square"></i></a><a
+                                                class="btn btn-outline-primary btn-sm" role="button" href="#"><i
+                                                    class="fa fa-instagram"></i></a><a
+                                                class="btn btn-outline-primary btn-sm" role="button" href="#"><svg
+                                                    class="bi bi-whatsapp" xmlns="http://www.w3.org/2000/svg"
+                                                    width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232">
+                                                    </path>
+                                                </svg></a><a class="btn btn-outline-primary btn-sm" role="button"
+                                                href="#"><i class="fa fa-facebook-square"></i></a></div>
+                                    </div>
+                                </div><!-- End: event-poster -->
+                                <!-- Start: location-details -->
+                                <div class="card mb-4">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="fw-bold mb-0">Contact
+                                            Info</h5><button class="btn btn-primary btn-sm" type="button"> Edit
+                                        </button>
+                                    </div>
+                                    <div class="card-body pt-2">
+                                        <div class="mb-3">
+                                            <div class="small text-muted mb-1"><span>Email</span></div>
+                                            <div class="d-flex align-items-center"><a class="text-decoration-none"
+                                                    href="mailto:sarah.johnson@company.com">sarah.johnson@company.com</a>
                                             </div>
-                                            <div class="mb-3">
-                                                <div class="small text-muted mb-1"><span>Phone</span></div>
-                                                <div class="d-flex align-items-center"><span>+1
-                                                        (555)
-                                                        123-4567</span></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <div class="small text-muted mb-1"><span>Location</span></div>
-                                                <div class="d-flex align-items-center"><span>San
-                                                        Francisco, CA
-                                                        94102</span></div>
-                                            </div>
-                                            <div class="mb-3">
-                                                <div class="small text-muted mb-1"><span>Time
-                                                        Zone</span></div>
-                                                <div class="d-flex align-items-center"><span>Pacific
-                                                        Time (PT)</span></div>
-                                            </div>
-                                            <hr>
-                                            <div class="small text-muted mb-2"><span>Social
-                                                    Links</span></div>
-                                            <div class="d-flex gap-2"><a class="btn btn-outline-primary btn-sm"
-                                                    role="button" href="#"><i class="fa fa-linkedin-square"></i></a><a
-                                                    class="btn btn-outline-primary btn-sm" role="button" href="#"><i
-                                                        class="fa fa-instagram"></i></a><a
-                                                    class="btn btn-outline-primary btn-sm" role="button" href="#"><svg
-                                                        class="bi bi-whatsapp" xmlns="http://www.w3.org/2000/svg"
-                                                        width="1em" height="1em" fill="currentColor"
-                                                        viewBox="0 0 16 16">
-                                                        <path
-                                                            d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232">
-                                                        </path>
-                                                    </svg></a><a class="btn btn-outline-primary btn-sm" role="button"
-                                                    href="#"><i class="fa fa-facebook-square"></i></a></div>
                                         </div>
-                                    </div><!-- End: location-details -->
-                                    <div class="card mb-4">
-                                        <div class="card-header">
-                                            <h5 class="fw-bold mb-0">Sponsors</h5>
+                                        <div class="mb-3">
+                                            <div class="small text-muted mb-1"><span>Phone</span></div>
+                                            <div class="d-flex align-items-center"><span>+1
+                                                    (555)
+                                                    123-4567</span></div>
                                         </div>
-                                        <div class="card-body pt-2">
-                                            <div class="list-group list-group-flush">
-                                                <div class="px-0 py-2 list-group-item">
-                                                    <div class="d-flex align-items-center"><img
-                                                            class="object-fit-cover rounded-circle me-2"
-                                                            src="assets/img/team/avatar1.jpg?h=fc3130ca16c6d3ee2009fd4450b80205"
-                                                            width="36" height="36" alt="Team member">
-                                                        <div class="flex-grow-1">
-                                                            <div class="small fw-semibold"><span>Mike
-                                                                    Chen</span></div><small class="text-muted">Lead
-                                                                Developer</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="px-0 py-2 list-group-item">
-                                                    <div class="d-flex align-items-center"><img
-                                                            class="object-fit-cover rounded-circle me-2"
-                                                            src="assets/img/team/avatar3.jpg?h=d00658bdbe17fa68ec776823ea82e9c1"
-                                                            width="36" height="36" alt="Team member">
-                                                        <div class="flex-grow-1">
-                                                            <div class="small fw-semibold"><span>Emma
-                                                                    Wilson</span></div><small class="text-muted">UI/UX
-                                                                Designer</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="px-0 py-2 list-group-item">
-                                                    <div class="d-flex align-items-center"><img
-                                                            class="object-fit-cover rounded-circle me-2"
-                                                            src="assets/img/team/avatar4.jpg?h=13fcb1a3bcb58463519bc5974513259b"
-                                                            width="36" height="36" alt="Team member">
-                                                        <div class="flex-grow-1">
-                                                            <div class="small fw-semibold"><span>David
-                                                                    Lee</span></div><small class="text-muted">Backend
-                                                                Developer</small>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="px-0 py-2 list-group-item">
-                                                    <div class="d-flex align-items-center"><img
-                                                            class="object-fit-cover rounded-circle me-2"
-                                                            src="assets/img/team/avatar5.jpg?h=3c112678b7e2b1881f0b09da11f0e1e7"
-                                                            width="36" height="36" alt="Team member">
-                                                        <div class="flex-grow-1">
-                                                            <div class="small fw-semibold"><span>Lisa
-                                                                    Martinez</span></div><small class="text-muted">QA
-                                                                Tester</small>
-                                                        </div>
+                                        <div class="mb-3">
+                                            <div class="small text-muted mb-1"><span>Location</span></div>
+                                            <div class="d-flex align-items-center"><span>San
+                                                    Francisco, CA
+                                                    94102</span></div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <div class="small text-muted mb-1"><span>Time
+                                                    Zone</span></div>
+                                            <div class="d-flex align-items-center"><span>Pacific
+                                                    Time (PT)</span></div>
+                                        </div>
+                                        <hr>
+                                        <div class="small text-muted mb-2"><span>Social
+                                                Links</span></div>
+                                        <div class="d-flex gap-2"><a class="btn btn-outline-primary btn-sm"
+                                                role="button" href="#"><i class="fa fa-linkedin-square"></i></a><a
+                                                class="btn btn-outline-primary btn-sm" role="button" href="#"><i
+                                                    class="fa fa-instagram"></i></a><a
+                                                class="btn btn-outline-primary btn-sm" role="button" href="#"><svg
+                                                    class="bi bi-whatsapp" xmlns="http://www.w3.org/2000/svg"
+                                                    width="1em" height="1em" fill="currentColor" viewBox="0 0 16 16">
+                                                    <path
+                                                        d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232">
+                                                    </path>
+                                                </svg></a><a class="btn btn-outline-primary btn-sm" role="button"
+                                                href="#"><i class="fa fa-facebook-square"></i></a></div>
+                                    </div>
+                                </div><!-- End: location-details -->
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h5 class="fw-bold mb-0">Sponsors</h5>
+                                    </div>
+                                    <div class="card-body pt-2">
+                                        <div class="list-group list-group-flush">
+                                            <div class="px-0 py-2 list-group-item">
+                                                <div class="d-flex align-items-center"><img
+                                                        class="object-fit-cover rounded-circle me-2"
+                                                        src="assets/img/team/avatar1.jpg?h=fc3130ca16c6d3ee2009fd4450b80205"
+                                                        width="36" height="36" alt="Team member">
+                                                    <div class="flex-grow-1">
+                                                        <div class="small fw-semibold"><span>Mike
+                                                                Chen</span></div><small class="text-muted">Lead
+                                                            Developer</small>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="mt-3"><a class="btn btn-outline-primary btn-sm w-100"
-                                                    role="button" href="#">View
-                                                    All Team Members</a></div>
+                                            <div class="px-0 py-2 list-group-item">
+                                                <div class="d-flex align-items-center"><img
+                                                        class="object-fit-cover rounded-circle me-2"
+                                                        src="assets/img/team/avatar3.jpg?h=d00658bdbe17fa68ec776823ea82e9c1"
+                                                        width="36" height="36" alt="Team member">
+                                                    <div class="flex-grow-1">
+                                                        <div class="small fw-semibold"><span>Emma
+                                                                Wilson</span></div><small class="text-muted">UI/UX
+                                                            Designer</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="px-0 py-2 list-group-item">
+                                                <div class="d-flex align-items-center"><img
+                                                        class="object-fit-cover rounded-circle me-2"
+                                                        src="assets/img/team/avatar4.jpg?h=13fcb1a3bcb58463519bc5974513259b"
+                                                        width="36" height="36" alt="Team member">
+                                                    <div class="flex-grow-1">
+                                                        <div class="small fw-semibold"><span>David
+                                                                Lee</span></div><small class="text-muted">Backend
+                                                            Developer</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="px-0 py-2 list-group-item">
+                                                <div class="d-flex align-items-center"><img
+                                                        class="object-fit-cover rounded-circle me-2"
+                                                        src="assets/img/team/avatar5.jpg?h=3c112678b7e2b1881f0b09da11f0e1e7"
+                                                        width="36" height="36" alt="Team member">
+                                                    <div class="flex-grow-1">
+                                                        <div class="small fw-semibold"><span>Lisa
+                                                                Martinez</span></div><small class="text-muted">QA
+                                                            Tester</small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3"><a class="btn btn-outline-primary btn-sm w-100" role="button"
+                                                href="#">View
+                                                All Team Members</a></div>
+                                    </div>
+                                </div>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="fw-bold mb-0">Recent
+                                            Activity</h5>
+                                    </div>
+                                    <div class="card-body pt-2">
+                                        <div>
+                                            <div class="d-flex mb-3">
+                                                <div class="flex-shrink-0">
+                                                    <div
+                                                        class="bg-success rounded-circle d-flex justify-content-center align-items-center size-30">
+                                                        <svg class="bi bi-check-lg fs-5 text-white"
+                                                            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                            fill="currentColor" viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z">
+                                                            </path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <div class="small fw-semibold"><span>Completed
+                                                            task</span></div>
+                                                    <div class="small text-muted"><span>Homepage
+                                                            mockup
+                                                            approved</span></div>
+                                                    <div class="small text-muted"><span>2
+                                                            hours
+                                                            ago</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex mb-3">
+                                                <div class="flex-shrink-0">
+                                                    <div
+                                                        class="bg-primary rounded-circle d-flex justify-content-center align-items-center size-30">
+                                                        <svg class="icon icon-tabler icon-tabler-pencil fs-5 text-white"
+                                                            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none">
+                                                            </path>
+                                                            <path
+                                                                d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4">
+                                                            </path>
+                                                            <path d="M13.5 6.5l4 4"></path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <div class="small fw-semibold"><span>Updated
+                                                            project</span></div>
+                                                    <div class="small text-muted"><span>Website
+                                                            Redesign
+                                                            progress</span></div>
+                                                    <div class="small text-muted"><span>5
+                                                            hours
+                                                            ago</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex mb-3">
+                                                <div class="flex-shrink-0">
+                                                    <div
+                                                        class="bg-warning rounded-circle d-flex justify-content-center align-items-center size-30">
+                                                        <svg class="icon icon-tabler icon-tabler-brand-zoom fs-5 text-white"
+                                                            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                            viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                            fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none">
+                                                            </path>
+                                                            <path d="M17.011 9.385v5.128l3.989 3.487v-12z"></path>
+                                                            <path
+                                                                d="M3.887 6h10.08c1.468 0 3.033 1.203 3.033 2.803v8.196a.991 .991 0 0 1 -.975 1h-10.373c-1.667 0 -2.652 -1.5 -2.652 -3l.01 -8a.882 .882 0 0 1 .208 -.71a.841 .841 0 0 1 .67 -.287z">
+                                                            </path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <div class="small fw-semibold"><span>Meeting
+                                                            scheduled</span></div>
+                                                    <div class="small text-muted"><span>Design
+                                                            review on Feb
+                                                            10</span></div>
+                                                    <div class="small text-muted"><span>Yesterday</span></div>
+                                                </div>
+                                            </div>
+                                            <div class="d-flex">
+                                                <div class="flex-shrink-0">
+                                                    <div
+                                                        class="bg-info rounded-circle d-flex justify-content-center align-items-center size-30">
+                                                        <svg class="bi bi-person-fill-check fs-5 text-white"
+                                                            xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                            fill="currentColor" viewBox="0 0 16 16">
+                                                            <path
+                                                                d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0">
+                                                            </path>
+                                                            <path
+                                                                d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4">
+                                                            </path>
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                <div class="flex-grow-1 ms-3">
+                                                    <div class="small fw-semibold"><span>Joined
+                                                            team</span></div>
+                                                    <div class="small text-muted"><span>Brand
+                                                            Identity
+                                                            project</span></div>
+                                                    <div class="small text-muted"><span>2
+                                                            days
+                                                            ago</span></div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h5 class="fw-bold mb-0">Recent
-                                                Activity</h5>
-                                        </div>
-                                        <div class="card-body pt-2">
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-xl-3 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
                                             <div>
-                                                <div class="d-flex mb-3">
-                                                    <div class="flex-shrink-0">
-                                                        <div
-                                                            class="bg-success rounded-circle d-flex justify-content-center align-items-center size-30">
-                                                            <svg class="bi bi-check-lg fs-5 text-white"
-                                                                xmlns="http://www.w3.org/2000/svg" width="1em"
-                                                                height="1em" fill="currentColor" viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z">
-                                                                </path>
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <div class="small fw-semibold"><span>Completed
-                                                                task</span></div>
-                                                        <div class="small text-muted"><span>Homepage
-                                                                mockup
-                                                                approved</span></div>
-                                                        <div class="small text-muted"><span>2
-                                                                hours
-                                                                ago</span></div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex mb-3">
-                                                    <div class="flex-shrink-0">
-                                                        <div
-                                                            class="bg-primary rounded-circle d-flex justify-content-center align-items-center size-30">
-                                                            <svg class="icon icon-tabler icon-tabler-pencil fs-5 text-white"
-                                                                xmlns="http://www.w3.org/2000/svg" width="1em"
-                                                                height="1em" viewBox="0 0 24 24" stroke-width="2"
-                                                                stroke="currentColor" fill="none" stroke-linecap="round"
-                                                                stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none">
-                                                                </path>
-                                                                <path
-                                                                    d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4">
-                                                                </path>
-                                                                <path d="M13.5 6.5l4 4"></path>
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <div class="small fw-semibold"><span>Updated
-                                                                project</span></div>
-                                                        <div class="small text-muted"><span>Website
-                                                                Redesign
-                                                                progress</span></div>
-                                                        <div class="small text-muted"><span>5
-                                                                hours
-                                                                ago</span></div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex mb-3">
-                                                    <div class="flex-shrink-0">
-                                                        <div
-                                                            class="bg-warning rounded-circle d-flex justify-content-center align-items-center size-30">
-                                                            <svg class="icon icon-tabler icon-tabler-brand-zoom fs-5 text-white"
-                                                                xmlns="http://www.w3.org/2000/svg" width="1em"
-                                                                height="1em" viewBox="0 0 24 24" stroke-width="2"
-                                                                stroke="currentColor" fill="none" stroke-linecap="round"
-                                                                stroke-linejoin="round">
-                                                                <path stroke="none" d="M0 0h24v24H0z" fill="none">
-                                                                </path>
-                                                                <path d="M17.011 9.385v5.128l3.989 3.487v-12z"></path>
-                                                                <path
-                                                                    d="M3.887 6h10.08c1.468 0 3.033 1.203 3.033 2.803v8.196a.991 .991 0 0 1 -.975 1h-10.373c-1.667 0 -2.652 -1.5 -2.652 -3l.01 -8a.882 .882 0 0 1 .208 -.71a.841 .841 0 0 1 .67 -.287z">
-                                                                </path>
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <div class="small fw-semibold"><span>Meeting
-                                                                scheduled</span></div>
-                                                        <div class="small text-muted"><span>Design
-                                                                review on Feb
-                                                                10</span></div>
-                                                        <div class="small text-muted"><span>Yesterday</span></div>
-                                                    </div>
-                                                </div>
-                                                <div class="d-flex">
-                                                    <div class="flex-shrink-0">
-                                                        <div
-                                                            class="bg-info rounded-circle d-flex justify-content-center align-items-center size-30">
-                                                            <svg class="bi bi-person-fill-check fs-5 text-white"
-                                                                xmlns="http://www.w3.org/2000/svg" width="1em"
-                                                                height="1em" fill="currentColor" viewBox="0 0 16 16">
-                                                                <path
-                                                                    d="M12.5 16a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7m1.679-4.493-1.335 2.226a.75.75 0 0 1-1.174.144l-.774-.773a.5.5 0 0 1 .708-.708l.547.548 1.17-1.951a.5.5 0 1 1 .858.514M11 5a3 3 0 1 1-6 0 3 3 0 0 1 6 0">
-                                                                </path>
-                                                                <path
-                                                                    d="M2 13c0 1 1 1 1 1h5.256A4.5 4.5 0 0 1 8 12.5a4.5 4.5 0 0 1 1.544-3.393Q8.844 9.002 8 9c-5 0-6 3-6 4">
-                                                                </path>
-                                                            </svg>
-                                                        </div>
-                                                    </div>
-                                                    <div class="flex-grow-1 ms-3">
-                                                        <div class="small fw-semibold"><span>Joined
-                                                                team</span></div>
-                                                        <div class="small text-muted"><span>Brand
-                                                                Identity
-                                                                project</span></div>
-                                                        <div class="small text-muted"><span>2
-                                                                days
-                                                                ago</span></div>
-                                                    </div>
-                                                </div>
+                                                <div class="text-muted small"><span>Event
+                                                        Start Date &amp;
+                                                        Time</span></div>
+                                                <div class="mb-0 h4" data-coreui-timepicker="true"
+                                                    data-coreui-toggle="date-range-picker"><input
+                                                        class="w-75 form-control" type="datetime-local"></div>
                                             </div>
                                         </div>
+                                        <div class="text-muted mt-2 small"><span>Event
+                                                Local Time</span></div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-xl-3 mb-4">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-start">
-                                                <div>
-                                                    <div class="text-muted small"><span>Event
-                                                            Start Date &amp;
-                                                            Time</span></div>
-                                                    <div class="mb-0 h4" data-coreui-timepicker="true"
-                                                        data-coreui-toggle="date-range-picker"><input
-                                                            class="w-75 form-control" type="datetime-local"></div>
-                                                </div>
-                                            </div>
-                                            <div class="text-muted mt-2 small"><span>Event
-                                                    Local Time</span></div>
+                            </div>
+                            <div class="col-md-6 col-xl-3 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <div class="text-muted small"><span>Completed
+                                                        Tasks</span></div>
+                                                <div class="mb-0 h4"><span>248</span></div>
+                                            </div><span class="badge bg-danger shadow-sm">
+                                                <svg class="icon icon-tabler icon-tabler-trending-down"
+                                                    xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M3 7l6 6l4 -4l8 8"></path>
+                                                    <path d="M21 10l0 7l-7 0"></path>
+                                                </svg>&nbsp;-15</span>
                                         </div>
+                                        <div class="text-muted mt-2 small"><span>Last
+                                                30 days</span></div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-xl-3 mb-4">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-start">
-                                                <div>
-                                                    <div class="text-muted small"><span>Completed
-                                                            Tasks</span></div>
-                                                    <div class="mb-0 h4"><span>248</span></div>
-                                                </div><span class="badge bg-danger shadow-sm">
-                                                    <svg class="icon icon-tabler icon-tabler-trending-down"
-                                                        xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
-                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M3 7l6 6l4 -4l8 8"></path>
-                                                        <path d="M21 10l0 7l-7 0"></path>
-                                                    </svg>&nbsp;-15</span>
-                                            </div>
-                                            <div class="text-muted mt-2 small"><span>Last
-                                                    30 days</span></div>
+                            </div>
+                            <div class="col-md-6 col-xl-3 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <div class="text-muted small"><span>Team
+                                                        Members</span></div>
+                                                <div class="mb-0 h4"><span>24</span></div>
+                                            </div><span class="badge bg-success shadow-sm"><svg
+                                                    class="icon icon-tabler icon-tabler-trending-up"
+                                                    xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M3 17l6 -6l4 4l8 -8"></path>
+                                                    <path d="M14 7l7 0l0 7"></path>
+                                                </svg>&nbsp;+3 </span>
                                         </div>
+                                        <div class="text-muted mt-2 small"><span>Across
+                                                5 teams</span></div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 col-xl-3 mb-4">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-start">
-                                                <div>
-                                                    <div class="text-muted small"><span>Team
-                                                            Members</span></div>
-                                                    <div class="mb-0 h4"><span>24</span></div>
-                                                </div><span class="badge bg-success shadow-sm"><svg
-                                                        class="icon icon-tabler icon-tabler-trending-up"
-                                                        xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
-                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M3 17l6 -6l4 4l8 -8"></path>
-                                                        <path d="M14 7l7 0l0 7"></path>
-                                                    </svg>&nbsp;+3 </span>
-                                            </div>
-                                            <div class="text-muted mt-2 small"><span>Across
-                                                    5 teams</span></div>
+                            </div>
+                            <div class="col-md-6 col-xl-3 mb-4">
+                                <div class="card h-100">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <div class="text-muted small"><span>Hours
+                                                        Logged</span></div>
+                                                <div class="mb-0 h4"><span>156</span></div>
+                                            </div><span class="badge bg-success shadow-sm"><svg
+                                                    class="icon icon-tabler icon-tabler-trending-up"
+                                                    xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
+                                                    viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
+                                                    fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                                    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+                                                    <path d="M3 17l6 -6l4 4l8 -8"></path>
+                                                    <path d="M14 7l7 0l0 7"></path>
+                                                </svg>&nbsp;+30</span>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 col-xl-3 mb-4">
-                                    <div class="card h-100">
-                                        <div class="card-body">
-                                            <div class="d-flex justify-content-between align-items-start">
-                                                <div>
-                                                    <div class="text-muted small"><span>Hours
-                                                            Logged</span></div>
-                                                    <div class="mb-0 h4"><span>156</span></div>
-                                                </div><span class="badge bg-success shadow-sm"><svg
-                                                        class="icon icon-tabler icon-tabler-trending-up"
-                                                        xmlns="http://www.w3.org/2000/svg" width="1em" height="1em"
-                                                        viewBox="0 0 24 24" stroke-width="2" stroke="currentColor"
-                                                        fill="none" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                                                        <path d="M3 17l6 -6l4 4l8 -8"></path>
-                                                        <path d="M14 7l7 0l0 7"></path>
-                                                    </svg>&nbsp;+30</span>
-                                            </div>
-                                            <div class="text-muted mt-2 small"><span>This
-                                                    month</span></div>
-                                        </div>
+                                        <div class="text-muted mt-2 small"><span>This
+                                                month</span></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="col-12 d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary mt-3">Save Event</button>
-                            </div>
-                        </div>
-                        <!-- Start: Footer Centered -->
-                        <?php include '_include/inner-footer.php'; ?>
-                        <!-- End: Footer Centered -->
-                    </main>
                 </div>
+                <div class="row">
+                    <div class="col-12 d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary mt-3">Save Event</button>
+                    </div>
+                </div>
+                <!-- Start: Footer Centered -->
+                <?php include '_include/inner-footer.php'; ?>
+                <!-- End: Footer Centered -->
+                </main>
             </div>
+        </div>
         </div>
         <div class="modal fade" id="zentraMediaModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered">
