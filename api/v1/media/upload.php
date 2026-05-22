@@ -6,6 +6,8 @@
 // Load config + classes
 require_once __DIR__ . '/../../../config/config.php';
 require_once __DIR__ . '/../../../config/helpers.php';
+secureSessionStart();
+
 require_once __DIR__ . '/../../../config/init.php';
 require_once __DIR__ . '/../../../config/db.php';
 require_once __DIR__ . '/../../../classes/User.php';
@@ -13,7 +15,7 @@ require_once __DIR__ . '/../../../classes/ModuleManager.php';
 require_once __DIR__ . '/../../../classes/ActivityLogger.php';
 
 // Start session
-secureSessionStart();
+enforceSessionSecurity();
 
 $ip      = $_SESSION['user_ip'] ?? cleanIP(getClientIP());
 $agent   = $_SESSION['user_agent'] ?? ($_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
@@ -121,6 +123,11 @@ try {
     echo json_encode(['success' => false, 'error' => 'DB error: ' . $e->getMessage()]);
     exit;
 }
+$utc   = new DateTime('now', new DateTimeZone('UTC'));
+$local = new DateTime('now', new DateTimeZone($_SESSION['user_timezone'] ?? 'America/Vancouver'));
+
+$created_on_utc       = $utc->format('Y-m-d H:i:s');
+$created_at_localtime = $local->format('Y-m-d H:i:s');
 
 // -------------------------
 //  ACTIVITY LOG
@@ -133,18 +140,20 @@ try {
         "Media Uploaded with library_id: {$mediaId} and filename {$filename} at path {$publicUrl} and type {$file['type']} and size {$file['size']} bytes",
         "Media Uploaded",
         [
-            'file_name' => $filename,
-            'file_type' => $file['type'],
-            'file_size' => $file['size'],
-            'file_path' => $publicUrl,
-            'user_name' => $_SESSION['user_name'] ?? null,
-            'ip'        => cleanIP(getClientIP()),
-            'browser'   => getBrowserName($_SESSION['user_agent'] ?? ''),
-            'device'    => getDeviceType($_SESSION['user_agent'] ?? ''),
-            'city'      => $_SESSION['geo']['city'] ?? null,
-            'region'    => $_SESSION['geo']['region'] ?? null,
-            'country'   => $_SESSION['geo']['country'] ?? null,
-            'geo_raw'   => $_SESSION['geo']['raw'] ?? null,
+            'file_name'            => $filename,
+            'file_type'            => $file['type'],
+            'file_size'            => $file['size'],
+            'file_path'            => $publicUrl,
+            'user_name'            => $_SESSION['user_name'] ?? null,
+            'ip'                   => cleanIP(getClientIP()),
+            'browser'              => getBrowserName($_SESSION['user_agent'] ?? ''),
+            'device'               => getDeviceType($_SESSION['user_agent'] ?? ''),
+            'city'                 => $_SESSION['geo']['city'] ?? null,
+            'region'               => $_SESSION['geo']['region'] ?? null,
+            'country'              => $_SESSION['geo']['country'] ?? null,
+            'geo_raw'              => $_SESSION['geo']['raw'] ?? null,
+            'created_on_utc'       => $created_on_utc,
+            'created_at_localtime' => $created_at_localtime,
         ]
     );
 
