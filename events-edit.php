@@ -281,12 +281,14 @@
                                                     accept="image/png, image/jpeg">
                                                 <input type="hidden" name="poster_media_id" id="poster_media_id">
                                             </div>
-                                            <div id="posterUploadError" class="alert alert-danger d-none w-100"></div>
-                                            <div id="posterUploadSuccess" class="alert alert-success d-none w-100">
-                                            </div>
+
+
 
                                         </div>
                                     </div><!-- End: event-poster -->
+                                    <div id="posterUploadError" class="alert alert-danger d-none w-100"></div>
+                                    <div id="posterUploadSuccess" class="alert alert-success d-none w-100">
+                                    </div>
                                     <!-- Start: event-poster -->
                                     <div class="card mb-4">
                                         <div class="card-header d-flex justify-content-between align-items-center">
