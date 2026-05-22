@@ -130,8 +130,8 @@ try {
 
     $logger->log(
         (string) $userId,
-        "Media Uploaded with id: {$mediaId} and filename {$filename} at path {$publicUrl} and type {$file['type']} and size {$file['size']} bytes",
-        (string) $mediaId,
+        "Media Uploaded with library_id: {$mediaId} and filename {$filename} at path {$publicUrl} and type {$file['type']} and size {$file['size']} bytes",
+        "Media Uploaded",
         [
             'file_name' => $filename,
             'file_type' => $file['type'],
