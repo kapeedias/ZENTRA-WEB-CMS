@@ -123,11 +123,6 @@ try {
     echo json_encode(['success' => false, 'error' => 'DB error: ' . $e->getMessage()]);
     exit;
 }
-$utc   = new DateTime('now', new DateTimeZone('UTC'));
-$local = new DateTime('now', new DateTimeZone($_SESSION['user_timezone'] ?? 'America/Vancouver'));
-
-$created_on_utc       = $utc->format('Y-m-d H:i:s');
-$created_at_localtime = $local->format('Y-m-d H:i:s');
 
 // -------------------------
 //  ACTIVITY LOG
@@ -140,20 +135,19 @@ try {
         "Media Uploaded with library_id: {$mediaId} and filename {$filename} at path {$publicUrl} and type {$file['type']} and size {$file['size']} bytes",
         "Media Uploaded",
         [
-            'file_name'            => $filename,
-            'file_type'            => $file['type'],
-            'file_size'            => $file['size'],
-            'file_path'            => $publicUrl,
-            'user_name'            => $_SESSION['user_name'] ?? null,
-            'ip'                   => cleanIP(getClientIP()),
-            'browser'              => getBrowserName($_SESSION['user_agent'] ?? ''),
-            'device'               => getDeviceType($_SESSION['user_agent'] ?? ''),
-            'city'                 => $_SESSION['geo']['city'] ?? null,
-            'region'               => $_SESSION['geo']['region'] ?? null,
-            'country'              => $_SESSION['geo']['country'] ?? null,
-            'geo_raw'              => $_SESSION['geo']['raw'] ?? null,
-            'created_on_utc'       => $created_on_utc,
-            'created_at_localtime' => $created_at_localtime,
+            'file_name'     => $filename,
+            'file_type'     => $file['type'],
+            'file_size'     => $file['size'],
+            'file_path'     => $publicUrl,
+            'user_name'     => $_SESSION['user_name'] ?? null,
+            'ip'            => cleanIP(getClientIP()),
+            'browser'       => getBrowserName($_SESSION['user_agent'] ?? ''),
+            'device'        => getDeviceType($_SESSION['user_agent'] ?? ''),
+            'city'          => $_SESSION['geo']['city'] ?? null,
+            'region'        => $_SESSION['geo']['region'] ?? null,
+            'country'       => $_SESSION['geo']['country'] ?? null,
+            'geo_raw'       => $_SESSION['geo']['raw'] ?? null,
+            'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
         ]
     );
 
