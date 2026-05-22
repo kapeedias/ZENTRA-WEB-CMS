@@ -133,6 +133,7 @@
                                                 <?php echo $badge['label']; ?>
                                             </span>
                                         </div>
+
                                         <div class="card-body pt-2">
                                             <div class="mb-3"><span>Event Title</span><input type="text"
                                                     class="form-control fw-bold text-warning" autofocus=""
@@ -284,6 +285,11 @@
 
 
 
+                                        </div>
+                                        <div class="col-12">
+                                            <div id="posterUploadError" class="w-100 alert-error d-none"></div>
+                                            <div id="posterUploadSuccess" class="w-100 alert-success d-none">
+                                            </div>
                                         </div>
                                     </div><!-- End: event-poster -->
 
