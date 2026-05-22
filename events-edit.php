@@ -700,12 +700,294 @@
             </div>
         </div>
     </form>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.8/js/dataTables.bootstrap5.min.js"></script>
-    <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/js/script.min.js?h=da74781f0d8a702dd153810a21ac1707"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const fullToolbar = [
+            [{
+                header: [1, 2, 3, 4, 5, 6, false]
+            }],
+            ["bold", "italic", "underline", "strike"],
+            [{
+                color: []
+            }, {
+                background: []
+            }],
+            [{
+                script: "sub"
+            }, {
+                script: "super"
+            }],
+            [{
+                list: "ordered"
+            }, {
+                list: "bullet"
+            }],
+            [{
+                indent: "-1"
+            }, {
+                indent: "+1"
+            }],
+            [{
+                align: []
+            }],
+            ["blockquote", "code-block"],
+            ["link", "image", "video"],
+            ["clean"]
+        ];
+
+        // 1️⃣ Initialize Quill
+        const quill = new Quill("#editor", {
+            theme: "snow",
+            modules: {
+                toolbar: fullToolbar
+            }
+        });
+
+        // 2️⃣ Override the image button to open your Media Library modal
+        const toolbar = quill.getModule("toolbar");
+        toolbar.addHandler("image", function() {
+            openZentraMediaLibraryModal(); // <-- your modal function
+        });
+
+        // 3️⃣ Sync Quill content before form submit
+        function syncQuillContent() {
+            const html = quill.root.innerHTML;
+            document.getElementById("event_description").value = html;
+            return true;
+        }
+
+        function openZentraMediaLibraryModal() {
+            const modal = new bootstrap.Modal(document.getElementById('zentraMediaModal'));
+            modal.show();
+        }
+    });
+    </script>
+    <script>
+    let selectedTags = [];
+    const badgeContainer = document.getElementById('eventTagBadges');
+    const tagSearchInput = document.getElementById('tagSearchInput');
+    const tagSearchResults = document.getElementById('tagSearchResults');
+    // --- SEARCH TAGS ---
+    tagSearchInput.addEventListener('input', function() {
+        const q = this.value.trim();
+        if (!q) {
+            tagSearchResults.innerHTML = '';
+            return;
+        }
+
+        fetch(`/api/v1/tags/search.php?q=${encodeURIComponent(q)}`)
+            .then(r => r.json())
+            .then(tags => renderTagSearch(tags, q));
+    });
+
+    function renderTagSearch(tags, query) {
+        tagSearchResults.innerHTML = '';
+
+        if (tags.length === 0) {
+            tagSearchResults.innerHTML = `
+                <button class="list-group-item list-group-item-action"
+                        onclick="addTag('${query}', true)">
+                    Create tag: <strong>${query}</strong>
+                </button>`;
+            return;
+        }
+
+        tags.forEach(tag => {
+            tagSearchResults.innerHTML += `
+                <button class="list-group-item list-group-item-action"
+                        onclick="addTag('${tag.tag_name}', false, ${tag.tag_id})">
+                    ${tag.tag_name}
+                </button>`;
+        });
+    }
+    // --- ADD TAG ---
+    function addTag(name, isNew, tagId = null) {
+        const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+
+        if (selectedTags.some(t => t.slug === slug)) return;
+
+        // If it's a new tag, create it in DB first
+        if (isNew) {
+            fetch('/api/v1/tags/create.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name,
+                        slug
+                    })
+                })
+                .then(r => r.json())
+                .then(data => {
+                    selectedTags.push({
+                        name,
+                        slug,
+                        tagId: data.tag_id,
+                        isNew: false
+                    });
+                    renderBadges();
+                });
+        } else {
+            // Existing tag
+            selectedTags.push({
+                name,
+                slug,
+                tagId,
+                isNew: false
+            });
+            renderBadges();
+        }
+    }
+    // --- RENDER BADGES ---
+    function renderBadges() {
+        badgeContainer.innerHTML = '';
+
+        selectedTags.forEach((tag, index) => {
+            badgeContainer.innerHTML += `
+            <span class="badge bg-light d-inline-flex gap-1 align-items-center">
+                ${tag.name}
+                <span class="remove-tag text-muted" onclick="removeTag(${index})">&times;</span>
+            </span>`;
+
+        });
+
+        document.getElementById('hiddenTags').value = JSON.stringify(selectedTags);
+    }
+    // --- REMOVE TAG ---
+    function removeTag(index) {
+        selectedTags.splice(index, 1);
+        renderBadges();
+    }
+    // --- LOAD TAGS FOR EDIT MODE ---
+    function loadEventTags(eventId) {
+        fetch(`/api/v1/tags/event-tags.php?event_id=${eventId}`)
+            .then(r => r.json())
+            .then(tags => {
+                selectedTags = tags.map(t => ({
+                    name: t.tag_name,
+                    slug: t.tag_slug,
+                    tagId: t.tag_id,
+                    isNew: false
+                }));
+                renderBadges();
+            });
+    }
+    // Auto-run on page load (only if editing)
+    <?php if (! empty($event_id)): ?>
+    document.addEventListener("DOMContentLoaded", function() {
+        loadEventTags(<?php echo $event_id ?>);
+    });
+    <?php endif; ?>
+    </script>
+
+    <script>
+    (() => {
+        // Prevent double initialization
+        if (window.__posterUploaderInitialized) return;
+        window.__posterUploaderInitialized = true;
+
+        const dropzone = document.querySelector('.storage-dropzone');
+        const fileInput = document.getElementById('fileInput-2');
+        const preview = document.getElementById('posterPreview');
+        const previewImg = document.getElementById('posterPreviewImg');
+        const posterMediaIdInput = document.getElementById('poster_media_id');
+
+        if (!dropzone || !fileInput) return;
+
+        // CLICK → open file dialog
+        dropzone.addEventListener('click', () => fileInput.click());
+
+        // File selected
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                uploadPoster(fileInput.files[0]);
+            }
+        });
+
+        // DRAG OVER
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('drag-over');
+        });
+
+        // DRAG LEAVE
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('drag-over');
+        });
+
+        // DROP FILE
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('drag-over');
+
+            if (e.dataTransfer.files.length > 0) {
+                uploadPoster(e.dataTransfer.files[0]);
+            }
+        });
+
+        // UPLOAD FUNCTION
+        function uploadPoster(file) {
+            if (!file.type.match(/image\/(png|jpeg)/)) {
+                showPosterError(data.error || "Upload failed - Invalid file type. Only PNG or JPG allowed");
+                return;
+            }
+
+            if (file.size > 2 * 1024 * 1024) {
+                showPosterError(data.error || "Upload failed - File too large. Max size is 2 MB");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/api/v1/media/upload.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        posterMediaIdInput.value = data.media_id;
+                        previewImg.src = data.url;
+                        preview.classList.remove('d-none');
+                        showPosterSuccess("Poster Image uploaded successfully");
+                    } else {
+                        showPosterError(data.error || "Upload failed");
+
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    showPosterError(data.error || "Upload error occurred");
+                });
+        }
+    })();
+    </script>
+    <script>
+    function showPosterError(msg) {
+        const box = document.getElementById('posterUploadError');
+        box.innerHTML = `<span>${msg}</span>`;
+        box.classList.remove('d-none');
+
+        setTimeout(() => {
+            box.classList.add('d-none');
+        }, 5000);
+    }
+
+    function showPosterSuccess(msg) {
+        const box = document.getElementById('posterUploadSuccess');
+        box.innerHTML = `<span>${msg}</span>`;
+        box.classList.remove('d-none');
+
+        setTimeout(() => {
+            box.classList.add('d-none');
+        }, 5000);
+    }
+    </script>
+
+    <?php include '_include/body_end_plugins.php'; ?>
 </body>
 
 </html>
