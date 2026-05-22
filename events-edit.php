@@ -968,9 +968,9 @@
                 .then(res => res.json())
                 .then(data => {
                     if (data.success) {
-                        posterMediaIdInput.value = data.media_id;
-                        previewImg.src = data.url;
-                        preview.classList.remove('d-none');
+                        // posterMediaIdInput.value = data.media_id;
+                        // previewImg.src = data.url;
+                        // preview.classList.remove('d-none');
                         showPosterSuccess("Poster Image uploaded successfully");
                         console.log("SUCCESS ALERT SHOWN");
 
