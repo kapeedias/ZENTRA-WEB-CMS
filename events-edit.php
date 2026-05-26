@@ -1084,12 +1084,15 @@
 
                 files.forEach(file => {
                     grid.innerHTML += `
-                    <div class="media-item border rounded p-1"
-                         data-id="${file.id}"
-                         data-url="${file.url}"
-                         style="cursor:pointer; width:120px; display:block; margin:5px;">
-                        <img src="${file.url}" class="img-fluid rounded">
-                    </div>
+                    <div class="media-item" data-id="${file.id}" data-url="${file.url}" data-tags="${file.tags || ''}">
+  <img src="${file.url}" alt="${file.name}">
+  <div class="media-overlay">
+    <button class="tag-btn" title="Edit Tags"><i class="fa fa-tags"></i></button>
+    <button class="link-btn" title="Copy Link"><i class="fa fa-link"></i></button>
+    <input type="checkbox" class="select-checkbox">
+  </div>
+</div>
+
                 `;
                 });
             })
@@ -1099,8 +1102,29 @@
             });
     }
     </script>
+    <script>
+    document.addEventListener('click', function(e) {
+        const item = e.target.closest('.media-item');
+        if (!item) return;
 
+        if (e.target.closest('.tag-btn')) {
+            console.log('Tag clicked for ID:', item.dataset.id);
+            return;
+        }
 
+        if (e.target.closest('.link-btn')) {
+            navigator.clipboard.writeText(item.dataset.url);
+            console.log('Link copied:', item.dataset.url);
+            return;
+        }
+
+        if (!e.target.closest('.media-overlay')) {
+            const checkbox = item.querySelector('.select-checkbox');
+            checkbox.checked = !checkbox.checked;
+            item.classList.toggle('selected', checkbox.checked);
+        }
+    });
+    </script>
 
     <?php include '_include/body_end_plugins.php'; ?>
 </body>

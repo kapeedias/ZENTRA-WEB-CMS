@@ -602,3 +602,27 @@ a {
 @media (max-width: 576px) {
   .media-item { flex: 0 0 calc(50% - 10px); } /* 2 per row */
 }
+.media-item {
+  position: relative;
+}
+
+.media-overlay {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.media-item:hover .media-overlay {
+  opacity: 1;
+}
+
+.select-checkbox {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+}
