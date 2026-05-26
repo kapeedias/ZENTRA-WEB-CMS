@@ -106,11 +106,12 @@
     <style>
     .media-grid {
         display: grid;
-        /* grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));*/
+        grid-template-columns: repeat(5, 1fr);
         gap: 2px;
         /* max-height: 60vh;*/
         /* keeps it inside modal */
         overflow-y: auto;
+        overflow-x: hidden;
         padding: 10px;
     }
 
