@@ -1043,9 +1043,11 @@
            data-id="${file.id}"
            data-url="${file.url}"
            style="cursor:pointer;">
-        <img src="${file.url}"
-             class="w-100 h-100 rounded"
-             style="object-fit:cover;">
+        <div>
+          <img src="${file.url}"
+               class="w-100 h-100 rounded"
+               style="object-fit:cover;">
+        </div>
       </div>
     </div>
   `;
