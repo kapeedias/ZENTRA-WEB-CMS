@@ -1097,6 +1097,7 @@
     });
 
 
+
     document.getElementById('insertSelectedMedia').addEventListener('click', function(e) {
         // Remove focus from the button BEFORE closing modal
         if (e && e.target) {
