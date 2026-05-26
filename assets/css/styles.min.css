@@ -628,8 +628,8 @@ a {
 /* Right-side checkbox */
 .select-checkbox {
   position: absolute;
-  top: 6px;
-  right: 6px;
+  top: 10px;
+  right: 10px;
   transform: scale(1.2);
   accent-color: #0d6efd;
 }
@@ -652,7 +652,7 @@ a {
   top: 6px;
   left: 6px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 6px;
   background: rgba(0, 0, 0, 0.5);
   padding: 6px;
