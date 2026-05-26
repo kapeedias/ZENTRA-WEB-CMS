@@ -719,6 +719,7 @@
                     </div>
 
                     <div class="modal-footer">
+                        <span id="selectedCount">0 items selected</span>
                         <button class="btn btn-primary" id="insertSelectedMedia">Insert</button>
                     </div>
 
@@ -1124,7 +1125,20 @@
             item.classList.toggle('selected', checkbox.checked);
         }
     });
+
+    function updateSelectedCount() {
+        const count = document.querySelectorAll('.select-checkbox:checked').length;
+        document.getElementById('selectedCount').textContent =
+            `${count} item${count !== 1 ? 's' : ''} selected`;
+    }
+
+    document.addEventListener('change', function(e) {
+        if (e.target.classList.contains('select-checkbox')) {
+            updateSelectedCount();
+        }
+    });
     </script>
+
 
     <?php include '_include/body_end_plugins.php'; ?>
 </body>
