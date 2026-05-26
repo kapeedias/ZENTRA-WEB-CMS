@@ -106,9 +106,9 @@
     <style>
     .media-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        gap: 10px;
-        max-height: 60vh;
+        /* grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));*/
+        gap: 2px;
+        /* max-height: 60vh;*/
         /* keeps it inside modal */
         overflow-y: auto;
         padding: 10px;
