@@ -535,10 +535,17 @@ a {
   font-size: x-small;
 }
 #mediaGrid {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 12px;
+  display: flex;
+  flex-wrap: wrap;          /* allows wrapping */
+  justify-content: flex-start;
+  align-content: flex-start;
+  width: 100%;              /* keeps grid inside modal */
+  max-height: 60vh;         /* enables vertical scroll */
+  overflow-y: auto;         /* vertical scroll only */
+  overflow-x: hidden;       /* disables horizontal scroll */
+  box-sizing: border-box;
 }
+
 
 .media-item {
     position: relative;
