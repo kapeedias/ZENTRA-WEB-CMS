@@ -1092,8 +1092,11 @@
 
 
 
-    document.getElementById('insertSelectedMedia').addEventListener('click', function() {
-        e.target.blur();
+    document.getElementById('insertSelectedMedia').addEventListener('click', function(e) {
+        // Remove focus from the button BEFORE closing modal
+        if (e && e.target) {
+            e.target.blur();
+        }
         // --- EDITOR MODE ---
         if (selectionMode === 'editor') {
             const selectedItems = document.querySelectorAll('.media-item.selected');
