@@ -1088,12 +1088,7 @@
         }
 
         // Toggle this checkbox
-        checkbox.checked = !checkbox.checked;
-
-        // Fire change event so .selected class updates
-        checkbox.dispatchEvent(new Event('change', {
-            bubbles: true
-        }));
+        checkbox.click();
     });
 
 
