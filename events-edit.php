@@ -1090,6 +1090,11 @@
         checkbox.click();
     });
 
+    document.addEventListener('click', function(e) {
+        if (e.target.classList.contains('btn-close')) {
+            e.target.blur();
+        }
+    });
 
 
     document.getElementById('insertSelectedMedia').addEventListener('click', function(e) {
