@@ -284,23 +284,14 @@
                                         </div>
                                         <div class="card-body pt-2">
 
-                                            <div class="card p-3">
-
-
+                                            <div class="card py-3">
                                                 <div id="posterPreview" class="mb-3">
                                                     <img id="posterPreviewImg"
                                                         src="<?php echo htmlspecialchars($poster_url) ?>"
                                                         alt="Poster Preview" class="img-fluid rounded border">
                                                 </div>
-
                                                 <input type="hidden" id="poster_media_id" name="poster_media_id"
                                                     value="<?php echo $poster_media_id ?>">
-
-
-                                                <div id="posterUploadError" class="alert alert-danger d-none mt-2">
-                                                </div>
-                                                <div id="posterUploadSuccess" class="alert alert-success d-none mt-2">
-                                                </div>
                                             </div>
 
 
