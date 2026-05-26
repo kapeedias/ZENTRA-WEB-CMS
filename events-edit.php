@@ -104,6 +104,23 @@
     <?php include '_include/head.php'; ?>
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
     <style>
+    #mediaGrid {
+        display: flex;
+        flex-wrap: wrap;
+        /* allows wrapping */
+        justify-content: flex-start;
+        align-content: flex-start;
+        width: 100%;
+        /* keeps grid inside modal */
+        max-height: 60vh;
+        /* enables vertical scroll */
+        overflow-y: auto;
+        /* vertical scroll only */
+        overflow-x: hidden;
+        /* disables horizontal scroll */
+        box-sizing: border-box;
+    }
+
     .media-grid {
         display: grid;
         grid-template-columns: repeat(5, 1fr);
@@ -116,23 +133,21 @@
     }
 
     .media-item {
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        background-color: #fff;
-        overflow: hidden;
-        text-align: center;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        width: 120px;
-        height: 120px;
+        flex: 0 0 calc(20% - 10px);
+        /* roughly 5 per row */
+        margin: 5px;
+        aspect-ratio: 1 / 1;
+        /* perfect square */
+        cursor: pointer;
     }
 
     .media-item img {
         width: 100%;
-        height: 100px;
+        height: 100%;
         object-fit: cover;
-        /* keeps aspect ratio */
-        display: block;
+        border-radius: 6px;
     }
+
 
     .media-item:hover {
         transform: scale(1.03);
