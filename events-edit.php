@@ -1123,7 +1123,7 @@
                     <div class="media-item border rounded p-1"
                          data-id="${file.id}"
                          data-url="${file.url}"
-                         style="cursor:pointer; width:120px; display:inline-block; margin:5px;">
+                         style="cursor:pointer; width:120px; display:block; margin:5px;">
                         <img src="${file.url}" class="img-fluid rounded">
                     </div>
                 `;
