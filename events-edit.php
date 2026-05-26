@@ -266,7 +266,8 @@
                                 <div class="col-xl-4 mb-4">
                                     <!-- Start: event-poster -->
                                     <div class="card mb-4">
-                                        <div class="card-header d-flex justify-content-between align-items-center">
+                                        <div
+                                            class="card-header d-flex justify-content-between align-items-center border-bottom">
                                             <h5 class="fw-bold mb-0">Event
                                                 Poster</h5>
                                             <button class="btn btn-warning text-white btn-sm" type="button"
@@ -277,15 +278,9 @@
 
                                             <div class="card p-3">
 
-
                                                 <div id="posterPreview" class="mb-3 d-none">
                                                     <img id="posterPreviewImg" src="" class="img-fluid rounded border">
                                                 </div>
-
-                                                <button type="button" class="btn btn-outline-primary"
-                                                    onclick="openZentraMediaLibraryModal('eventPoster')">
-                                                    Select Poster from Media Library
-                                                </button>
 
                                                 <input type="hidden" id="poster_media_id" name="poster_media_id">
 
@@ -394,7 +389,7 @@
                                                 <div class="px-0 py-2 list-group-item">
                                                     <div class="d-flex align-items-center"><img
                                                             class="object-fit-cover rounded-circle me-2"
-                                                            src="assets/img/team/avatar1.jpg?h=fc3130ca16c6d3ee2009fd4450b80205"
+                                                            src="/assets/img/team/avatar1.jpg?h=fc3130ca16c6d3ee2009fd4450b80205"
                                                             width="36" height="36" alt="Team member">
                                                         <div class="flex-grow-1">
                                                             <div class="small fw-semibold"><span>Mike
@@ -406,7 +401,7 @@
                                                 <div class="px-0 py-2 list-group-item">
                                                     <div class="d-flex align-items-center"><img
                                                             class="object-fit-cover rounded-circle me-2"
-                                                            src="assets/img/team/avatar3.jpg?h=d00658bdbe17fa68ec776823ea82e9c1"
+                                                            src="/assets/img/team/avatar3.jpg?h=d00658bdbe17fa68ec776823ea82e9c1"
                                                             width="36" height="36" alt="Team member">
                                                         <div class="flex-grow-1">
                                                             <div class="small fw-semibold"><span>Emma
@@ -418,7 +413,7 @@
                                                 <div class="px-0 py-2 list-group-item">
                                                     <div class="d-flex align-items-center"><img
                                                             class="object-fit-cover rounded-circle me-2"
-                                                            src="assets/img/team/avatar4.jpg?h=13fcb1a3bcb58463519bc5974513259b"
+                                                            src="/assets/img/team/avatar4.jpg?h=13fcb1a3bcb58463519bc5974513259b"
                                                             width="36" height="36" alt="Team member">
                                                         <div class="flex-grow-1">
                                                             <div class="small fw-semibold"><span>David
@@ -430,7 +425,7 @@
                                                 <div class="px-0 py-2 list-group-item">
                                                     <div class="d-flex align-items-center"><img
                                                             class="object-fit-cover rounded-circle me-2"
-                                                            src="assets/img/team/avatar5.jpg?h=3c112678b7e2b1881f0b09da11f0e1e7"
+                                                            src="/assets/img/team/avatar5.jpg?h=3c112678b7e2b1881f0b09da11f0e1e7"
                                                             width="36" height="36" alt="Team member">
                                                         <div class="flex-grow-1">
                                                             <div class="small fw-semibold"><span>Lisa
