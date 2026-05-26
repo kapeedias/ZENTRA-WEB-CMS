@@ -673,3 +673,11 @@ a {
   font-size: 14px;
   color: #333;
 }
+
+.media-overlay {
+  pointer-events: none; /* overlay no longer blocks clicks */
+}
+
+.media-overlay button {
+  pointer-events: auto; /* buttons still clickable */
+}
