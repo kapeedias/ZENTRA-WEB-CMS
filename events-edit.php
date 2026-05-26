@@ -1063,22 +1063,18 @@
         if (el) el.textContent = `${count} item${count !== 1 ? 's' : ''} selected`;
     }
 
-    document.addEventListener('click', function(e) {
-        const item = e.target.closest('.media-item');
-        if (!item) return;
+    // Directly attach click listener to each image
+    document.querySelectorAll('.media-item img').forEach(img => {
+        img.addEventListener('click', function() {
+            const item = this.closest('.media-item');
+            const checkbox = item.querySelector('.select-checkbox');
+            const isSelected = !item.classList.contains('selected');
 
-        // Ignore Tag or Link buttons
-        if (e.target.closest('.tag-btn') || e.target.closest('.link-btn')) return;
+            item.classList.toggle('selected', isSelected);
+            checkbox.checked = isSelected;
 
-        const checkbox = item.querySelector('.select-checkbox');
-        if (!checkbox) return;
-
-        // Toggle selection
-        const isSelected = !item.classList.contains('selected');
-        item.classList.toggle('selected', isSelected);
-        checkbox.checked = isSelected;
-
-        updateSelectedCount();
+            updateSelectedCount();
+        });
     });
     </script>
 

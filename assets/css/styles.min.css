@@ -662,3 +662,15 @@ a {
 @media (max-width: 576px) {
   .media-item { flex: 0 0 calc(50% - 10px); }
 }
+.media-item img {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+.media-overlay {
+  pointer-events: none;
+}
+
+.media-overlay button {
+  pointer-events: auto;
+}
