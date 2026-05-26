@@ -1090,11 +1090,6 @@
         checkbox.click();
     });
 
-    document.addEventListener('click', function(e) {
-        if (e.target.classList.contains('btn-close')) {
-            e.target.blur();
-        }
-    });
 
 
 
@@ -1139,6 +1134,14 @@
             return;
         }
     });
+
+    document.getElementById('zentraMediaModal')
+        .addEventListener('hide.bs.modal', function() {
+            // Remove focus from ANY element inside the modal before hiding
+            if (document.activeElement && this.contains(document.activeElement)) {
+                document.activeElement.blur();
+            }
+        });
     </script>
 
 
