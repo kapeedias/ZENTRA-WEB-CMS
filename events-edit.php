@@ -284,7 +284,7 @@
                                         </div>
                                         <div class="card-body pt-2">
 
-                                            <div class="card py-3">
+                                            <div class="card">
                                                 <div id="posterPreview" class="mb-3">
                                                     <img id="posterPreviewImg"
                                                         src="<?php echo htmlspecialchars($poster_url) ?>"
