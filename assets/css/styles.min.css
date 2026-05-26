@@ -583,3 +583,22 @@ a {
     outline: 3px solid #0d6efd;
     outline-offset: -3px;
 }
+#mediaGrid::-webkit-scrollbar {
+  width: 8px;
+}
+#mediaGrid::-webkit-scrollbar-thumb {
+  background-color: rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+#mediaGrid::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0,0,0,0.35);
+}
+@media (max-width: 992px) {
+  .media-item { flex: 0 0 calc(25% - 10px); } /* 4 per row */
+}
+@media (max-width: 768px) {
+  .media-item { flex: 0 0 calc(33.33% - 10px); } /* 3 per row */
+}
+@media (max-width: 576px) {
+  .media-item { flex: 0 0 calc(50% - 10px); } /* 2 per row */
+}
