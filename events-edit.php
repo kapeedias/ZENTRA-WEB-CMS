@@ -1077,6 +1077,7 @@
         const isSelected = !item.classList.contains('selected');
         item.classList.toggle('selected', isSelected);
         checkbox.checked = isSelected;
+        console.log('Clicked:', e.target);
 
         updateSelectedCount();
     });
