@@ -1094,22 +1094,42 @@
 
 
     document.getElementById('insertSelectedMedia').addEventListener('click', function() {
+
         // --- EDITOR MODE ---
-        if (selectionMode !== 'editor') return;
+        if (selectionMode === 'editor') {
+            const selectedItems = document.querySelectorAll('.media-item.selected');
 
-        const selectedItems = document.querySelectorAll('.media-item.selected');
+            selectedItems.forEach(item => {
+                const url = item.dataset.url;
+                const range = quill.getSelection(true);
 
-        selectedItems.forEach(item => {
-            const url = item.dataset.url;
-            const range = quill.getSelection(true);
+                quill.insertEmbed(range.index, 'image', url);
+                quill.setSelection(range.index + 1);
+            });
 
-            quill.insertEmbed(range.index, 'image', url);
-            quill.setSelection(range.index + 1);
-        });
+            bootstrap.Modal.getInstance(document.getElementById('zentraMediaModal')).hide();
+            return;
+        }
 
-        const modal = bootstrap.Modal.getInstance(document.getElementById('zentraMediaLibraryModal'));
-        modal.hide();
-        return;
+        // --- POSTER MODE ---
+        if (selectionMode === 'eventPoster') {
+            const selected = document.querySelector('.media-item.selected');
+            if (!selected) return;
+
+            const url = selected.dataset.url;
+            const id = selected.dataset.id;
+
+            // Update preview
+            document.getElementById('posterPreviewImg').src = url;
+            document.getElementById('posterPreview').classList.remove('d-none');
+
+            // Update hidden input
+            document.getElementById('poster_media_id').value = id;
+
+            // Close modal
+            bootstrap.Modal.getInstance(document.getElementById('zentraMediaModal')).hide();
+            return;
+        }
     });
     </script>
 
