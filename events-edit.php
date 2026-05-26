@@ -104,39 +104,22 @@
     <?php include '_include/head.php'; ?>
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
     <style>
-    .media-grid {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        gap: 2px;
-        /* max-height: 60vh;*/
-        /* keeps it inside modal */
+    /* Make modal body never scroll horizontally */
+    .modal-body {
+        overflow-x: hidden !important;
+    }
+
+    /* Force vertical scroll only on the grid wrapper */
+    .media-grid-wrapper {
+        max-height: 60vh;
         overflow-y: auto;
         overflow-x: hidden;
-        padding: 10px;
-    }
-
-    .media-item {
-        border: 1px solid #ddd;
-        border-radius: 6px;
-        background-color: #fff;
-        overflow: hidden;
-        text-align: center;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-        width: 120px;
-        height: 120px;
-    }
-
-    .media-item img {
         width: 100%;
-        height: 100px;
-        object-fit: cover;
-        /* keeps aspect ratio */
-        display: block;
     }
 
-    .media-item:hover {
-        transform: scale(1.03);
-        box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    /* Just in case something added nowrap somewhere */
+    .media-grid-wrapper.row {
+        flex-wrap: wrap !important;
     }
     </style>
 </head>
@@ -748,7 +731,8 @@
 
                         </div>
                         <!-- Filter row ends here -->
-                        <div id="mediaGrid" class="row g-2" style="max-height:60vh; overflow-y:auto;"></div>
+                        <div id="mediaGrid" class="row g-2 media-grid-wrapper"></div>
+
                         <!--
                         <div id="mediaGrid" class="media-grid"></div>
                                                             -->
@@ -1119,16 +1103,19 @@
                 }
 
                 files.forEach(file => {
-                    grid.innerHTML += `
-                        <div class="col-6 col-sm-4 col-md-3" style="flex:0 0 20%; max-width:20%;">
-                            <div class="media-item border rounded p-1"
-                                data-id="${file.id}"
-                                data-url="${file.url}"
-                                style="cursor:pointer;">
-                                <img src="${file.url}" class="img-fluid rounded" style="height:120px; object-fit:cover;">
-                            </div>
-                        </div>
-                    `;
+                    files.forEach(file => {
+                        grid.innerHTML += `
+        <div class="col-6 col-sm-4 col-md-3" style="flex:0 0 20%; max-width:20%;">
+            <div class="media-item border rounded p-1"
+                 data-id="${file.id}"
+                 data-url="${file.url}"
+                 style="cursor:pointer;">
+                <img src="${file.url}" class="img-fluid rounded" style="height:120px; object-fit:cover;">
+            </div>
+        </div>
+    `;
+                    });
+
 
                 });
             })
