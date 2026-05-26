@@ -748,9 +748,10 @@
 
                         </div>
                         <!-- Filter row ends here -->
-
+                        <div id="mediaGrid" class="row g-2" style="max-height:60vh; overflow-y:auto;"></div>
+                        <!--
                         <div id="mediaGrid" class="media-grid"></div>
-
+                                                            -->
                     </div>
 
                     <div class="modal-footer">
@@ -1119,13 +1120,16 @@
 
                 files.forEach(file => {
                     grid.innerHTML += `
-                    <div class="media-item border rounded p-1"
-                         data-id="${file.id}"
-                         data-url="${file.url}"
-                         style="cursor:pointer; width:120px; display:inline-block; margin:5px;">
-                        <img src="${file.url}" class="img-fluid rounded">
-                    </div>
-                `;
+                        <div class="col-6 col-sm-4 col-md-3" style="flex:0 0 20%; max-width:20%;">
+                            <div class="media-item border rounded p-1"
+                                data-id="${file.id}"
+                                data-url="${file.url}"
+                                style="cursor:pointer;">
+                                <img src="${file.url}" class="img-fluid rounded" style="height:120px; object-fit:cover;">
+                            </div>
+                        </div>
+                    `;
+
                 });
             })
             .catch(err => {
