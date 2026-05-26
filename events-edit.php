@@ -1077,6 +1077,23 @@
         // Let the checkbox handle everything (state + counter)
         checkbox.click();
     });
+    document.getElementById('insertSelectedMedia').addEventListener('click', function() {
+
+        if (selectionMode !== 'editor') return;
+
+        const selectedItems = document.querySelectorAll('.media-item.selected');
+
+        selectedItems.forEach(item => {
+            const url = item.dataset.url;
+            const range = quill.getSelection(true);
+
+            quill.insertEmbed(range.index, 'image', url);
+            quill.setSelection(range.index + 1);
+        });
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById('zentraMediaLibraryModal'));
+        modal.hide();
+    });
     </script>
 
 
