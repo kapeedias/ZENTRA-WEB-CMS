@@ -121,6 +121,8 @@
         overflow: hidden;
         text-align: center;
         transition: transform 0.2s ease, box-shadow 0.2s ease;
+        width: 120px;
+        height: 120px;
     }
 
     .media-item img {
