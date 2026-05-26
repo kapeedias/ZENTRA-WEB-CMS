@@ -673,87 +673,87 @@
                 </div>
             </div>
         </div>
-        <script>
-        function openZentraMediaLibraryModal(mode) {
-            window.mediaLibraryMode = mode;
-            loadMediaLibrary();
-            const modalEl = document.getElementById('zentraMediaModal');
-            const modal = new bootstrap.Modal(modalEl);
+    </form>
+    <script>
+    function openZentraMediaLibraryModal(mode) {
+        window.mediaLibraryMode = mode;
+        loadMediaLibrary();
+        const modalEl = document.getElementById('zentraMediaModal');
+        const modal = new bootstrap.Modal(modalEl);
 
-            modal.show();
-        }
-        </script>
+        modal.show();
+    }
+    </script>
 
-        <div class="modal fade" id="zentraMediaModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
+    <div class="modal fade" id="zentraMediaModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
 
-                    <div class="modal-header">
-                        <h5 class="modal-title">Media Library</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <div class="modal-header">
+                    <h5 class="modal-title">Media Library</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <!-- Filter row starts here -->
+                    <div class="d-flex align-items-center gap-2 mb-3">
+
+                        <input type="text" id="mediaSearch" class="form-control" placeholder="Search files..."
+                            style="max-width: 250px;">
+
+                        <button class="btn btn-sm btn-outline-secondary" data-filter="all">All</button>
+                        <button class="btn btn-sm btn-outline-secondary" data-filter="images">Images</button>
+                        <button class="btn btn-sm btn-outline-secondary" data-filter="documents">Documents</button>
+                        <button class="btn btn-sm btn-outline-secondary" data-filter="videos">Videos</button>
+
+                        <button id="uploadBtn" class="btn btn-sm btn-light border ms-auto">
+                            <i class="fa fa-upload"></i> Upload
+                        </button>
+
                     </div>
-
-                    <div class="modal-body">
-
-                        <!-- Filter row starts here -->
-                        <div class="d-flex align-items-center gap-2 mb-3">
-
-                            <input type="text" id="mediaSearch" class="form-control" placeholder="Search files..."
-                                style="max-width: 250px;">
-
-                            <button class="btn btn-sm btn-outline-secondary" data-filter="all">All</button>
-                            <button class="btn btn-sm btn-outline-secondary" data-filter="images">Images</button>
-                            <button class="btn btn-sm btn-outline-secondary" data-filter="documents">Documents</button>
-                            <button class="btn btn-sm btn-outline-secondary" data-filter="videos">Videos</button>
-
-                            <button id="uploadBtn" class="btn btn-sm btn-light border ms-auto">
-                                <i class="fa fa-upload"></i> Upload
-                            </button>
-
-                        </div>
-                        <!-- Filter row ends here -->
-                        <div id="mediaGrid" class="row g-2" style="max-height:60vh; overflow-y:auto;"></div>
-                        <!--
+                    <!-- Filter row ends here -->
+                    <div id="mediaGrid" class="row g-2" style="max-height:60vh; overflow-y:auto;"></div>
+                    <!--
                         <div id="mediaGrid" class="media-grid"></div>
                                                             -->
-                    </div>
-
-                    <div class="modal-footer">
-                        <span id="selectedCount">0 items selected</span>
-                        <button class="btn btn-primary" id="insertSelectedMedia">Insert</button>
-                    </div>
-
                 </div>
+
+                <div class="modal-footer">
+                    <span id="selectedCount">0 items selected</span>
+                    <button class="btn btn-primary" id="insertSelectedMedia">Insert</button>
+                </div>
+
             </div>
         </div>
-        <div class="modal fade" id="tagPickerModal" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content">
+    </div>
+    <div class="modal fade" id="tagPickerModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
 
-                    <div class="modal-header">
-                        <h5 class="modal-title fw-bold">Select Tags</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">Select Tags</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
 
-                    <div class="modal-body">
+                <div class="modal-body">
 
-                        <input type="text" id="tagSearchInput" class="form-control"
-                            placeholder="Search or create tags…">
+                    <input type="text" id="tagSearchInput" class="form-control" placeholder="Search or create tags…">
 
-                        <div id="tagSearchResults" class="list-group mt-3"></div>
-
-                    </div>
-
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <input type="hidden" id="hiddenTags" name="tags">
-
-                    </div>
+                    <div id="tagSearchResults" class="list-group mt-3"></div>
 
                 </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="hidden" id="hiddenTags" name="tags">
+
+                </div>
+
             </div>
         </div>
-    </form>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     <script>
     document.addEventListener("DOMContentLoaded", function() {
