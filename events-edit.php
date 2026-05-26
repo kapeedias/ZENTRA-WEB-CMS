@@ -282,10 +282,10 @@
                                                 onclick="openZentraMediaLibraryModal('eventPoster')"> Set Event Poster
                                             </button>
                                         </div>
-                                        <div class="card-body pt-2">
+                                        <div class="card-body mt-2">
 
-                                            <div class="card my-3">
-                                                <div id="posterPreview" class="mb-3">
+                                            <div class="card mb-3">
+                                                <div id="posterPreview">
                                                     <img id="posterPreviewImg"
                                                         src="<?php echo htmlspecialchars($poster_url) ?>"
                                                         alt="Poster Preview" class="img-fluid rounded border">
