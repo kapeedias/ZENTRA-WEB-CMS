@@ -676,7 +676,7 @@
         <script>
         function openZentraMediaLibraryModal(mode) {
             window.mediaLibraryMode = mode;
-
+            loadMediaLibrary();
             const modalEl = document.getElementById('zentraMediaModal');
             const modal = new bootstrap.Modal(modalEl);
 
@@ -1055,6 +1055,25 @@
         }, 5000);
     }
     </script>
+    <script>
+    function loadMediaLibrary() {
+        console.log("loadMediaLibrary() called");
+
+        const grid = document.getElementById("mediaGrid");
+        if (!grid) {
+            console.error("mediaGrid not found");
+            return;
+        }
+
+        // TEMPORARY placeholder until backend is ready
+        grid.innerHTML = `
+        <div class="p-4 text-center text-muted">
+            Media library loading...
+        </div>
+    `;
+    }
+    </script>
+
 
     <?php include '_include/body_end_plugins.php'; ?>
 </body>
