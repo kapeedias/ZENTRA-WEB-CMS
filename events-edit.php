@@ -268,24 +268,12 @@
                                     <div class="card mb-4">
                                         <div class="card-header d-flex justify-content-between align-items-center">
                                             <h5 class="fw-bold mb-0">Event
-                                                Poster Upload</h5>
+                                                Poster</h5>
                                         </div>
                                         <div class="card-body pt-2">
-                                            <!--<div class="mb-4 storage-dropzone">
-                                                <i class="fa fa-cloud-upload fa-3x text-muted mb-3"></i>
-
-                                                <h6 class="fw-bold mb-1">Click or drag event poster to upload
-                                                </h6>
-                                                <p class="small text-muted mb-0">PNG or JPG (max. 2 MB)</p>
-
-                                                <input class="d-none" type="file" id="fileInput-2"
-                                                    accept="image/png, image/jpeg">
-                                                <input type="hidden" name="poster_media_id" id="poster_media_id">
-                                            </div>
-                                                            -->
 
                                             <div class="card p-3">
-                                                <label class="form-label fw-bold">Event Poster</label>
+
 
                                                 <div id="posterPreview" class="mb-3 d-none">
                                                     <img id="posterPreviewImg" src="" class="img-fluid rounded border">
