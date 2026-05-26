@@ -558,8 +558,9 @@ a {
     overflow: hidden;
     cursor: pointer;
     background: #f8f9fa;
-    position: relative;
+    position: relative; /* keep this */
 }
+
 
 /* Image inside thumbnail — DO NOT overwrite this */
 .media-item img {

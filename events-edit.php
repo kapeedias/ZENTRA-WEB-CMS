@@ -1072,6 +1072,7 @@
 
             item.classList.toggle('selected', isSelected);
             checkbox.checked = isSelected;
+            console.log("ITEM HAS SELECTED CLASS?", item.classList.contains('selected'));
 
             updateSelectedCount();
         });
