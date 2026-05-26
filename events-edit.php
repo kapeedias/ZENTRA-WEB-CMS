@@ -1038,18 +1038,19 @@
 
                 files.forEach(file => {
                     grid.innerHTML += `
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2" style="flex:0 0 20%; max-width:20%;">
-      <div class="media-item border rounded p-1 text-center"
+    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
+      <div class="ratio ratio-1x1 border rounded media-item"
            data-id="${file.id}"
            data-url="${file.url}"
            style="cursor:pointer;">
         <img src="${file.url}"
-             class="img-fluid rounded"
-             style="width:100%; height:120px; object-fit:cover;">
+             class="w-100 h-100 rounded"
+             style="object-fit:cover;">
       </div>
     </div>
   `;
                 });
+
 
 
             })
