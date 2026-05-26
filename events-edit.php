@@ -1057,23 +1057,19 @@
         }
     });
 
-    // 1. Update counter based on .media-item.selected
     function updateSelectedCount() {
         const count = document.querySelectorAll('.media-item.selected').length;
         const el = document.getElementById('selectedCount');
-        if (!el) return;
-        el.textContent = `${count} item${count !== 1 ? 's' : ''} selected`;
+        if (el) el.textContent = `${count} item${count !== 1 ? 's' : ''} selected`;
     }
 
-    // 2. Click-to-select on media-item (image, background, etc.)
+    // Handle clicks on image or empty space
     document.addEventListener('click', function(e) {
         const item = e.target.closest('.media-item');
         if (!item) return;
 
-        // Ignore Tag + Link buttons
-        if (e.target.closest('.tag-btn') || e.target.closest('.link-btn')) {
-            return;
-        }
+        // Ignore Tag or Link buttons
+        if (e.target.closest('.tag-btn') || e.target.closest('.link-btn')) return;
 
         const checkbox = item.querySelector('.select-checkbox');
         if (!checkbox) return;
