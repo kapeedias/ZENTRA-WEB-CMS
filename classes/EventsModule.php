@@ -295,5 +295,19 @@ class EventsModule
             return [];
         }
     }
+    public function getEventPosterByMediaId(int $mediaId): ?string
+    {
+        if (empty($mediaId)) {
+            return null;
+        }
+
+        $sql  = "SELECT url FROM media WHERE id = :id LIMIT 1";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['id' => $mediaId]);
+
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $row ? $row['url'] : null;
+    }
 
 }

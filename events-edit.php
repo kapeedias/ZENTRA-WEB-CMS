@@ -69,16 +69,24 @@
     }
 
     // ==== LOAD EVENT ====
-    $event           = $events->getEventByHash($eventHash);
+    $event = $events->getEventByHash($eventHash);
+
+    if (! $event) {
+    header("Location: /events-manage.php?not_found=1");
+    exit;
+    }
+
     $eventUrl        = $events->getEventUrl($eventHash);
     $locations       = $events->getEventLocations();
     $currentLocation = $event['event_location'];         // value stored in DB
     $isAllDay        = (int) $event['is_event_all_day']; // value from DB
     $eventCategory   = $event['event_category'];         // value stored in DB
+    $poster_media_id = (int) ($event['poster_media_id'] ?? 0);
 
-    if (! $event) {
-    header("Location: /events-manage.php?not_found=1");
-    exit;
+    if ($poster_media_id > 0) {
+    $poster_url = $events->getEventPosterByMediaId($poster_media_id);
+    } else {
+    $poster_url = '/assets/img/1200x600.jpg';
     }
 
     $startDT = $event['event_start_date'] . 'T' . ($event['event_start_time'] ?? '00:00');
@@ -278,12 +286,16 @@
 
                                             <div class="card p-3">
 
-                                                <div id="posterPreview" class="mb-3 d-none">
-                                                    <img id="posterPreviewImg" src="/assets/img/1200x600.jpg"
-                                                        alt="Poster Preview" class="img-fluid rounded border">
+
+                                                <div id="posterPreview" class="mb-3">
+                                                    <img id="posterPreviewImg"
+                                                        src="<?php echo htmlspecialchars($poster_url) ?>" alt="Poster Preview"
+                                                        class="img-fluid rounded border">
                                                 </div>
 
-                                                <input type="hidden" id="poster_media_id" name="poster_media_id">
+                                                <input type="hidden" id="poster_media_id" name="poster_media_id"
+                                                    value="<?php echo $poster_media_id ?>">
+
 
                                                 <div id="posterUploadError" class="alert alert-danger d-none mt-2">
                                                 </div>
