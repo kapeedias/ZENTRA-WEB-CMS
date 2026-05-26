@@ -1071,7 +1071,7 @@
         const item = img.closest('.media-item');
         const checkbox = item.querySelector('.select-checkbox');
         if (!checkbox) return;
-
+        checkbox.checked = !checkbox.checked;
         // Let the checkbox handle everything (state + counter)
         checkbox.click();
     });
