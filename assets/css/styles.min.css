@@ -626,3 +626,30 @@ a {
   top: 6px;
   left: 6px;
 }
+
+.media-overlay {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.5); /* translucent black background */
+  padding: 6px;
+  border-radius: 6px;
+}
+
+.media-overlay button {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.media-overlay button:hover {
+  transform: scale(1.1);
+  color: #0d6efd;
+}
+
