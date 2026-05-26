@@ -1063,7 +1063,6 @@
         if (el) el.textContent = `${count} item${count !== 1 ? 's' : ''} selected`;
     }
 
-    // Handle clicks on image or empty space
     document.addEventListener('click', function(e) {
         const item = e.target.closest('.media-item');
         if (!item) return;
@@ -1074,10 +1073,10 @@
         const checkbox = item.querySelector('.select-checkbox');
         if (!checkbox) return;
 
+        // Toggle selection
         const isSelected = !item.classList.contains('selected');
         item.classList.toggle('selected', isSelected);
         checkbox.checked = isSelected;
-        console.log('Clicked:', e.target);
 
         updateSelectedCount();
     });
