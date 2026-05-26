@@ -534,40 +534,51 @@ a {
 .text-x-small {
   font-size: x-small;
 }
+/* Container that holds all thumbnails */
 #mediaGrid {
-  display: flex;
-  flex-wrap: wrap;          /* allows wrapping */
-  justify-content: flex-start;
-  align-content: flex-start;
-  width: 100%;              /* keeps grid inside modal */
-  max-height: 60vh;         /* enables vertical scroll */
-  overflow-y: auto;         /* vertical scroll only */
-  overflow-x: hidden;       /* disables horizontal scroll */
-  box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;              /* wrap items into rows */
+    justify-content: flex-start;
+    align-content: flex-start;
+    width: 100%;                  /* stay inside modal */
+    max-height: 60vh;             /* vertical scroll limit */
+    overflow-y: auto;             /* vertical scroll only */
+    overflow-x: hidden;           /* prevent horizontal scroll */
+    box-sizing: border-box;
+    padding: 5px;                 /* optional spacing */
 }
 
-
+/* Each thumbnail wrapper */
 .media-item {
-    position: relative;
-    width: 100%;
-    padding-top: 100%; /* 1:1 square */
-    background-color: #f8f9fa;
+    flex: 0 0 calc(20% - 10px);   /* 5 per row (responsive) */
+    margin: 5px;
+    aspect-ratio: 1 / 1;          /* perfect square */
     border: 1px solid #ddd;
     border-radius: 6px;
     overflow: hidden;
     cursor: pointer;
+    background: #f8f9fa;
+    position: relative;
 }
 
-.media-item img,
-.media-item .file-icon {
+/* Image inside thumbnail */
+.media-item img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover; /* perfect 1:1 cropping */
+    object-fit: cover;            /* crop to square */
+    border-radius: 6px;
 }
 
+/* Hover effect */
+.media-item:hover {
+    transform: scale(1.03);
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Selected state */
 .media-item.selected {
     outline: 3px solid #0d6efd;
     outline-offset: -3px;
