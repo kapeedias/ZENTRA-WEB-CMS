@@ -1069,12 +1069,12 @@
         const item = e.target.closest('.media-item');
         if (!item) return;
 
-        // Do NOT toggle selection when clicking Tag or Link buttons
+        // Do NOT toggle when clicking Tag or Link buttons
         if (e.target.closest('.tag-btn') || e.target.closest('.link-btn')) {
             return;
         }
 
-        // Toggle selection when clicking image or empty space
+        // Toggle selection when clicking image or empty area
         const checkbox = item.querySelector('.select-checkbox');
         const isSelected = !item.classList.contains('selected');
 
