@@ -606,11 +606,11 @@ a {
   position: relative;
 }
 
-/* Left-side icons */
+/* Keep Tag + Link on the left */
 .media-overlay {
   position: absolute;
   top: 6px;
-  left: 6px; /* move to left side */
+  left: 6px;
   display: flex;
   flex-direction: column;
   gap: 6px;
@@ -625,14 +625,17 @@ a {
   opacity: 1;
 }
 
-/* Right-side checkbox */
+/* Move checkbox to right side */
 .select-checkbox {
   position: absolute;
   top: 6px;
   right: 6px;
   transform: scale(1.2);
   accent-color: #0d6efd;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
+
 
 /* Keep checkbox visible when selected */
 .media-item.selected .select-checkbox {
