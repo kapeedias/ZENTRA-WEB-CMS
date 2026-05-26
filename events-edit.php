@@ -103,6 +103,39 @@
     <title><?php echo getenv('APP_NAME') ?> - Edit Event</title>
     <?php include '_include/head.php'; ?>
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <style>
+    .media-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
+        max-height: 60vh;
+        /* keeps it inside modal */
+        overflow-y: auto;
+        padding: 10px;
+    }
+
+    .media-item {
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        background-color: #fff;
+        overflow: hidden;
+        text-align: center;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .media-item img {
+        width: 100%;
+        height: 100px;
+        object-fit: cover;
+        /* keeps aspect ratio */
+        display: block;
+    }
+
+    .media-item:hover {
+        transform: scale(1.03);
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+    }
+    </style>
 </head>
 
 <body>
@@ -713,7 +746,7 @@
                         </div>
                         <!-- Filter row ends here -->
 
-                        <div id="mediaGrid"></div>
+                        <div id="mediaGrid" class="media-grid"></div>
 
                     </div>
 
