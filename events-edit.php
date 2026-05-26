@@ -1069,14 +1069,17 @@
         const item = e.target.closest('.media-item');
         if (!item) return;
 
-        // ignore clicks on overlay buttons
-        if (e.target.closest('.tag-btn') || e.target.closest('.link-btn')) return;
+        // Do NOT toggle selection when clicking Tag or Link buttons
+        if (e.target.closest('.tag-btn') || e.target.closest('.link-btn')) {
+            return;
+        }
 
-        // toggle selection
+        // Toggle selection when clicking image or empty space
         const checkbox = item.querySelector('.select-checkbox');
         const isSelected = !item.classList.contains('selected');
+
         item.classList.toggle('selected', isSelected);
-        if (checkbox) checkbox.checked = isSelected;
+        checkbox.checked = isSelected;
 
         updateSelectedCount();
     });
