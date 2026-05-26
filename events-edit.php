@@ -1057,6 +1057,7 @@
         }
     });
 
+    // 1. Update counter based on .media-item.selected
     function updateSelectedCount() {
         const count = document.querySelectorAll('.media-item.selected').length;
         const el = document.getElementById('selectedCount');
@@ -1064,20 +1065,20 @@
         el.textContent = `${count} item${count !== 1 ? 's' : ''} selected`;
     }
 
-
+    // 2. Click-to-select on media-item (image, background, etc.)
     document.addEventListener('click', function(e) {
         const item = e.target.closest('.media-item');
         if (!item) return;
 
-        // Do NOT toggle when clicking Tag or Link buttons
+        // Ignore Tag + Link buttons
         if (e.target.closest('.tag-btn') || e.target.closest('.link-btn')) {
             return;
         }
 
-        // Toggle selection when clicking image or empty area
         const checkbox = item.querySelector('.select-checkbox');
-        const isSelected = !item.classList.contains('selected');
+        if (!checkbox) return;
 
+        const isSelected = !item.classList.contains('selected');
         item.classList.toggle('selected', isSelected);
         checkbox.checked = isSelected;
 
