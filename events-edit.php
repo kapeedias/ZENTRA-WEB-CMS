@@ -756,6 +756,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     <script>
+    let quill;
     document.addEventListener("DOMContentLoaded", function() {
         const fullToolbar = [
             [{
@@ -812,6 +813,26 @@
         }
 
 
+    });
+
+    document.getElementById('insertMediaBtn').addEventListener('click', function() {
+
+        // Only run when modal was opened for the editor
+        if (selectionMode !== 'editor') return;
+
+        const selectedItems = document.querySelectorAll('.media-item.selected');
+
+        selectedItems.forEach(item => {
+            const url = item.dataset.url;
+            const range = quill.getSelection(true);
+
+            quill.insertEmbed(range.index, 'image', url);
+            quill.setSelection(range.index + 1);
+        });
+
+        // Close modal
+        const modal = bootstrap.Modal.getInstance(document.getElementById('zentraMediaLibraryModal'));
+        modal.hide();
     });
     </script>
     <script>
