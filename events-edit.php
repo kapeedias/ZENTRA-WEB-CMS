@@ -1026,16 +1026,6 @@
         };
     })();
     </script>
-    <script>
-    function openZentraMediaLibraryModal(mode) {
-        window.mediaLibraryMode = mode;
-
-        const modalEl = document.getElementById('zentraMediaModal');
-        const modal = new bootstrap.Modal(modalEl);
-
-        modal.show();
-    }
-    </script>
 
     <script>
     function showPosterError(msg) {
