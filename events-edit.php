@@ -677,7 +677,6 @@
         function openZentraMediaLibraryModal(mode) {
             window.mediaLibraryMode = mode;
 
-            loadMediaLibrary(); // <-- function to load media items into the modal
             const modalEl = document.getElementById('zentraMediaModal');
             const modal = new bootstrap.Modal(modalEl);
 
