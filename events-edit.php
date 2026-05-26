@@ -1064,15 +1064,6 @@
     }
 
     // When checkbox changes, sync .selected and counter
-    document.addEventListener('change', function(e) {
-        if (!e.target.matches('.select-checkbox')) return;
-
-        const item = e.target.closest('.media-item');
-        if (!item) return;
-
-        item.classList.toggle('selected', e.target.checked);
-        updateSelectedCount();
-    });
     document.addEventListener('click', function(e) {
         const img = e.target.closest('.media-item img');
         if (!img) return;
@@ -1081,9 +1072,8 @@
         const checkbox = item.querySelector('.select-checkbox');
         if (!checkbox) return;
 
-        checkbox.checked = !checkbox.checked;
-        item.classList.toggle('selected', checkbox.checked);
-        updateSelectedCount();
+        // Let the checkbox handle everything (state + counter)
+        checkbox.click();
     });
     </script>
 
