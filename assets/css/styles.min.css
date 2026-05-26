@@ -602,11 +602,14 @@ a {
 @media (max-width: 576px) {
   .media-item { flex: 0 0 calc(50% - 10px); } /* 2 per row */
 }
+/* Base container */
 .media-item {
   position: relative;
 }
 
-/* Overlay stays on left */
+/* ----------------------------- */
+/* LEFT SIDE: Tag + Link overlay */
+/* ----------------------------- */
 .media-overlay {
   position: absolute;
   top: 6px;
@@ -625,70 +628,7 @@ a {
   opacity: 1;
 }
 
-/* Checkbox now independent on right */
-.select-checkbox {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  transform: scale(1.2);
-  accent-color: #0d6efd;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-/* Always visible when selected */
-.media-item.selected .select-checkbox {
-  opacity: 1;
-}
-
-
-.media-item:not(:hover) .select-checkbox {
-  opacity: 0;
-}
-
-.media-item.selected:not(:hover) .select-checkbox {
-  opacity: 1; /* visible even when not hovered */
-}
-
-.media-overlay {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  display: flex;
-  flex-direction: row;
-  gap: 6px;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 6px;
-  border-radius: 6px;
-  opacity: 0;
-  transition: opacity 0.2s ease;
-}
-
-.media-item:hover .media-overlay {
-  opacity: 1;
-}
-
-/* Checkbox first in stack */
-.media-overlay .select-checkbox {
-  order: -1; /* moves checkbox to top */
-  transform: scale(1.2);
-  accent-color: #0d6efd;
-}
-
-/* Keep checkbox visible when selected */
-.media-item.selected .select-checkbox {
-  opacity: 1;
-}
-
-.media-item:not(:hover) .select-checkbox {
-  opacity: 0;
-}
-
-.media-item.selected:not(:hover) .select-checkbox {
-  opacity: 1;
-}
-
-
+/* Overlay buttons */
 .media-overlay button {
   background: transparent;
   border: none;
@@ -703,6 +643,28 @@ a {
   color: #0d6efd;
 }
 
+/* ----------------------------- */
+/* RIGHT SIDE: Checkbox          */
+/* ----------------------------- */
+.select-checkbox {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  transform: scale(1.2);
+  accent-color: #0d6efd;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Show checkbox on hover OR when selected */
+.media-item:hover .select-checkbox,
+.media-item.selected .select-checkbox {
+  opacity: 1;
+}
+
+/* ----------------------------- */
+/* Footer counter                */
+/* ----------------------------- */
 .media-footer {
   display: flex;
   justify-content: space-between;
