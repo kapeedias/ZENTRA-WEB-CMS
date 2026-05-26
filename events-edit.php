@@ -756,8 +756,10 @@
 
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
     <script>
-    let quill;
+    let quill; // global
+
     document.addEventListener("DOMContentLoaded", function() {
+
         const fullToolbar = [
             [{
                 header: [1, 2, 3, 4, 5, 6, false]
@@ -791,50 +793,29 @@
             ["clean"]
         ];
 
-        // 1️⃣ Initialize Quill
-        const quill = new Quill("#editor", {
+        // ✅ Initialize Quill ONCE
+        quill = new Quill("#editor", {
             theme: "snow",
             modules: {
                 toolbar: fullToolbar
             }
         });
 
-        // 2️⃣ Override the image button to open your Media Library modal
+        // ✅ Override image button to open media library
         const toolbar = quill.getModule("toolbar");
         toolbar.addHandler("image", function() {
-            openZentraMediaLibraryModal(); // <-- your modal function
+            openZentraMediaLibraryModal('editor');
         });
 
-        // 3️⃣ Sync Quill content before form submit
-        function syncQuillContent() {
+        // Optional: sync content before submit
+        window.syncQuillContent = function() {
             const html = quill.root.innerHTML;
             document.getElementById("event_description").value = html;
             return true;
-        }
-
-
-    });
-
-    document.getElementById('insertMediaBtn').addEventListener('click', function() {
-
-        // Only run when modal was opened for the editor
-        if (selectionMode !== 'editor') return;
-
-        const selectedItems = document.querySelectorAll('.media-item.selected');
-
-        selectedItems.forEach(item => {
-            const url = item.dataset.url;
-            const range = quill.getSelection(true);
-
-            quill.insertEmbed(range.index, 'image', url);
-            quill.setSelection(range.index + 1);
-        });
-
-        // Close modal
-        const modal = bootstrap.Modal.getInstance(document.getElementById('zentraMediaLibraryModal'));
-        modal.hide();
+        };
     });
     </script>
+
     <script>
     let selectedTags = [];
     const badgeContainer = document.getElementById('eventTagBadges');
