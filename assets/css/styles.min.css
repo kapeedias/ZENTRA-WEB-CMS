@@ -537,22 +537,22 @@ a {
 /* Container that holds all thumbnails */
 #mediaGrid {
     display: flex;
-    flex-wrap: wrap;              /* wrap items into rows */
+    flex-wrap: wrap;
     justify-content: flex-start;
     align-content: flex-start;
-    width: 100%;                  /* stay inside modal */
-    max-height: 60vh;             /* vertical scroll limit */
-    overflow-y: auto;             /* vertical scroll only */
-    overflow-x: hidden;           /* prevent horizontal scroll */
+    width: 100%;
+    max-height: 60vh;
+    overflow-y: auto;
+    overflow-x: hidden;
     box-sizing: border-box;
-    padding: 5px;                 /* optional spacing */
+    padding: 5px;
 }
 
 /* Each thumbnail wrapper */
 .media-item {
-    flex: 0 0 calc(20% - 10px);   /* 5 per row (responsive) */
+    flex: 0 0 calc(20% - 10px);
     margin: 5px;
-    aspect-ratio: 1 / 1;          /* perfect square */
+    aspect-ratio: 1 / 1;
     border: 1px solid #ddd;
     border-radius: 6px;
     overflow: hidden;
@@ -561,15 +561,15 @@ a {
     position: relative;
 }
 
-/* Image inside thumbnail */
+/* Image inside thumbnail — DO NOT overwrite this */
 .media-item img {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;            /* crop to square */
-    border-radius: 6px;
+    object-fit: cover;
+    pointer-events: auto; /* ensure image receives clicks */
 }
 
 /* Hover effect */
@@ -583,101 +583,82 @@ a {
     outline: 3px solid #0d6efd;
     outline-offset: -3px;
 }
-#mediaGrid::-webkit-scrollbar {
-  width: 8px;
-}
-#mediaGrid::-webkit-scrollbar-thumb {
-  background-color: rgba(0,0,0,0.2);
-  border-radius: 4px;
-}
-#mediaGrid::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(0,0,0,0.35);
-}
-@media (max-width: 992px) {
-  .media-item { flex: 0 0 calc(25% - 10px); } /* 4 per row */
-}
-@media (max-width: 768px) {
-  .media-item { flex: 0 0 calc(33.33% - 10px); } /* 3 per row */
-}
-@media (max-width: 576px) {
-  .media-item { flex: 0 0 calc(50% - 10px); } /* 2 per row */
-}
-/* Base container */
-.media-item {
-  position: relative;
-}
 
 /* ----------------------------- */
 /* LEFT SIDE: Tag + Link overlay */
 /* ----------------------------- */
 .media-overlay {
-  position: absolute;
-  top: 6px;
-  left: 6px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  background: rgba(0, 0, 0, 0.5);
-  padding: 6px;
-  border-radius: 6px;
-  opacity: 0;
-  transition: opacity 0.2s ease;
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 6px;
+    border-radius: 6px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    pointer-events: none; /* overlay does NOT block clicks */
 }
 
 .media-item:hover .media-overlay {
-  opacity: 1;
+    opacity: 1;
 }
 
-/* Overlay buttons */
 .media-overlay button {
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 14px;
-  cursor: pointer;
-  transition: transform 0.1s ease;
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+    pointer-events: auto; /* buttons still clickable */
 }
 
 .media-overlay button:hover {
-  transform: scale(1.1);
-  color: #0d6efd;
+    transform: scale(1.1);
+    color: #0d6efd;
 }
 
 /* ----------------------------- */
 /* RIGHT SIDE: Checkbox          */
 /* ----------------------------- */
 .select-checkbox {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  transform: scale(1.2);
-  accent-color: #0d6efd;
-  opacity: 0;
-  transition: opacity 0.2s ease;
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    transform: scale(1.2);
+    accent-color: #0d6efd;
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
 /* Show checkbox on hover OR when selected */
 .media-item:hover .select-checkbox,
 .media-item.selected .select-checkbox {
-  opacity: 1;
+    opacity: 1;
 }
 
 /* ----------------------------- */
 /* Footer counter                */
 /* ----------------------------- */
 .media-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 8px 16px;
-  font-size: 14px;
-  color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #333;
 }
 
-.media-overlay {
-  pointer-events: none; /* overlay no longer blocks clicks */
+/* Responsive */
+@media (max-width: 992px) {
+  .media-item { flex: 0 0 calc(25% - 10px); }
 }
-
-.media-overlay button {
-  pointer-events: auto; /* buttons still clickable */
+@media (max-width: 768px) {
+  .media-item { flex: 0 0 calc(33.33% - 10px); }
+}
+@media (max-width: 576px) {
+  .media-item { flex: 0 0 calc(50% - 10px); }
 }
