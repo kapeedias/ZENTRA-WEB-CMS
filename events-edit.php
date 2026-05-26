@@ -1070,10 +1070,14 @@
 
         const item = img.closest('.media-item');
         const checkbox = item.querySelector('.select-checkbox');
-        if (!checkbox) return;
 
-        // Let the checkbox handle everything (state + counter)
-        checkbox.click();
+        // Toggle checkbox
+        checkbox.checked = !checkbox.checked;
+
+        // Fire the change event so the counter updates
+        checkbox.dispatchEvent(new Event('change', {
+            bubbles: true
+        }));
     });
     </script>
 
