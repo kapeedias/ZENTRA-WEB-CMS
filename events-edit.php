@@ -731,9 +731,7 @@
 
                         </div>
                         <!-- Filter row ends here -->
-                        <div id="mediaGrid" class="row g-3 overflow-auto" style="max-height:60vh;"></div>
-
-
+                        <div id="mediaGrid" class="row g-2" style="max-height:60vh; overflow-y:auto;"></div>
                         <!--
                         <div id="mediaGrid" class="media-grid"></div>
                                                             -->
@@ -973,7 +971,74 @@
             openZentraMediaLibraryModal("eventPoster"); // ✅ unified modal
         });
 
+        /*
+        // File selected
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                uploadPoster(fileInput.files[0]);
+            }
+        });
 
+        // DRAG OVER
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('drag-over');
+        });
+
+        // DRAG LEAVE
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('drag-over');
+        });
+
+        // DROP FILE
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('drag-over');
+
+            if (e.dataTransfer.files.length > 0) {
+                uploadPoster(e.dataTransfer.files[0]);
+            }
+        });
+
+        // UPLOAD FUNCTION
+        function uploadPoster(file) {
+            if (!file.type.match(/image\/(png|jpeg)/)) {
+                showPosterError(data.error || "Upload failed - Invalid file type. Only PNG or JPG allowed");
+                return;
+            }
+
+            if (file.size > 2 * 1024 * 1024) {
+                showPosterError(data.error || "Upload failed - File too large. Max size is 2 MB");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/api/v1/media/upload.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        posterMediaIdInput.value = data.media_id;
+                        previewImg.src = data.url;
+                        preview.classList.remove('d-none');
+                        showPosterSuccess("Poster Image uploaded successfully");
+                        console.log("SUCCESS ALERT SHOWN");
+
+                    } else {
+                        showPosterError(data.error || "Upload failed");
+
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    showPosterError(data.error || "Upload error occurred");
+                });
+        }
+        */
         window.applySelectedMedia = function(selected) {
             if (window.mediaLibraryMode === "eventPoster") {
                 posterMediaIdInput.value = selected.id;
@@ -1038,30 +1103,17 @@
 
                 files.forEach(file => {
                     grid.innerHTML += `
-    <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-      <div class="ratio ratio-1x1 border rounded media-item" 
-           data-id="${file.id}" 
-           data-url="${file.url}" 
-           style="cursor:pointer; position:relative;">
-        
-        <img src="${file.url}"
-             style="
-               position:absolute;
-               top:0;
-               left:0;
-               width:100%;
-               height:100%;
-               object-fit:cover;
-             "
-             class="rounded">
-      </div>
-    </div>
-  `;
+                        <div class="col-6 col-sm-4 col-md-3" style="flex:0 0 20%; max-width:20%;">
+                            <div class="media-item border rounded p-1"
+                                data-id="${file.id}"
+                                data-url="${file.url}"
+                                style="cursor:pointer;">
+                                <img src="${file.url}" class="img-fluid rounded" style="height:120px; object-fit:cover;">
+                            </div>
+                        </div>
+                    `;
+
                 });
-
-
-
-
             })
             .catch(err => {
                 console.error("loadMediaLibrary error:", err);
