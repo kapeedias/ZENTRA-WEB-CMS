@@ -673,6 +673,17 @@
                 </div>
             </div>
         </div>
+        <script>
+        function openZentraMediaLibraryModal(mode) {
+            window.mediaLibraryMode = mode;
+
+            const modalEl = document.getElementById('zentraMediaModal');
+            const modal = new bootstrap.Modal(modalEl);
+
+            modal.show();
+        }
+        </script>
+
         <div class="modal fade" id="zentraMediaModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
             <div class="modal-dialog modal-lg modal-dialog-centered">
                 <div class="modal-content">
@@ -798,11 +809,7 @@
             return true;
         }
 
-        function openZentraMediaLibraryModal(mode) {
-            window.mediaLibraryMode = mode; // ✅ store context globally
-            const modal = new bootstrap.Modal(document.getElementById('zentraMediaModal'));
-            modal.show();
-        }
+
     });
     </script>
     <script>
