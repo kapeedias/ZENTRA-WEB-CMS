@@ -1039,19 +1039,26 @@
                 files.forEach(file => {
                     grid.innerHTML += `
     <div class="col-6 col-sm-4 col-md-3 col-lg-2">
-      <div class="ratio ratio-1x1 border rounded media-item"
-           data-id="${file.id}"
-           data-url="${file.url}"
-           style="cursor:pointer;">
-        <div>
-          <img src="${file.url}"
-               class="w-100 h-100 rounded"
-               style="object-fit:cover;">
-        </div>
+      <div class="ratio ratio-1x1 border rounded media-item" 
+           data-id="${file.id}" 
+           data-url="${file.url}" 
+           style="cursor:pointer; position:relative;">
+        
+        <img src="${file.url}"
+             style="
+               position:absolute;
+               top:0;
+               left:0;
+               width:100%;
+               height:100%;
+               object-fit:cover;
+             "
+             class="rounded">
       </div>
     </div>
   `;
                 });
+
 
 
 
