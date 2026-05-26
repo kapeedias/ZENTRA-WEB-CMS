@@ -1068,7 +1068,6 @@
         if (el) el.textContent = `${count} item${count !== 1 ? 's' : ''} selected`;
     }
 
-    // When checkbox changes, sync .selected and counter
     document.addEventListener('click', function(e) {
         const img = e.target.closest('.media-item img');
         if (!img) return;
@@ -1077,11 +1076,30 @@
         const checkbox = item.querySelector('.select-checkbox');
         if (!checkbox) return;
 
-        // Let the checkbox handle everything (state + counter)
-        checkbox.click();
-    });
-    document.getElementById('insertSelectedMedia').addEventListener('click', function() {
+        // --- POSTER MODE: allow only one selection ---
+        if (selectionMode === 'eventPoster') {
+            // Unselect all other items
+            document.querySelectorAll('.media-item.selected').forEach(i => {
+                if (i !== item) {
+                    i.classList.remove('selected');
+                    i.querySelector('.select-checkbox').checked = false;
+                }
+            });
+        }
 
+        // Toggle this checkbox
+        checkbox.checked = !checkbox.checked;
+
+        // Fire change event so .selected class updates
+        checkbox.dispatchEvent(new Event('change', {
+            bubbles: true
+        }));
+    });
+
+
+
+    document.getElementById('insertSelectedMedia').addEventListener('click', function() {
+        // --- EDITOR MODE ---
         if (selectionMode !== 'editor') return;
 
         const selectedItems = document.querySelectorAll('.media-item.selected');
@@ -1096,6 +1114,7 @@
 
         const modal = bootstrap.Modal.getInstance(document.getElementById('zentraMediaLibraryModal'));
         modal.hide();
+        return;
     });
     </script>
 
