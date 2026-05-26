@@ -269,6 +269,9 @@
                                         <div class="card-header d-flex justify-content-between align-items-center">
                                             <h5 class="fw-bold mb-0">Event
                                                 Poster</h5>
+                                            <button class="btn btn-warning text-white btn-sm" type="button"
+                                                onclick="openZentraMediaLibraryModal('eventPoster')"> Set Event Poster
+                                            </button>
                                         </div>
                                         <div class="card-body pt-2">
 
