@@ -1063,18 +1063,26 @@
         if (el) el.textContent = `${count} item${count !== 1 ? 's' : ''} selected`;
     }
 
-    // Directly attach click listener to each image
+    // When checkbox changes, sync .selected and counter
+    document.addEventListener('change', function(e) {
+        if (!e.target.matches('.select-checkbox')) return;
+
+        const item = e.target.closest('.media-item');
+        if (!item) return;
+
+        item.classList.toggle('selected', e.target.checked);
+        updateSelectedCount();
+    });
     document.addEventListener('click', function(e) {
         const img = e.target.closest('.media-item img');
         if (!img) return;
 
         const item = img.closest('.media-item');
         const checkbox = item.querySelector('.select-checkbox');
-        const isSelected = !item.classList.contains('selected');
+        if (!checkbox) return;
 
-        item.classList.toggle('selected', isSelected);
-        checkbox.checked = isSelected;
-
+        checkbox.checked = !checkbox.checked;
+        item.classList.toggle('selected', checkbox.checked);
         updateSelectedCount();
     });
     </script>
