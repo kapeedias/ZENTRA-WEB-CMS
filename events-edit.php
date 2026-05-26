@@ -279,7 +279,8 @@
                                             <div class="card p-3">
 
                                                 <div id="posterPreview" class="mb-3 d-none">
-                                                    <img id="posterPreviewImg" src="" class="img-fluid rounded border">
+                                                    <img id="posterPreviewImg" src="/assets/img/1200x600.jpg"
+                                                        alt="Poster Preview" class="img-fluid rounded border">
                                                 </div>
 
                                                 <input type="hidden" id="poster_media_id" name="poster_media_id">
