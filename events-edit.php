@@ -675,12 +675,15 @@
         </div>
     </form>
     <script>
+    let selectionMode = null;
+
     function openZentraMediaLibraryModal(mode) {
-        window.mediaLibraryMode = mode;
+        selectionMode = mode; // <-- THIS is the missing line
+
         loadMediaLibrary();
+
         const modalEl = document.getElementById('zentraMediaModal');
         const modal = new bootstrap.Modal(modalEl);
-
         modal.show();
     }
     </script>
