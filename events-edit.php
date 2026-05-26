@@ -953,74 +953,6 @@
             openZentraMediaLibraryModal("eventPoster"); // ✅ unified modal
         });
 
-        /*
-        // File selected
-        fileInput.addEventListener('change', () => {
-            if (fileInput.files.length > 0) {
-                uploadPoster(fileInput.files[0]);
-            }
-        });
-
-        // DRAG OVER
-        dropzone.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            dropzone.classList.add('drag-over');
-        });
-
-        // DRAG LEAVE
-        dropzone.addEventListener('dragleave', () => {
-            dropzone.classList.remove('drag-over');
-        });
-
-        // DROP FILE
-        dropzone.addEventListener('drop', (e) => {
-            e.preventDefault();
-            dropzone.classList.remove('drag-over');
-
-            if (e.dataTransfer.files.length > 0) {
-                uploadPoster(e.dataTransfer.files[0]);
-            }
-        });
-
-        // UPLOAD FUNCTION
-        function uploadPoster(file) {
-            if (!file.type.match(/image\/(png|jpeg)/)) {
-                showPosterError(data.error || "Upload failed - Invalid file type. Only PNG or JPG allowed");
-                return;
-            }
-
-            if (file.size > 2 * 1024 * 1024) {
-                showPosterError(data.error || "Upload failed - File too large. Max size is 2 MB");
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('file', file);
-
-            fetch('/api/v1/media/upload.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(res => res.json())
-                .then(data => {
-                    if (data.success) {
-                        posterMediaIdInput.value = data.media_id;
-                        previewImg.src = data.url;
-                        preview.classList.remove('d-none');
-                        showPosterSuccess("Poster Image uploaded successfully");
-                        console.log("SUCCESS ALERT SHOWN");
-
-                    } else {
-                        showPosterError(data.error || "Upload failed");
-
-                    }
-                })
-                .catch(err => {
-                    console.error(err);
-                    showPosterError(data.error || "Upload error occurred");
-                });
-        }
-        */
         window.applySelectedMedia = function(selected) {
             if (window.mediaLibraryMode === "eventPoster") {
                 posterMediaIdInput.value = selected.id;
@@ -1086,15 +1018,14 @@
                 files.forEach(file => {
                     grid.innerHTML += `
                     <div class="media-item" data-id="${file.id}" data-url="${file.url}" data-tags="${file.tags || ''}">
-  <img src="${file.url}" alt="${file.name}">
-  <div class="media-overlay">
-    <button class="tag-btn" title="Edit Tags"><i class="fa fa-tags"></i></button>
-    <button class="link-btn" title="Copy Link"><i class="fa fa-link"></i></button>
-  </div>
-   <input type="checkbox" class="select-checkbox">
-</div>
-
-                `;
+                    <img src="${file.url}" alt="${file.name}">
+                    <div class="media-overlay">
+                        <button class="tag-btn" title="Edit Tags"><i class="fa fa-tags"></i></button>
+                        <button class="link-btn" title="Copy Link"><i class="fa fa-link"></i></button>
+                    </div>
+                    <input type="checkbox" class="select-checkbox">
+                    </div>
+                    `;
                 });
             })
             .catch(err => {
@@ -1127,15 +1058,27 @@
     });
 
     function updateSelectedCount() {
-        const count = document.querySelectorAll('.select-checkbox:checked').length;
-        document.getElementById('selectedCount').textContent =
-            `${count} item${count !== 1 ? 's' : ''} selected`;
+        const count = document.querySelectorAll('.media-item.selected').length;
+        const el = document.getElementById('selectedCount');
+        if (!el) return;
+        el.textContent = `${count} item${count !== 1 ? 's' : ''} selected`;
     }
 
-    document.addEventListener('change', function(e) {
-        if (e.target.classList.contains('select-checkbox')) {
-            updateSelectedCount();
-        }
+
+    document.addEventListener('click', function(e) {
+        const item = e.target.closest('.media-item');
+        if (!item) return;
+
+        // ignore clicks on overlay buttons
+        if (e.target.closest('.tag-btn') || e.target.closest('.link-btn')) return;
+
+        // toggle selection
+        const checkbox = item.querySelector('.select-checkbox');
+        const isSelected = !item.classList.contains('selected');
+        item.classList.toggle('selected', isSelected);
+        if (checkbox) checkbox.checked = isSelected;
+
+        updateSelectedCount();
     });
     </script>
 
