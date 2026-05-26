@@ -1056,23 +1056,49 @@
     }
     </script>
     <script>
-    function loadMediaLibrary() {
-        console.log("loadMediaLibrary() called");
-
+    function loadMediaLibrary(page = 1, search = "", filter = "all") {
         const grid = document.getElementById("mediaGrid");
         if (!grid) {
             console.error("mediaGrid not found");
             return;
         }
 
-        // TEMPORARY placeholder until backend is ready
-        grid.innerHTML = `
-        <div class="p-4 text-center text-muted">
-            Media library loading...
-        </div>
-    `;
+        grid.innerHTML = `<div class="text-center p-4">Loading...</div>`;
+
+        const params = new URLSearchParams({
+            page: page,
+            q: search,
+            filter: filter
+        });
+
+        fetch(`/api/v1/media/list.php?${params.toString()}`)
+            .then(r => r.json())
+            .then(files => {
+                grid.innerHTML = "";
+
+                if (!files.length) {
+                    grid.innerHTML = `<div class="text-center text-muted p-4">No media found</div>`;
+                    return;
+                }
+
+                files.forEach(file => {
+                    grid.innerHTML += `
+                    <div class="media-item border rounded p-1"
+                         data-id="${file.id}"
+                         data-url="${file.url}"
+                         style="cursor:pointer; width:120px; display:inline-block; margin:5px;">
+                        <img src="${file.url}" class="img-fluid rounded">
+                    </div>
+                `;
+                });
+            })
+            .catch(err => {
+                console.error("loadMediaLibrary error:", err);
+                grid.innerHTML = `<div class="text-danger p-4">Error loading media</div>`;
+            });
     }
     </script>
+
 
 
     <?php include '_include/body_end_plugins.php'; ?>
