@@ -1064,18 +1064,18 @@
     }
 
     // Directly attach click listener to each image
-    document.querySelectorAll('.media-item img').forEach(img => {
-        img.addEventListener('click', function() {
-            const item = this.closest('.media-item');
-            const checkbox = item.querySelector('.select-checkbox');
-            const isSelected = !item.classList.contains('selected');
+    document.addEventListener('click', function(e) {
+        const img = e.target.closest('.media-item img');
+        if (!img) return;
 
-            item.classList.toggle('selected', isSelected);
-            checkbox.checked = isSelected;
-            console.log("ITEM HAS SELECTED CLASS?", item.classList.contains('selected'));
+        const item = img.closest('.media-item');
+        const checkbox = item.querySelector('.select-checkbox');
+        const isSelected = !item.classList.contains('selected');
 
-            updateSelectedCount();
-        });
+        item.classList.toggle('selected', isSelected);
+        checkbox.checked = isSelected;
+
+        updateSelectedCount();
     });
     </script>
 
