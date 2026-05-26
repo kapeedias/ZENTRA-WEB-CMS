@@ -271,7 +271,7 @@
                                                 Poster Upload</h5>
                                         </div>
                                         <div class="card-body pt-2">
-                                            <div class="mb-4 storage-dropzone">
+                                            <!--<div class="mb-4 storage-dropzone">
                                                 <i class="fa fa-cloud-upload fa-3x text-muted mb-3"></i>
 
                                                 <h6 class="fw-bold mb-1">Click or drag event poster to upload
@@ -281,6 +281,27 @@
                                                 <input class="d-none" type="file" id="fileInput-2"
                                                     accept="image/png, image/jpeg">
                                                 <input type="hidden" name="poster_media_id" id="poster_media_id">
+                                            </div>
+                                                            -->
+
+                                            <div class="card p-3">
+                                                <label class="form-label fw-bold">Event Poster</label>
+
+                                                <div id="posterPreview" class="mb-3 d-none">
+                                                    <img id="posterPreviewImg" src="" class="img-fluid rounded border">
+                                                </div>
+
+                                                <button type="button" class="btn btn-outline-primary"
+                                                    onclick="openZentraMediaLibraryModal('eventPoster')">
+                                                    Select Poster from Media Library
+                                                </button>
+
+                                                <input type="hidden" id="poster_media_id" name="poster_media_id">
+
+                                                <div id="posterUploadError" class="alert alert-danger d-none mt-2">
+                                                </div>
+                                                <div id="posterUploadSuccess" class="alert alert-success d-none mt-2">
+                                                </div>
                                             </div>
 
 
