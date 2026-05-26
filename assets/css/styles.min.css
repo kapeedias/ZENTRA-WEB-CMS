@@ -606,7 +606,7 @@ a {
   position: relative;
 }
 
-/* Keep Tag + Link on the left */
+/* Overlay stays on left */
 .media-overlay {
   position: absolute;
   top: 6px;
@@ -625,7 +625,7 @@ a {
   opacity: 1;
 }
 
-/* Move checkbox to right side */
+/* Checkbox now independent on right */
 .select-checkbox {
   position: absolute;
   top: 6px;
@@ -636,11 +636,11 @@ a {
   transition: opacity 0.2s ease;
 }
 
-
-/* Keep checkbox visible when selected */
+/* Always visible when selected */
 .media-item.selected .select-checkbox {
   opacity: 1;
 }
+
 
 .media-item:not(:hover) .select-checkbox {
   opacity: 0;

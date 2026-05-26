@@ -1089,8 +1089,8 @@
   <div class="media-overlay">
     <button class="tag-btn" title="Edit Tags"><i class="fa fa-tags"></i></button>
     <button class="link-btn" title="Copy Link"><i class="fa fa-link"></i></button>
-    <input type="checkbox" class="select-checkbox">
   </div>
+   <input type="checkbox" class="select-checkbox">
 </div>
 
                 `;
