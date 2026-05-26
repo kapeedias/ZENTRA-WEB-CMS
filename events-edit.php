@@ -777,7 +777,8 @@
             return true;
         }
 
-        function openZentraMediaLibraryModal() {
+        function openZentraMediaLibraryModal(mode) {
+            window.mediaLibraryMode = mode; // ✅ store context globally
             const modal = new bootstrap.Modal(document.getElementById('zentraMediaModal'));
             modal.show();
         }
@@ -917,8 +918,12 @@
         if (!dropzone || !fileInput) return;
 
         // CLICK → open file dialog
-        dropzone.addEventListener('click', () => fileInput.click());
+        //dropzone.addEventListener('click', () => fileInput.click());
+        dropzone.addEventListener('click', () => {
+            openZentraMediaLibraryModal("eventPoster"); // ✅ unified modal
+        });
 
+        /*
         // File selected
         fileInput.addEventListener('change', () => {
             if (fileInput.files.length > 0) {
@@ -985,6 +990,19 @@
                     showPosterError(data.error || "Upload error occurred");
                 });
         }
+        */
+        window.applySelectedMedia = function(selected) {
+            if (window.mediaLibraryMode === "eventPoster") {
+                posterMediaIdInput.value = selected.id;
+                previewImg.src = selected.url;
+                preview.classList.remove('d-none');
+                showPosterSuccess("Poster selected successfully");
+            } else if (window.mediaLibraryMode === "editorInsert") {
+                quill.insertEmbed(quill.getSelection().index, 'image', selected.url);
+            }
+            const modal = bootstrap.Modal.getInstance(document.getElementById('zentraMediaModal'));
+            modal.hide();
+        };
     })();
     </script>
     <script>
