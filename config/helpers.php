@@ -4,7 +4,7 @@ function getClientIP(): string
 {
     return $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
 }
-function cleanIP($ip)
+function cleanIP($ip): string
 {
     // If Azure sends "IP:PORT", strip the port
     if (strpos($ip, ':') !== false) {
@@ -153,7 +153,7 @@ function getUserAgent(): string
 {
     return $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
 }
-function getBrowserName($agent)
+function getBrowserName($agent): string
 {
     if (strpos($agent, 'Edg') !== false) {
         return 'Microsoft Edge';
@@ -179,7 +179,7 @@ function getBrowserName($agent)
     //Usage to get the browser
     //$browser = getBrowserName($agent);
 }
-function getDeviceType($agent)
+function getDeviceType($agent): string
 {
     if (preg_match('/mobile/i', $agent)) {
         return 'Mobile';
@@ -193,7 +193,7 @@ function getDeviceType($agent)
     //Usage to get the device
     //$device = getDeviceType($agent);
 }
-function getGeoLocation($ip)
+function getGeoLocation($ip): array
 {
     $url = "https://ipwho.is/" . urlencode($ip);
     $raw = @file_get_contents($url);
