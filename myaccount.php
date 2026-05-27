@@ -13,7 +13,7 @@
     require_once __DIR__ . '/classes/ModuleManager.php';
 
     enforceSessionSecurity();
-    $ip            = getClientIP();
+    $ip            = cleanIP(getClientIP());
     $moduleManager = new ModuleManager($pdo); // ← REQUIRED
 
     $pageTitle   = "My Account";
