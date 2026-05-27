@@ -157,14 +157,16 @@
                             // Structured SOC2 JSON
                             'audit_payload' => [
                                 'event'    => [
-                                    'type'       => 'login',
-                                    'identifier' => $identifier,
-                                    'success'    => true, // or false on failure
+                                    'type'             => 'login',
+                                    'identifier'       => $identifier,
+                                    'success'          => true, // or false on failure
+                                    'event_time_utc'   => gmdate('Y-m-d H:i:s'),
+                                    'event_time_local' => (new DateTime('now', new DateTimeZone($_SESSION['user_timezone'] ?? 'UTC')))->format('Y-m-d H:i:s'),
                                 ],
 
                                 'user'     => [
                                     'user_id'    => $userId,
-                                    'username'   => $user['email'] ?? null,
+                                    'username'   => $email ?? null,
                                     'first_name' => $user['first_name'] ?? null,
                                     'tenant_id'  => $user['tenant_id'] ?? null,
                                     'timezone'   => $_SESSION['user_timezone'] ?? 'UTC',
@@ -243,14 +245,16 @@
                 // Structured SOC2 JSON
                 'audit_payload' => [
                     'event'    => [
-                        'type'       => 'login',
-                        'identifier' => $identifier,
-                        'success'    => false, // or true on failure
+                        'type'             => 'login',
+                        'identifier'       => $identifier,
+                        'success'          => false, // or true on failure
+                        'event_time_utc'   => gmdate('Y-m-d H:i:s'),
+                        'event_time_local' => (new DateTime('now', new DateTimeZone($_SESSION['user_timezone'] ?? 'UTC')))->format('Y-m-d H:i:s'),
                     ],
 
                     'user'     => [
                         'user_id'    => $userId,
-                        'username'   => $user['email'] ?? null,
+                        'username'   => $email ?? null,
                         'first_name' => $user['first_name'] ?? null,
                         'tenant_id'  => $user['tenant_id'] ?? null,
                         'timezone'   => $_SESSION['user_timezone'] ?? 'UTC',
