@@ -123,8 +123,11 @@
     // 6️⃣ Save tags
     if (method_exists($events, 'saveEventTags')) {
         $events->saveEventTags($savedHash, $tags);
-        $msg = $eventHash ? "Event updated successfully." : "Event created successfully.";
+        $msg[] = $eventHash ? "Event updated successfully." : "Event created successfully.";
     }
+
+    // Append a readable dump of $data for debugging
+    $msg[] = print_r($data, true);
 
     // 8️⃣ Redirect back to edit page
     header("Location: /event/{$savedHash}/edit?saved=1");
