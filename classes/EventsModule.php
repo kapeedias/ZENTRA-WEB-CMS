@@ -1,5 +1,6 @@
 <?php
 declare (strict_types = 1);
+require_once __DIR__ . '/ActivityLogger.php';
 
 class EventsModule
 {
@@ -318,6 +319,7 @@ class EventsModule
         $agent   = $_SESSION['user_agent'] ?? ($_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
         $browser = getBrowserName($agent);
         $device  = getDeviceType($agent);
+        $geo     = $_SESSION['geo'] ?? [];
 
         // 1. Validate media belongs to tenant
         $sql = "SELECT file_url
