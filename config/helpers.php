@@ -58,33 +58,10 @@ function sanitizeInput(array $input, array $allowedFields): array
 
     return $clean;
 }
-/*
-function secureSessionStart(): void
-{
-    if (session_status() === PHP_SESSION_NONE) {
-        session_start();
 
-        // Prevent JavaScript access to session cookie
-        ini_set('session.cookie_httponly', 1);
-
-        // Send cookie only over HTTPS
-        ini_set('session.cookie_secure', isset($_SERVER['HTTPS']) ? 1 : 0);
-
-        // Enforce strict session handling
-        ini_set('session.use_strict_mode', 1);
-
-        // Add SameSite policy
-        session_set_cookie_params([
-            'lifetime' => 0,
-            'path' => '/',
-            'domain' => $_SERVER['HTTP_HOST'],
-            'secure' => isset($_SERVER['HTTPS']),
-            'httponly' => true,
-            'samesite' => 'Lax'
-        ]);
-    }
-}
-    */
+// =========================
+//  SECURE SESSION START
+// =========================
 
 function secureSessionStart(): void
 {
@@ -108,7 +85,9 @@ function secureSessionStart(): void
         session_start();
     }
 }
-
+// =========================
+//  SESSION SECURITY
+// =========================
 function isSessionHijacked(): bool
 {
     // Load Azure‑safe client IP
@@ -171,16 +150,16 @@ function enforceSessionSecurity(): void
     // Update last activity timestamp
     $_SESSION['last_activity'] = $now;
 }
-/**
- * Get the user's browser user agent string.
- * Centralized here so SOC2 audit logs use consistent logic.
- */
-
+/*=========================
+USER AGENT + DEVICE
+Centralized here so SOC2 audit logs use consistent logic.
+========================= */
 function getUserAgent(): string
 {
     return $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
 }
-function getBrowserName($agent)
+
+function getBrowserName($agent): string
 {
     if (strpos($agent, 'Edg') !== false) {
         return 'Microsoft Edge';
@@ -206,20 +185,22 @@ function getBrowserName($agent)
     //Usage to get the browser
     //$browser = getBrowserName($agent);
 }
-function getDeviceType($agent)
+
+function getDeviceType($agent): string
 {
     if (preg_match('/mobile/i', $agent)) {
         return 'Mobile';
     }
-
     if (preg_match('/tablet|ipad/i', $agent)) {
         return 'Tablet';
     }
-
     return 'Desktop';
     //Usage to get the device
     //$device = getDeviceType($agent);
 }
+// =========================
+//  GEO LOOKUP (ON DEMAND)
+// =========================
 function getGeoLocation($ip): array
 {
     $url = "https://ipwho.is/" . urlencode($ip);
@@ -314,7 +295,7 @@ function getGeoLocation($ip): array
         'raw'          => $raw,
     ];
 }
-
+$ip      = cleanIP(getClientIP());
 $agent   = getUserAgent();
 $browser = getBrowserName($agent);
 $device  = getDeviceType($agent);
