@@ -203,7 +203,8 @@
         $safeEmail  = $email ?? 'unknown';
         $identifier = "Failed login attempt for email: {$safeEmail}";
         $userId     = $user['id'] ?? null;
-
+        var_dump($ip, $browser, $device, $geo);
+        exit;
         $userObj->logActivity(
             $userId,
             $identifier,
