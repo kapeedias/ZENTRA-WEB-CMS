@@ -58,6 +58,33 @@ function sanitizeInput(array $input, array $allowedFields): array
 
     return $clean;
 }
+/*
+function secureSessionStart(): void
+{
+    if (session_status() === PHP_SESSION_NONE) {
+        session_start();
+
+        // Prevent JavaScript access to session cookie
+        ini_set('session.cookie_httponly', 1);
+
+        // Send cookie only over HTTPS
+        ini_set('session.cookie_secure', isset($_SERVER['HTTPS']) ? 1 : 0);
+
+        // Enforce strict session handling
+        ini_set('session.use_strict_mode', 1);
+
+        // Add SameSite policy
+        session_set_cookie_params([
+            'lifetime' => 0,
+            'path' => '/',
+            'domain' => $_SERVER['HTTP_HOST'],
+            'secure' => isset($_SERVER['HTTPS']),
+            'httponly' => true,
+            'samesite' => 'Lax'
+        ]);
+    }
+}
+    */
 
 function secureSessionStart(): void
 {
@@ -153,7 +180,7 @@ function getUserAgent(): string
 {
     return $_SERVER['HTTP_USER_AGENT'] ?? 'Unknown';
 }
-function getBrowserName($agent): string
+function getBrowserName($agent)
 {
     if (strpos($agent, 'Edg') !== false) {
         return 'Microsoft Edge';
@@ -179,7 +206,7 @@ function getBrowserName($agent): string
     //Usage to get the browser
     //$browser = getBrowserName($agent);
 }
-function getDeviceType($agent): string
+function getDeviceType($agent)
 {
     if (preg_match('/mobile/i', $agent)) {
         return 'Mobile';
