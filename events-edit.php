@@ -1114,6 +1114,25 @@
             // Update hidden input
             document.getElementById('poster_media_id').value = id;
 
+            // ⭐ NEW: Update event poster immediately
+            const eventId = document.getElementById('event_id').value; // hidden input on edit page
+
+            fetch('/ajax/update_event_poster.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        event_id: eventId,
+                        library_id: id
+                    })
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (!data.success) {
+                        alert("Failed to update event poster");
+                    }
+                });
             // Close modal
             bootstrap.Modal.getInstance(document.getElementById('zentraMediaModal')).hide();
             return;
