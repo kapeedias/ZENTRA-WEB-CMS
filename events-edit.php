@@ -78,9 +78,9 @@
 
     $eventUrl        = $events->getEventUrl($eventHash);
     $locations       = $events->getEventLocations();
-    $currentLocation = ltrim(rtrim($event['event_location'])); // value stored in DB
-    $isAllDay        = (int) $event['is_event_all_day'];       // value from DB
-    $eventCategory   = ltrim(rtrim($event['event_category'])); // value stored in DB
+    $currentLocation = $event['event_location'];         // value stored in DB
+    $isAllDay        = (int) $event['is_event_all_day']; // value from DB
+    $eventCategory   = $event['event_category'];         // value stored in DB
     $poster_media_id = (int) ($event['poster_media_id'] ?? 0);
     $userId          = $_SESSION['user_id'] ?? null;
     $poster_url      = $event['poster_url'] ?: '/assets/img/1200x600.jpg';
