@@ -157,11 +157,14 @@
                             // Structured SOC2 JSON
                             'audit_payload' => [
                                 'event'    => [
-                                    'type'             => 'login',
-                                    'identifier'       => $identifier,
-                                    'success'          => true, // or false on failure
-                                    'event_time_utc'   => gmdate('Y-m-d H:i:s'),
-                                    'event_time_local' => (new DateTime('now', new DateTimeZone($_SESSION['user_timezone'] ?? 'UTC')))->format('Y-m-d H:i:s'),
+                                    'type'                => 'login',
+                                    'identifier'          => $identifier,
+                                    'success'             => false, // or true on failure
+                                    'event_time_utc'      => gmdate('Y-m-d H:i:s'),
+                                    'event_time_local'    => (new DateTime('now', new DateTimeZone($_SESSION['user_timezone'] ?? 'UTC')))->format('Y-m-d H:i:s'),
+                                    'event_user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+                                    'session_id'          => session_id(),
+                                    'ip'                  => $ip,
                                 ],
 
                                 'user'     => [
@@ -169,10 +172,7 @@
                                     'username'   => $email ?? null,
                                     'first_name' => $user['first_name'] ?? null,
                                     'tenant_id'  => $user['tenant_id'] ?? null,
-                                    'timezone'   => $_SESSION['user_timezone'] ?? 'UTC',
-                                    'session_id' => session_id(),
                                 ],
-                                'ip'       => $ip,
 
                                 'location' => [
                                     'city'     => $geo['city'] ?? null,
@@ -245,11 +245,14 @@
                 // Structured SOC2 JSON
                 'audit_payload' => [
                     'event'    => [
-                        'type'             => 'login',
-                        'identifier'       => $identifier,
-                        'success'          => false, // or true on failure
-                        'event_time_utc'   => gmdate('Y-m-d H:i:s'),
-                        'event_time_local' => (new DateTime('now', new DateTimeZone($_SESSION['user_timezone'] ?? 'UTC')))->format('Y-m-d H:i:s'),
+                        'type'                => 'login',
+                        'identifier'          => $identifier,
+                        'success'             => false, // or true on failure
+                        'event_time_utc'      => gmdate('Y-m-d H:i:s'),
+                        'event_time_local'    => (new DateTime('now', new DateTimeZone($_SESSION['user_timezone'] ?? 'UTC')))->format('Y-m-d H:i:s'),
+                        'event_user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+                        'session_id'          => session_id(),
+                        'ip'                  => $ip,
                     ],
 
                     'user'     => [
@@ -257,10 +260,7 @@
                         'username'   => $email ?? null,
                         'first_name' => $user['first_name'] ?? null,
                         'tenant_id'  => $user['tenant_id'] ?? null,
-                        'timezone'   => $_SESSION['user_timezone'] ?? 'UTC',
-                        'session_id' => session_id(),
                     ],
-                    'ip'       => $ip,
 
                     'location' => [
                         'city'     => $geo['city'] ?? null,
