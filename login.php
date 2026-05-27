@@ -11,8 +11,9 @@
     // ==== SECURE SESSION START ====
     secureSessionStart();
 
-    if (isset($_GET['session_error'])) {
-    $errors[] = "Your session expired or became invalid. Please log in again.";
+    if (isset($_SESSION['session_error'])) {
+    $errors[] = $_SESSION['session_error'];
+    unset($_SESSION['session_error']);
     }
 
     // If user is already logged in, redirect to dashboard

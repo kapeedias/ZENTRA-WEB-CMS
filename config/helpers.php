@@ -109,6 +109,11 @@ function isSessionHijacked(): bool
         return true;
     }
     return false;
+    error_log("SESSION CHECK: expectedIp=" . ($_SESSION['user_ip'] ?? 'null') .
+        " currentIp=" . $currentIp .
+        " expectedUA=" . ($_SESSION['user_agent'] ?? 'null') .
+        " currentUA=" . $currentAgent);
+
 }
 function enforceSessionSecurity(): void
 {
@@ -121,11 +126,17 @@ function enforceSessionSecurity(): void
 
     $now = time();
 
+    $isHijacked = isSessionHijacked();
+    $isTimedOut = isset($_SESSION['last_activity']) && ($now - $_SESSION['last_activity']) > $timeout;
+
     // Check for hijacking or timeout
-    if (
-        isSessionHijacked() ||
-        (isset($_SESSION['last_activity']) && ($now - $_SESSION['last_activity']) > $timeout)
-    ) {
+    if ($isHijacked || $isTimedOut) {
+        // ⭐ STORE HUMAN‑READABLE ERROR MESSAGE BEFORE DESTROYING SESSION
+        if ($isHijacked) {
+            $_SESSION['session_error'] = "Your session was terminated for security reasons (IP or device mismatch).";
+        } else {
+            $_SESSION['session_error'] = "Your session expired due to inactivity.";
+        }
         // Log the forced logout with user ID and IP if available
         if (isset($_SESSION['user_id'])) {
             try {
