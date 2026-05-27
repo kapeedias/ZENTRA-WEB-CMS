@@ -135,7 +135,7 @@
                     $_SESSION['user_agent']    = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
 
                     // ==== ACTIVITY LOG ====
-                    $identifier = "User {$user['first_name']} ({$email}) logged in successfully.";
+                    $identifier = "User {$user['first_name']} ({$email}) logged in successfully";
 
                     $userObj->logActivity(
                         $userId,
