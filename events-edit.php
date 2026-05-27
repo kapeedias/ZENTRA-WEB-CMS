@@ -126,9 +126,6 @@
         $msg[] = $eventHash ? "Event updated successfully." : "Event created successfully.";
     }
 
-    // Append a readable dump of $data for debugging
-    $msg[] = print_r($data, true);
-
     // 8️⃣ Redirect back to edit page
     header("Location: /event/{$savedHash}/edit?saved=1");
     exit;
@@ -196,7 +193,7 @@
                                         <div class="card-body pt-2">
                                             <div class="mb-3"><span>Event Title</span>
                                                 <input type="hidden" id="event_id"
-                                                    value="<?php echo $event['event_id'] ?>">
+                                                    value="<?php echo htmlspecialchars($eventHash) ?>">
                                                 <input type="text" class="form-control fw-bold text-warning"
                                                     autofocus="" name="event_title" id="event_title"
                                                     value="<?php echo htmlspecialchars($event['event_title']); ?>"><span
