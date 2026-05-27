@@ -72,7 +72,7 @@ class ActivityLogger
             'created_at_localtime' => $timestampLocal,
             'session_id'           => $sessionId,
             'activity_text'        => $activity_text,
-            'geo_raw'              => $geo_raw,
+            'geo_raw'              => $context['geo_raw'] ?? null,
             'audit_payload'        => $auditPayloadJson,
         ]);
     }
