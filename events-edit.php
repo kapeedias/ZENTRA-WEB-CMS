@@ -168,24 +168,20 @@
                             <div class="row">
                                 <div class="col-12 mb-4">
                                     <div class="card"></div>
+                                    <?php if (! empty($errors) || ! empty($msg)): ?>
+                                    <div class="w-100 <?php echo ! empty($errors) ? 'alert-error' : 'alert-success' ?>">
+                                        <?php
+                                            $list = ! empty($errors) ? $errors : $msg;
+                                            foreach ($list as $item):
+                                        ?>
+                                        <span><?php echo htmlspecialchars($item) ?></span>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <?php endif; ?>
+
                                 </div>
                                 <div class="col-xl-8 mb-4">
                                     <div class="card mb-4">
-                                        <?php if (! empty($errors)): ?>
-                                        <div class="w-100 alert-error">
-                                            <?php foreach ($errors as $err): ?>
-                                            <span><?php echo htmlspecialchars($err) ?></span>
-                                            <?php endforeach; ?>
-                                        </div>
-                                        <?php endif; ?>
-
-                                        <?php if (! empty($msg)): ?>
-                                        <div class="w-100 alert-success">
-                                            <?php foreach ($msg as $message): ?>
-                                            <span><?php echo htmlspecialchars($message) ?></span>
-                                            <?php endforeach; ?>
-                                        </div>
-                                        <?php endif; ?>
                                         <div class="card-header d-flex justify-content-end align-items-center">
                                             <h5 class="fw-bold mb-0"></h5>
                                             Status:&nbsp;<span
