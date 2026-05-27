@@ -154,7 +154,7 @@
 </head>
 
 <body>
-    <form id="eventEditForm" enctype="multipart/form-data">
+    <form id="eventEditForm" enctype="multipart/form-data" method="POST">
         <div class="container-fluid">
             <div class="row min-vh-100">
                 <?php include '_include/nav_side.php'; ?>
