@@ -310,4 +310,72 @@ class EventsModule
         return $row ? $row['url'] : null;
     }
 
+    public function updateEventPoster(int $eventId, int $libraryId, int $tenantId): bool
+    {
+
+        // Use session values set at login
+        $ip      = $_SESSION['user_ip'] ?? cleanIP(getClientIP());
+        $agent   = $_SESSION['user_agent'] ?? ($_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
+        $browser = getBrowserName($agent);
+        $device  = getDeviceType($agent);
+
+        // 1. Validate media belongs to tenant
+        $sql = "SELECT file_url
+            FROM zentra_library
+            WHERE library_id = :id AND tenant_id = :tenant_id
+            LIMIT 1";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute([
+            'id'        => $libraryId,
+            'tenant_id' => $tenantId,
+        ]);
+
+        $url = $stmt->fetchColumn();
+        if (! $url) {
+            return false; // media not found or not tenant-owned
+        }
+
+        // 2. Update event poster (tenant-scoped)
+        $sql = "UPDATE zentra_events
+            SET poster_library_id = :lib_id,
+                poster_url = :url
+            WHERE event_id = :event_id
+              AND tenant_id = :tenant_id";
+
+        $stmt    = $this->pdo->prepare($sql);
+        $success = $stmt->execute([
+            'lib_id'    => $libraryId,
+            'url'       => $url,
+            'event_id'  => $eventId,
+            'tenant_id' => $tenantId,
+        ]);
+
+        // 3. Log activity (tenant-aware)
+        if ($success) {
+            $this->logEventActivity(
+                (int) $_SESSION['user_id'],
+                'event_poster_updated',
+                'Event poster updated',
+                [
+                    'event_id'          => $eventId,
+                    'poster_library_id' => $libraryId,
+                    'poster_url'        => $url,
+                    'tenant_id'         => $tenantId,
+                    'user_name'         => $_SESSION['user_name'] ?? null,
+                    'user_timezone'     => $_SESSION['user_timezone'] ?? 'UTC',
+                    'ip'                => $ip,
+                    'browser'           => $browser,
+                    'device'            => $device,
+                    'city'              => $geo['city'] ?? null,
+                    'region'            => $geo['region'] ?? null,
+                    'country'           => $geo['country'] ?? null,
+                    'geo_raw'           => $geo['raw'] ?? null,
+                ],
+            );
+        }
+
+        return $success;
+    }
+
 }
