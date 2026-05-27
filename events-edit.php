@@ -166,7 +166,7 @@
                         <!-- End: top-nav-and-details -->
                         <div>
                             <div class="row">
-                                <div class="col-12 mb-4">
+                                <div class="col-12">
                                     <div class="card"></div>
                                     <?php if (! empty($errors) || ! empty($msg)): ?>
                                     <div class="w-100 <?php echo ! empty($errors) ? 'alert-error' : 'alert-success' ?>">
