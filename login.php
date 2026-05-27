@@ -135,7 +135,7 @@
                     $_SESSION['user_agent']    = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
 
                     // ==== ACTIVITY LOG ====
-                    $identifier = "User {$user['first_name']} ({$email}) logged in";
+                    $identifier = "User {$user['first_name']} ({$email}) logged in successfully.";
 
                     $userObj->logActivity(
                         $userId,
@@ -156,6 +156,20 @@
                             'country'       => $geo['country'],
                             // Structured SOC2 JSON
                             'audit_payload' => [
+                                'event'    => [
+                                    'type'       => 'login',
+                                    'identifier' => $identifier,
+                                    'success'    => true, // or false on failure
+                                ],
+
+                                'user'     => [
+                                    'user_id'    => $userId,
+                                    'username'   => $user['email'] ?? null,
+                                    'first_name' => $user['first_name'] ?? null,
+                                    'tenant_id'  => $user['tenant_id'] ?? null,
+                                    'timezone'   => $_SESSION['user_timezone'] ?? 'UTC',
+                                    'session_id' => session_id(),
+                                ],
                                 'ip'       => $ip,
 
                                 'location' => [
@@ -228,6 +242,20 @@
                 'country'       => $geo['country'],
                 // Structured SOC2 JSON
                 'audit_payload' => [
+                    'event'    => [
+                        'type'       => 'login',
+                        'identifier' => $identifier,
+                        'success'    => false, // or true on failure
+                    ],
+
+                    'user'     => [
+                        'user_id'    => $userId,
+                        'username'   => $user['email'] ?? null,
+                        'first_name' => $user['first_name'] ?? null,
+                        'tenant_id'  => $user['tenant_id'] ?? null,
+                        'timezone'   => $_SESSION['user_timezone'] ?? 'UTC',
+                        'session_id' => session_id(),
+                    ],
                     'ip'       => $ip,
 
                     'location' => [
