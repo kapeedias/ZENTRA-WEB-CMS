@@ -82,7 +82,7 @@
     $isAllDay        = (int) $event['is_event_all_day']; // value from DB
     $eventCategory   = $event['event_category'];         // value stored in DB
     $poster_media_id = (int) ($event['poster_media_id'] ?? 0);
-
+    $userId          = $_SESSION['user_id'] ?? null;
     $poster_url      = $event['poster_url'] ?: '/assets/img/1200x600.jpg';
     $poster_media_id = $event['poster_library_id'] ?: '';
 
@@ -90,6 +90,45 @@
     $endDT   = $event['event_end_date'] . 'T' . ($event['event_end_time'] ?? '00:00');
     $status  = $event['event_status'];
     $badge   = $events->getStatusBadge($status);
+
+    // ⭐⭐⭐ SAVE HANDLER — RUNS BEFORE PAGE LOAD ⭐⭐⭐
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    // 1️⃣ Collect POST data
+    $data = [
+        'event_title'       => $_POST['event_title'] ?? '',
+        'event_description' => $_POST['event_description'] ?? '',
+        'event_location'    => $_POST['event_location'] ?? '',
+        'event_start_date'  => $_POST['event_start_date'] ?? '',
+        'event_end_date'    => $_POST['event_end_date'] ?? '',
+        'event_start_time'  => $_POST['event_start_time'] ?? '',
+        'event_end_time'    => $_POST['event_end_time'] ?? '',
+        'event_timezone'    => $_POST['event_timezone'] ?? 'UTC',
+        'is_event_all_day'  => isset($_POST['is_event_all_day']) ? 1 : 0,
+        'event_slug'        => $_POST['event_slug'] ?? null,
+    ];
+
+    // 2️⃣ Tags
+    $tags = json_decode($_POST['hiddenTags'] ?? '[]', true);
+
+    // 3️⃣ Poster
+    $posterId = $_POST['poster_media_id'] ?? null;
+
+    // 4️⃣ Determine CREATE vs UPDATE
+    $eventHash = $_POST['event_id'] ?: null;
+
+    // 5️⃣ Save event
+    $savedHash = $events->saveEvent($data, $eventHash, $userId);
+
+    // 6️⃣ Save tags
+    if (method_exists($events, 'saveEventTags')) {
+        $events->saveEventTags($savedHash, $tags);
+    }
+
+    // 8️⃣ Redirect back to edit page
+    header("Location: /event/{$savedHash}/edit?saved=1");
+    exit;
+    }
 
     $pageTitle   = "Edit Event";
     $breadcrumbs = [
