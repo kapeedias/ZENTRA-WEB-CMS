@@ -342,8 +342,8 @@ class EventsModule
         if ($success) {
             $this->logEventActivity(
                 (int) $_SESSION['user_id'],
-                'event_poster_updated',
-                'Event poster updated',
+                'Event Poster Updated for Event ID ' . $eventId . ' (Media ID ' . $libraryId . ')' . ' by userid' . $_SESSION['user_id'],
+                'Event posterupdated',
                 [
                     'event_id'          => $eventId,
                     'poster_library_id' => $libraryId,

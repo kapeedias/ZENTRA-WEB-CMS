@@ -142,16 +142,46 @@
                         $identifier,
                         'Login',
                         [
-                            'user_name'     => $user['first_name'], // REQUIRED for ActivityLogger
+                            'user_name'     => $user['first_name'],
                             'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
                             'tenant_id'     => $user['tenant_id'],
-                            'ip'            => $ip,
-                            'browser'       => $browser,
-                            'device'        => $device,
-                            'city'          => $geo['city'] ?? null,
-                            'region'        => $geo['region'] ?? null,
-                            'country'       => $geo['country'] ?? null,
+
+                            // Raw geo data (forensics)
                             'geo_raw'       => $geo['raw'] ?? null,
+
+                            // Structured SOC2 JSON
+                            'audit_payload' => [
+                                'ip'       => $ip,
+
+                                'location' => [
+                                    'city'     => $geo['city'] ?? null,
+                                    'region'   => $geo['region'] ?? null,
+                                    'country'  => $geo['country'] ?? null,
+                                    'timezone' => $geo['timezone'] ?? null,
+                                    'lat'      => $geo['latitude'] ?? null,
+                                    'lon'      => $geo['longitude'] ?? null,
+                                ],
+
+                                'network'  => [
+                                    'asn' => $geo['asn'] ?? null,
+                                    'isp' => $geo['isp'] ?? null,
+                                ],
+
+                                'security' => [
+                                    'vpn'     => $geo['vpn'] ?? null,
+                                    'proxy'   => $geo['proxy'] ?? null,
+                                    'tor'     => $geo['tor'] ?? null,
+                                    'hosting' => $geo['hosting'] ?? null, // datacenter
+                                    'mobile'  => $geo['mobile'] ?? null,
+                                    'carrier' => $geo['carrier'] ?? null,
+                                    'bot'     => $geo['bot'] ?? null,
+                                ],
+
+                                'device'   => [
+                                    'browser' => $browser,
+                                    'device'  => $device,
+                                ],
+                            ],
                         ]
                     );
 
@@ -179,20 +209,46 @@
             $identifier,
             'Login Error',
             [
-                'user_name'     => $safeEmail, // shows email for failed attempts
-                'tenant_id'     => $_SESSION['tenant_id'],
+                'user_name'     => $user['first_name'],
                 'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
-                'field_changed' => 'LOGIN_ATTEMPT',
-                'old_value'     => 'UNAUTHENTICATED',
-                'new_value'     => 'ERROR',
-                'context_error' => $errorText,
-                'ip'            => $ip,
-                'browser'       => $browser,
-                'device'        => $device,
-                'city'          => $geo['city'] ?? null,
-                'region'        => $geo['region'] ?? null,
-                'country'       => $geo['country'] ?? null,
+                'tenant_id'     => $user['tenant_id'],
+
+                // Raw geo data (forensics)
                 'geo_raw'       => $geo['raw'] ?? null,
+
+                // Structured SOC2 JSON
+                'audit_payload' => [
+                    'ip'       => $ip,
+
+                    'location' => [
+                        'city'     => $geo['city'] ?? null,
+                        'region'   => $geo['region'] ?? null,
+                        'country'  => $geo['country'] ?? null,
+                        'timezone' => $geo['timezone'] ?? null,
+                        'lat'      => $geo['latitude'] ?? null,
+                        'lon'      => $geo['longitude'] ?? null,
+                    ],
+
+                    'network'  => [
+                        'asn' => $geo['asn'] ?? null,
+                        'isp' => $geo['isp'] ?? null,
+                    ],
+
+                    'security' => [
+                        'vpn'     => $geo['vpn'] ?? null,
+                        'proxy'   => $geo['proxy'] ?? null,
+                        'tor'     => $geo['tor'] ?? null,
+                        'hosting' => $geo['hosting'] ?? null, // datacenter
+                        'mobile'  => $geo['mobile'] ?? null,
+                        'carrier' => $geo['carrier'] ?? null,
+                        'bot'     => $geo['bot'] ?? null,
+                    ],
+
+                    'device'   => [
+                        'browser' => $browser,
+                        'device'  => $device,
+                    ],
+                ],
             ]
         );
 

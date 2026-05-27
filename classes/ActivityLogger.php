@@ -48,10 +48,17 @@ class ActivityLogger
             "User: {$userName} | UserID: {$userId} | {$identifier} at {$timestampUTC} UTC " .
             "(Local Time: {$timestampLocal}) from IP {$ip} ({$location}) using {$agentInfo}";
 
+        // NEW: SOC2 JSON audit payload
+        $auditPayload     = $context['audit_payload'] ?? null;
+        $auditPayloadJson = $auditPayload ? json_encode($auditPayload, JSON_UNESCAPED_SLASHES) : null;
+
         $stmt = $this->pdo->prepare("
         INSERT INTO {$this->activityTable}
-        (user_id,tenant_id, action, field_changed, old_value, new_value, created_on_utc, created_at_localtime, session_id, activity_text, geo_raw)
-        VALUES (:user_id, :tenant_id, :action, :field_changed, :old_value, :new_value, :created_on_utc,:created_at_localtime,  :session_id, :activity_text, :geo_raw)
+        (user_id, tenant_id, action, field_changed, old_value, new_value,
+         created_on_utc, created_at_localtime, session_id, activity_text, geo_raw, audit_payload)
+        VALUES
+        (:user_id, :tenant_id, :action, :field_changed, :old_value, :new_value,
+         :created_on_utc, :created_at_localtime, :session_id, :activity_text, :geo_raw, :audit_payload)
     ");
 
         $stmt->execute([
@@ -65,8 +72,9 @@ class ActivityLogger
             'created_at_localtime' => $timestampLocal,
             'session_id'           => $sessionId,
             'activity_text'        => $activity_text,
-            'geo_raw'              => $context['geo_raw'] ?? null,
+            'geo_raw'              => $geo_raw,
+            'audit_payload'        => $auditPayloadJson,
         ]);
-
     }
+
 }
