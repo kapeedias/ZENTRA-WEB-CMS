@@ -118,7 +118,77 @@ try {
         );
 
     } else {
+
         error_log("Logout skipped: tenant_id missing for user {$userId}");
+
+        $identifier = "Logout skipped: tenant_id missing for user {$userId}";
+        $logger->log(
+            $userId,
+            $identifier,
+            'Logout',
+            [
+                'user_name'     => $userFullName,
+                'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+                'tenant_id'     => $tenantId,
+                // Raw geo data (forensics)
+                'geo_raw'       => $geo['raw'] ?? null,
+                'ip'            => $ip,
+                'browser'       => $browser,
+                'device'        => $device,
+                'city'          => $geo['city'],
+                'region'        => $geo['region'],
+                'country'       => $geo['country'],
+                // Structured SOC2 JSON
+                'audit_payload' => [
+                    'event'    => [
+                        'type'                => 'logout',
+                        'identifier'          => $identifier,
+                        'success'             => false, // or true on failure
+                        'event_time_utc'      => gmdate('Y-m-d H:i:s'),
+                        'event_time_local'    => (new DateTime('now', new DateTimeZone($_SESSION['user_timezone'] ?? 'UTC')))->format('Y-m-d H:i:s'),
+                        'event_user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+                        'session_id'          => session_id(),
+                        'ip'                  => $ip,
+                    ],
+
+                    'user'     => [
+                        'user_id'    => $userId,
+                        'username'   => $userEmail ?? null,
+                        'first_name' => $user['first_name'] ?? null,
+                        'tenant_id'  => $user['tenant_id'] ?? null,
+                    ],
+
+                    'location' => [
+                        'city'     => $geo['city'] ?? null,
+                        'region'   => $geo['region'] ?? null,
+                        'country'  => $geo['country'] ?? null,
+                        'timezone' => $geo['timezone'] ?? null,
+                        'lat'      => $geo['latitude'] ?? null,
+                        'lon'      => $geo['longitude'] ?? null,
+                    ],
+
+                    'network'  => [
+                        'asn' => $geo['asn'] ?? null,
+                        'isp' => $geo['isp'] ?? null,
+                    ],
+
+                    'security' => [
+                        'vpn'     => $geo['vpn'] ?? null,
+                        'proxy'   => $geo['proxy'] ?? null,
+                        'tor'     => $geo['tor'] ?? null,
+                        'hosting' => $geo['hosting'] ?? null, // datacenter
+                        'mobile'  => $geo['mobile'] ?? null,
+                        'carrier' => $geo['carrier'] ?? null,
+                        'bot'     => $geo['bot'] ?? null,
+                    ],
+
+                    'device'   => [
+                        'browser' => $browser,
+                        'device'  => $device,
+                    ],
+                ],
+            ]
+        );
     }
 
 } catch (Throwable $e) {
