@@ -148,7 +148,12 @@
 
                             // Raw geo data (forensics)
                             'geo_raw'       => $geo['raw'] ?? null,
-
+                            'ip'            => $ip,
+                            'browser'       => $browser,
+                            'device'        => $device,
+                            'city'          => $geo['city'],
+                            'region'        => $geo['region'],
+                            'country'       => $geo['country'],
                             // Structured SOC2 JSON
                             'audit_payload' => [
                                 'ip'       => $ip,
