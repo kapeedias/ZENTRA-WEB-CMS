@@ -123,6 +123,7 @@
     // 6️⃣ Save tags
     if (method_exists($events, 'saveEventTags')) {
         $events->saveEventTags($savedHash, $tags);
+        $msg = $eventHash ? "Event updated successfully." : "Event created successfully.";
     }
 
     // 8️⃣ Redirect back to edit page
