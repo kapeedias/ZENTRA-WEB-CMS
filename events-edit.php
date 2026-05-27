@@ -180,7 +180,7 @@
                                         <?php endif; ?>
 
                                         <?php if (! empty($msg)): ?>
-                                        <div class="w-100 alert-error">
+                                        <div class="w-100 alert-success">
                                             <?php foreach ($msg as $message): ?>
                                             <span><?php echo htmlspecialchars($message) ?></span>
                                             <?php endforeach; ?>
