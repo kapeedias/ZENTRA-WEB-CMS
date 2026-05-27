@@ -83,11 +83,8 @@
     $eventCategory   = $event['event_category'];         // value stored in DB
     $poster_media_id = (int) ($event['poster_media_id'] ?? 0);
 
-    if ($poster_media_id > 0) {
-    $poster_url = $events->getEventPosterByMediaId($poster_media_id);
-    } else {
-    $poster_url = '/assets/img/1200x600.jpg';
-    }
+    $poster_url      = $event['poster_url'] ?: '/assets/img/1200x600.jpg';
+    $poster_media_id = $event['poster_library_id'] ?: '';
 
     $startDT = $event['event_start_date'] . 'T' . ($event['event_start_time'] ?? '00:00');
     $endDT   = $event['event_end_date'] . 'T' . ($event['event_end_time'] ?? '00:00');
@@ -144,7 +141,8 @@
 
                                         <div class="card-body pt-2">
                                             <div class="mb-3"><span>Event Title</span>
-                                                <input type="hidden" id="event_id" value="<?php echo $event['event_id'] ?>">
+                                                <input type="hidden" id="event_id"
+                                                    value="<?php echo $event['event_id'] ?>">
                                                 <input type="text" class="form-control fw-bold text-warning"
                                                     autofocus="" name="event_title" id="event_title"
                                                     value="<?php echo htmlspecialchars($event['event_title']); ?>"><span
