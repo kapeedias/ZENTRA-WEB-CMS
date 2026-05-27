@@ -137,8 +137,7 @@
     ['label' => 'Events', 'url' => '/events-manage.php'],
     ['label' => $event['event_title'], 'url' => "#"],
     ];
-    $msg[]    = "test";
-    $errors[] = "test error";
+
 ?>
 <!DOCTYPE html>
 <html data-bs-theme="light" lang="en">
