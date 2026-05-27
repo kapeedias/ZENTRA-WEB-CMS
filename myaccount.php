@@ -5,6 +5,12 @@
     require_once __DIR__ . '/config/helpers.php';
     secureSessionStart();
 
+    $ip      = cleanIP(getClientIP());
+    $agent   = getUserAgent();
+    $browser = getBrowserName($agent);
+    $device  = getDeviceType($agent);
+    $geo     = getGeoLocation($ip);
+
     require_once __DIR__ . '/config/init.php';
     require_once __DIR__ . '/config/db.php';
     require_once __DIR__ . '/classes/User.php';
@@ -13,7 +19,7 @@
     require_once __DIR__ . '/classes/ModuleManager.php';
 
     enforceSessionSecurity();
-    $ip            = cleanIP(getClientIP());
+
     $moduleManager = new ModuleManager($pdo); // ← REQUIRED
 
     $pageTitle   = "My Account";
