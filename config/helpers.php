@@ -109,10 +109,6 @@ function isSessionHijacked(): bool
         return true;
     }
     return false;
-    error_log("SESSION CHECK: expectedIp=" . ($_SESSION['user_ip'] ?? 'null') .
-        " currentIp=" . $currentIp .
-        " expectedUA=" . ($_SESSION['user_agent'] ?? 'null') .
-        " currentUA=" . $currentAgent);
 
 }
 function enforceSessionSecurity(): void
