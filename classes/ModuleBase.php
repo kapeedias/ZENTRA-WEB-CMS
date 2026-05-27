@@ -160,22 +160,6 @@ class ModuleBase
 
         return false;
 
-        /*
-        // USAGE OF DELETE LIBRARY ITEM  - CHECKS IF THE LIBRARY ITEM IS USED IN ANY OF THE MODULES BEFORE DELETION
-        
-        $libraryId = (int) $_POST['library_id'];
-
-            if ($library->isLibraryItemInUse($libraryId)) {
-                echo json_encode([
-                    'success' => false,
-                    'message' => 'This image is used in Events, Blogs, or Gallery and cannot be deleted.'
-                ]);
-                exit;
-            }
-
-            $library->deleteLibraryItem($libraryId);
-
-        */
     }
 
     public function deleteLibraryItem(int $libraryId, int $tenantId, int $userId): bool
@@ -314,27 +298,6 @@ class ModuleBase
             ]
         );
         return false;
-
-        /*  
-        --------------------------------------------
-        Purge job runs after 90 days:
-        --------------------------------------------
-        UPDATE zentra_library
-        SET status = 'purged',
-            purged_on_utc = UTC_TIMESTAMP(),
-            purged_on_localtime = :system_localtime,
-            purged_by = 0  -- system user
-        WHERE library_id = :id;
-        
-        --------------------------------------------
-        Delete purged items after 7 days from library:
-        --------------------------------------------
-        DELETE FROM zentra_library
-        WHERE status = 'purged'
-        AND purged_on_utc < (UTC_TIMESTAMP() - INTERVAL 7 DAY);
-        
-        (You can choose 0–7 days for final hard delete.)
-        */
 
     }
 
