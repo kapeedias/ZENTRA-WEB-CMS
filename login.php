@@ -159,7 +159,7 @@
                                 'event'    => [
                                     'type'                => 'login',
                                     'identifier'          => $identifier,
-                                    'success'             => false, // or true on failure
+                                    'success'             => true, // or true on failure
                                     'event_time_utc'      => gmdate('Y-m-d H:i:s'),
                                     'event_time_local'    => (new DateTime('now', new DateTimeZone($_SESSION['user_timezone'] ?? 'UTC')))->format('Y-m-d H:i:s'),
                                     'event_user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
