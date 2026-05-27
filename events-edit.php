@@ -270,7 +270,8 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-xl-4 mb-4">
+                                <div class="col-xl-4 mb-4"><button type="submit" class="btn btn-primary mt-3">Save
+                                        Event</button>
                                     <!-- Start: event-poster -->
                                     <div class="card mb-4">
                                         <div
