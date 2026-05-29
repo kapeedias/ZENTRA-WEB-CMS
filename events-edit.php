@@ -17,7 +17,8 @@
 
     // ==== SESSION SECURITY ====
     enforceSessionSecurity();
-
+    $errors = $errors ?? [];
+    $msg    = $msg ?? [];
     // ==== DB CONNECTION ====
     try {
     $pdo = Database::getInstance();
