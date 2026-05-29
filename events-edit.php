@@ -160,8 +160,12 @@
     }
 
     /* Keep backdrop below modal but above page */
+    .modal {
+        z-index: 2000 !important;
+    }
+
     .modal-backdrop {
-        z-index: 1900 !important;
+        z-index: 1990 !important;
     }
     </style>
 
