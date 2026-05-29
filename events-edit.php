@@ -701,7 +701,8 @@
                         </div>
                         <div class="row">
                             <div class="col-12 d-flex justify-content-center">
-                                <button type="submit" class="btn btn-primary mt-3">Save Event</button>
+                                <button type="button" id="saveEventBtn" class="btn btn-secondary mt-3">Save
+                                    Event</button>
                             </div>
                         </div>
                         <!-- Start: Footer Centered -->
@@ -856,7 +857,31 @@
         };
     });
     </script>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
 
+        const saveBtn = document.getElementById("saveEventBtn");
+        const form = document.getElementById("eventForm");
+
+        if (saveBtn && form) {
+            saveBtn.addEventListener("click", function() {
+
+                // ⭐ Sync Quill content
+                const html = quill.root.innerHTML;
+                document.getElementById("event_description").value = html;
+
+                // ⭐ Sync tags (if you use tags)
+                if (window.selectedTags) {
+                    document.getElementById("hiddenTags").value =
+                        JSON.stringify(window.selectedTags);
+                }
+
+                // ⭐ Submit form
+                form.submit();
+            });
+        }
+    });
+    </script>
     <script>
     let selectedTags = [];
     const badgeContainer = document.getElementById('eventTagBadges');
