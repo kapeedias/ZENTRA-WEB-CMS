@@ -121,15 +121,9 @@
     $eventHash = $_POST['event_idhash'] ?: null;
 
     // 5️⃣ Save event
-    $savedHash = $events->saveEvent($data, $eventHash, $userId);
+    $savedHash = $events->saveEvent($data, $eventHash, $userId, $tags);
 
-    // 6️⃣ Save tags
-    if (method_exists($events, 'saveEventTags')) {
-        $events->saveEventTags($savedHash, $tags);
-        $msg[] = $eventHash ? "Event updated successfully." : "Event created successfully.";
-    }
-
-    // 8️⃣ Redirect back to edit page
+    // 6️⃣ Redirect back to edit page
     header("Location: /event/{$savedHash}/edit?saved=1");
     exit;
     }
@@ -339,7 +333,8 @@
                                         <div class="card-header d-flex justify-content-between align-items-center">
                                             <h5 class="fw-bold mb-0">Event Tags</h5>
                                             <button class="btn btn-warning text-white btn-sm" type="button"
-                                                data-bs-toggle="modal" data-bs-target="#tagPickerModal"> Add Event Tags
+                                                data-bs-toggle="modal" data-bs-target="#ZentraEventtagPickerModal"> Add
+                                                Event Tags
                                             </button>
                                             <input type="hidden" id="hiddenTags" name="tags">
                                         </div>
@@ -818,7 +813,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" id="tagPickerModal" tabindex="-1" aria-hidden="true">
+    <div class="modal fade" id="ZentraEventtagPickerModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content">
 
