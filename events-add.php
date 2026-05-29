@@ -216,7 +216,7 @@
                                                     class="fw-bold form-control-sm form-control" type="text"
                                                     autofocus="" required="" name="event_title" id="event_title"><span
                                                     class="text-secondary text-x-small"
-                                                    id="event-url">http://mywebsite.com/events/2026/04/23/navrathri-2026</span>
+                                                    id="event-url">http://mywebsite.com/events/yyyy/mm/dd/event-title</span>
                                             </div>
                                             <div class="row g-3">
                                                 <div class="col-md-6">

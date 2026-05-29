@@ -234,8 +234,8 @@
                                                 <input type="text" class="form-control fw-bold text-warning"
                                                     autofocus="" name="event_title" id="event_title"
                                                     value="<?php echo htmlspecialchars($event['event_title']); ?>"><span
-                                                    class="small text-secondary"
-                                                    id="event-url"><?php echo htmlspecialchars($eventUrl); ?></span>
+                                                    class="text-secondary text-x-small"
+                                                    id="event-url">http://mywebsite.com/events/yyyy/mm/dd/event-title</span>
                                             </div>
                                             <div class="row g-3">
                                                 <div class="col-md-4">
