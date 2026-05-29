@@ -336,7 +336,7 @@
                                                 data-bs-toggle="modal" data-bs-target="#ZentraEventtagPickerModal"> Add
                                                 Event Tags
                                             </button>
-                                            <input type="hidden" id="hiddenTags" name="tags">
+                                            <input type="hidden" id="hiddenTags" name="hiddenTags">
                                         </div>
 
                                         <div class="card-body pt-2">
