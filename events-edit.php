@@ -309,16 +309,12 @@
                                         </div>
                                         <div class="card-body pt-0">
                                             <div class="list-group list-group-flush">
-                                                <!--  <form method="POST" action="your-handler.php"
-                                                    onsubmit="return syncQuillContent()">
-                                                        -->
-                                                <textarea id="event_description_editor" name="event_description"
+
+                                                <textarea id="event_description" name="event_description"
                                                     class="form-control" rows="10">
-                                                    <?php echo htmlspecialchars($event['event_description']) ?>
+                                                    <?php echo trim(htmlspecialchars($event['event_description'])) ?>
                                                 </textarea>
-                                                <!-- Hidden input that will store Quill HTML -->
-                                                <input type="hidden" name="event_description" id="event_description">
-                                                <!--</form> -->
+
                                             </div>
                                         </div>
                                     </div>
@@ -799,7 +795,6 @@
 
     <script>
     let quill; // global
-
     document.addEventListener("DOMContentLoaded", function() {
 
         const fullToolbar = [
@@ -857,6 +852,55 @@
         };
     });
     </script>
+
+    <script>
+    tinymce.init({
+        selector: '#event_description',
+        height: 500,
+
+        // ⭐ Enable ALL free plugins
+        plugins: `
+        advlist anchor autolink autosave charmap code codesample directionality
+        emoticons fullscreen help image insertdatetime link lists media nonbreaking
+        pagebreak preview quickbars searchreplace table visualblocks visualchars
+        wordcount
+    `,
+
+        // ⭐ Full toolbar
+        toolbar: `
+        undo redo | blocks fontfamily fontsize | bold italic underline strikethrough |
+        forecolor backcolor | alignleft aligncenter alignright alignjustify |
+        bullist numlist outdent indent | link image media table |
+        emoticons charmap | pagebreak anchor | codesample code |
+        visualblocks visualchars | fullscreen preview
+    `,
+
+        menubar: 'file edit view insert format tools table help',
+        branding: false,
+
+        setup: function(editor) {
+
+            // 1️⃣ Override toolbar image button → open your modal
+            editor.ui.registry.addButton('image', {
+                icon: 'image',
+                tooltip: 'Insert image',
+                onAction: function() {
+                    openZentraMediaLibraryModal('editor');
+                }
+            });
+
+            // 2️⃣ Clicking an image inside the editor → open your modal
+            editor.on('click', function(e) {
+                if (e.target.nodeName === 'IMG') {
+                    openZentraMediaLibraryModal('editor');
+                }
+            });
+        }
+    });
+    </script>
+
+
+
     <script>
     document.addEventListener("DOMContentLoaded", function() {
 
