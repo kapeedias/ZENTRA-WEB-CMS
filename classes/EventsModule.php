@@ -529,7 +529,8 @@ class EventsModule
         if (! $url) {
             return false; // media not found or not tenant-owned
         }
-
+        $nowUtc   = gmdate('Y-m-d H:i:s');
+        $nowLocal = $_SESSION['user_timezone'] ?? 'UTC';
         // 2. Update event poster (tenant-scoped)
         $sql = "UPDATE zentra_events
             SET poster_library_id = :lib_id,
