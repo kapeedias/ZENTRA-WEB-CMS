@@ -312,12 +312,10 @@
                                                 <!--  <form method="POST" action="your-handler.php"
                                                     onsubmit="return syncQuillContent()">
                                                         -->
-                                                <!-- Quill Editor -->
-                                                <div id="editor" style="height: 300px;">
-                                                    <p>Hello World!</p>
-                                                    <p>Some initial <strong>bold</strong> text</p>
-                                                </div>
-
+                                                <textarea id="event_description_editor" name="event_description"
+                                                    class="form-control" rows="10">
+                                                    <?php echo htmlspecialchars($event['event_description']) ?>
+                                                </textarea>
                                                 <!-- Hidden input that will store Quill HTML -->
                                                 <input type="hidden" name="event_description" id="event_description">
                                                 <!--</form> -->
@@ -797,6 +795,8 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script src="/assets/tinymce/tinymce.min.js"></script>
+
     <script>
     let quill; // global
 
