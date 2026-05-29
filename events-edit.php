@@ -867,9 +867,9 @@
     `,
 
         toolbar: `
-        undo redo | blocks fontfamily fontsize | bold italic underline strikethrough |
-        forecolor backcolor | alignleft aligncenter alignright alignjustify |
-        bullist numlist outdent indent | myimage media table |
+        undo redo | blocks fontsize | bold italic underline strikethrough | myimage media table | link
+         | alignleft aligncenter alignright alignjustify |
+        bullist numlist outdent indent |
         emoticons charmap | pagebreak anchor | codesample code |
         visualblocks visualchars | fullscreen preview
     `,
