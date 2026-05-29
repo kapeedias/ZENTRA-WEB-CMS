@@ -264,7 +264,7 @@
                                                             event?</span></div>
                                                     <label class="form-check">
                                                         <input class="form-check-input text-warning" type="checkbox"
-                                                            id="all_day_event" name="all_day_event"
+                                                            id="is_event_all_day" name="is_event_all_day"
                                                             onchange="setAllDayEvent(this.checked)"
                                                             <?php echo $isAllDay ? 'checked' : '' ?>>
                                                         <span class="form-check-label">Yes</span>
