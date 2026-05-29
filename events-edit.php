@@ -857,7 +857,7 @@
     tinymce.init({
         selector: '#event_description',
         height: 500,
-
+        license_key: 'gpl',
         // ⭐ Enable ALL free plugins
         plugins: `
         advlist anchor autolink autosave charmap code codesample directionality
