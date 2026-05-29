@@ -8,12 +8,14 @@ class EventsModule
     private int $tenant_id;
     private string $table = 'zentra_events';
     private int $object_id;
+    private ActivityLogger $logger;
 
-    public function __construct(PDO $pdo, int $tenant_id, int $object_id = 1)
+    public function __construct(PDO $pdo, int $tenant_id, ActivityLogger $logger, int $object_id = 1)
     {
         $this->pdo       = $pdo;
         $this->tenant_id = $tenant_id;
         $this->object_id = $object_id;
+        $this->logger    = $logger;
     }
 
     public function listEvents(
@@ -65,17 +67,92 @@ class EventsModule
 
     public function saveEvent(array $data, ?string $hash = null, ?int $userId = null): string
     {
-        $now    = date('Y-m-d H:i:s');
+
+        // ---------------------------------------------------------
+        // 1) Timestamps
+        // ---------------------------------------------------------
         $nowUtc = gmdate('Y-m-d H:i:s');
 
         $userTz   = $_SESSION['user_timezone'] ?? 'UTC';
         $dt       = new DateTime('now', new DateTimeZone($userTz));
         $nowLocal = $dt->format('Y-m-d H:i:s');
 
+        // ---------------------------------------------------------
+        // 2) Load existing event ONLY in update mode
+        // ---------------------------------------------------------
+        $existingEvent = null;
+        if ($hash !== null) {
+            $existingEvent = $this->getEventByHash($hash);
+        }
+        // ---------------------------------------------------------
+        // 3) FIELD‑LEVEL DIFF LOGGING
+        // ---------------------------------------------------------
+        $changes = [];
+
+        if ($existingEvent !== null) {
+            foreach ($data as $key => $newValue) {
+                $oldValue = $existingEvent[$key] ?? null;
+
+                // Normalize empty values
+                if ($oldValue === '') {
+                    $oldValue = null;
+                }
+
+                if ($newValue === '') {
+                    $newValue = null;
+                }
+
+                if ($oldValue != $newValue) {
+                    $changes[$key] = [
+                        'old' => $oldValue,
+                        'new' => $newValue,
+                    ];
+                }
+            }
+        }
+
+        $hasChanges = ! empty($changes);
+
+        // ---------------------------------------------------------
+        // 4) Guarantee slug ALWAYS exists
+        // ---------------------------------------------------------
+        $slugMissingInPost = empty($data['event_slug']);
+        $slugMissingInDb   = empty($existingEvent['event_slug'] ?? null);
+
+        if ($slugMissingInPost || $slugMissingInDb) {
+
+            $title     = $data['event_title'] ?? 'event';
+            $startDate = $data['event_start_date'] ?? date('Y-m-d');
+
+            // Slugify title
+            $slug = strtolower(trim(preg_replace('/[^a-z0-9]+/', '-', $title), '-'));
+
+            // Build date path
+            $ts    = strtotime($startDate);
+            $year  = date("Y", $ts);
+            $month = date("m", $ts);
+            $day   = date("d", $ts);
+
+            // Final slug
+            $data['event_slug'] = "$year/$month/$day/$slug";
+
+            // Add slug to diff log if updating
+            if ($existingEvent !== null) {
+                $changes['event_slug'] = [
+                    'old' => $existingEvent['event_slug'] ?? null,
+                    'new' => $data['event_slug'],
+                ];
+                $hasChanges = true;
+            }
+        }
+
+        // ---------------------------------------------------------
+        // 5) Build payload
+        // ---------------------------------------------------------
         $payload = [
             'tenant_id'            => $this->tenant_id,
             'object_id'            => $this->object_id,
-            'event_slug'           => $data['event_slug'] ?? null,
+            'event_slug'           => $data['event_slug'],
             'event_title'          => $data['event_title'] ?? '',
             'event_description'    => $data['event_description'] ?? '',
             'event_location'       => $data['event_location'] ?? null,
@@ -88,21 +165,22 @@ class EventsModule
             'event_timezone'       => $data['event_timezone'] ?? 'UTC',
             'is_event_all_day'     => $data['is_event_all_day'] ?? 0,
             'event_status'         => $data['event_status'] ?? 'Draft',
+            'event_category'       => $data['event_category'] ?? 'event',
             'created_by'           => $userId,
             'created_on_utc'       => $nowUtc,
             'created_at_localtime' => $nowLocal,
-            'event_category'       => $data['event_category'] ?? 'event',
         ];
 
-        // CREATE MODE
+        // ---------------------------------------------------------
+        // 6) CREATE MODE
+        // ---------------------------------------------------------
         if ($hash === null) {
 
-            // ⭐ Generate secure event hash
-            $eventHash = substr(bin2hex(random_bytes(16)), 0, 12);
+            // Generate secure event hash
+            $eventHash             = substr(bin2hex(random_bytes(16)), 0, 12);
+            $payload['event_hash'] = $eventHash;
 
-            $payload['event_hash']     = $eventHash;
-            $payload['created_on_utc'] = $now;
-
+            // Insert
             $columns      = implode(', ', array_keys($payload));
             $placeholders = ':' . implode(', :', array_keys($payload));
 
@@ -111,18 +189,28 @@ class EventsModule
             );
             $stmt->execute($payload);
 
-            if ($userId !== null) {
-                $this->logEventActivity(
-                    $userId,
-                    "Created event ({$payload['event_title']})",
-                    'Event Created'
-                );
-            }
+            // ---------------------------------------------------------
+            // CREATE LOGGING (always logs)
+            // ---------------------------------------------------------
+            $this->logEventAudit(
+                $userId,
+                "Event Created ({$payload['event_title']})",
+                'event_create',
+                $eventHash,
+                $payload,
+                $changes
+            );
 
             return $eventHash;
         }
 
-        // UPDATE MODE
+        // ---------------------------------------------------------
+        // 7) UPDATE MODE — skip if no changes
+        // ---------------------------------------------------------
+        if (! $hasChanges) {
+            return $hash; // No update, no logging
+        }
+
         $payload['event_hash'] = $hash;
 
         $setParts = [];
@@ -130,39 +218,128 @@ class EventsModule
             if ($key === 'tenant_id' || $key === 'event_hash') {
                 continue;
             }
+
             $setParts[] = "{$key} = :{$key}";
         }
         $setQuery = implode(', ', $setParts);
 
         $stmt = $this->pdo->prepare(
             "UPDATE {$this->table}
-             SET {$setQuery}
-             WHERE event_hash = :event_hash AND tenant_id = :tenant_id"
+         SET {$setQuery}
+         WHERE event_hash = :event_hash AND tenant_id = :tenant_id"
         );
         $stmt->execute($payload);
 
-        if ($userId !== null) {
-            $this->logEventActivity(
-                $userId,
-                "Created event ({$payload['event_title']})",
-                'Event Created',
-                [
-                    'user_name'     => $_SESSION['user_name'] ?? 'Unknown',
-                    'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
-                    'tenant_id'     => $_SESSION['tenant_id'] ?? 0,
-                    'ip'            => $_SESSION['user_ip'] ?? null,
-                    'browser'       => getBrowserName($_SESSION['user_agent'] ?? ''),
-                    'device'        => getDeviceType($_SESSION['user_agent'] ?? ''),
-                    'city'          => $_SESSION['geo']['city'] ?? null,
-                    'region'        => $_SESSION['geo']['region'] ?? null,
-                    'country'       => $_SESSION['geo']['country'] ?? null,
-                    'geo_raw'       => $_SESSION['geo']['raw'] ?? null,
-                ]
-            );
-
-        }
+        // ---------------------------------------------------------
+        // UPDATE LOGGING (only when changes exist)
+        // ---------------------------------------------------------
+        $this->logEventAudit(
+            $userId,
+            "Event Updated ({$payload['event_title']})",
+            'event_update',
+            $hash,
+            $payload,
+            $changes
+        );
 
         return $hash;
+    }
+
+    private function logEventAudit(
+        int $userId,
+        string $identifier,
+        string $eventType,
+        string $eventHash,
+        array $payload,
+        array $changes
+    ): void {
+
+        $geo     = $_SESSION['geo'] ?? [];
+        $ip      = $_SESSION['user_ip'] ?? getClientIP();
+        $browser = getBrowserName($_SESSION['user_agent'] ?? '');
+        $device  = getDeviceType($_SESSION['user_agent'] ?? '');
+
+        $this->logger->log(
+            $userId,
+            $identifier,
+            ucfirst(str_replace('_', ' ', $eventType)),
+            [
+                'user_name'     => $_SESSION['user_name'] ?? 'Unknown',
+                'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+                'tenant_id'     => $_SESSION['tenant_id'] ?? 0,
+
+                'geo_raw'       => $geo['raw'] ?? null,
+                'ip'            => $ip,
+                'browser'       => $browser,
+                'device'        => $device,
+                'city'          => $geo['city'] ?? null,
+                'region'        => $geo['region'] ?? null,
+                'country'       => $geo['country'] ?? null,
+
+                'audit_payload' => [
+                    'event'         => [
+                        'type'                => $eventType,
+                        'identifier'          => $identifier,
+                        'success'             => true,
+                        'event_time_utc'      => gmdate('Y-m-d H:i:s'),
+                        'event_time_local'    => (new DateTime('now', new DateTimeZone($_SESSION['user_timezone'] ?? 'UTC')))
+                            ->format('Y-m-d H:i:s'),
+                        'event_user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+                        'session_id'          => session_id(),
+                        'ip'                  => $ip,
+                    ],
+
+                    'event_details' => [
+                        'event_hash'     => $eventHash,
+                        'event_title'    => $payload['event_title'],
+                        'event_slug'     => $payload['event_slug'],
+                        'event_category' => $payload['event_category'],
+                        'start_date'     => $payload['event_start_date'],
+                        'end_date'       => $payload['event_end_date'],
+                        'all_day'        => $payload['is_event_all_day'],
+                        'timezone'       => $payload['event_timezone'],
+                    ],
+
+                    'changes'       => $changes,
+
+                    'user'          => [
+                        'user_id'    => $userId,
+                        'username'   => $_SESSION['user_email'] ?? null,
+                        'first_name' => $_SESSION['user_name'] ?? null,
+                        'tenant_id'  => $_SESSION['tenant_id'] ?? null,
+                    ],
+
+                    'location'      => [
+                        'city'     => $geo['city'] ?? null,
+                        'region'   => $geo['region'] ?? null,
+                        'country'  => $geo['country'] ?? null,
+                        'timezone' => $geo['timezone'] ?? null,
+                        'lat'      => $geo['latitude'] ?? null,
+                        'lon'      => $geo['longitude'] ?? null,
+                    ],
+
+                    'network'       => [
+                        'asn' => $geo['asn'] ?? null,
+                        'isp' => $geo['isp'] ?? null,
+                    ],
+
+                    'security'      => [
+                        'vpn'     => $geo['vpn'] ?? null,
+                        'proxy'   => $geo['proxy'] ?? null,
+                        'tor'     => $geo['tor'] ?? null,
+                        'hosting' => $geo['hosting'] ?? null,
+                        'mobile'  => $geo['mobile'] ?? null,
+                        'carrier' => $geo['carrier'] ?? null,
+                        'bot'     => $geo['bot'] ?? null,
+                    ],
+
+                    'device'        => [
+                        'browser' => $browser,
+                        'device'  => $device,
+                    ],
+                ],
+            ]
+        );
     }
 
     public function deleteEvent(string $hash, ?int $userId = null): void

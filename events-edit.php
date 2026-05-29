@@ -58,9 +58,10 @@
     exit;
     }
     $moduleManager = new ModuleManager($pdo); // ← REQUIRED
-    $events        = new EventsModule($pdo, (int) $tenantId);
     $logger        = new ActivityLogger($pdo, (int) $tenantId);
-    $timezones     = DateTimeZone::listIdentifiers();
+    $events        = new EventsModule($pdo, (int) $tenantId, $logger);
+
+    $timezones = DateTimeZone::listIdentifiers();
     // ==== GET EVENT HASH FROM ROUTE ====
     $eventHash = $_GET['e'] ?? null;
 
