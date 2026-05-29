@@ -155,9 +155,13 @@
     }
 
     /* Raise Zentra modal and backdrop above TinyMCE fullscreen */
-    #zentraMediaModal,
-    .modal-backdrop {
+    #zentraMediaModal {
         z-index: 2000 !important;
+    }
+
+    /* Keep backdrop below modal but above page */
+    .modal-backdrop {
+        z-index: 1900 !important;
     }
     </style>
 
