@@ -525,25 +525,94 @@ class EventsModule
 
         // 3. Log activity (tenant-aware)
         if ($success) {
+            $userId   = (int) ($_SESSION['user_id'] ?? 0);
+            $userName = $_SESSION['user_name'] ?? 'Unknown';
+            $userTz   = $_SESSION['user_timezone'] ?? 'UTC';
+
+            $eventType  = 'event_poster_updated';
+            $identifier = "Event Poster Updated (Event ID {$eventId}, Media ID {$libraryId} by user {$userId} | {$userName})";
+
             $this->logEventActivity(
                 (int) $_SESSION['user_id'],
-                'Event Poster Updated for Event ID ' . $eventId . ' (Media ID ' . $libraryId . ')' . ' by userid' . $_SESSION['user_id'],
-                'Event posterupdated',
+                $identifier,
+                ucfirst(str_replace('_', ' ', $eventType)),
                 [
-                    'event_id'          => $eventId,
-                    'poster_library_id' => $libraryId,
-                    'poster_url'        => $url,
-                    'tenant_id'         => $tenantId,
-                    'user_name'         => $_SESSION['user_name'] ?? null,
-                    'user_timezone'     => $_SESSION['user_timezone'] ?? 'UTC',
-                    'ip'                => $ip,
-                    'browser'           => $browser,
-                    'device'            => $device,
-                    'city'              => $geo['city'] ?? null,
-                    'region'            => $geo['region'] ?? null,
-                    'country'           => $geo['country'] ?? null,
-                    'geo_raw'           => $geo['raw'] ?? null,
-                ],
+                    'user_name'     => $userName,
+                    'user_timezone' => $userTz,
+                    'tenant_id'     => $tenantId,
+
+                    'geo_raw'       => $geo['raw'] ?? null,
+                    'ip'            => $ip,
+                    'browser'       => $browser,
+                    'device'        => $device,
+                    'city'          => $geo['city'] ?? null,
+                    'region'        => $geo['region'] ?? null,
+                    'country'       => $geo['country'] ?? null,
+
+                    'audit_payload' => [
+
+                        // ---- EVENT METADATA ----
+                        'event'         => [
+                            'type'                => $eventType,
+                            'identifier'          => $identifier,
+                            'success'             => true,
+                            'event_time_utc'      => gmdate('Y-m-d H:i:s'),
+                            'event_time_local'    => (new DateTime('now', new DateTimeZone($userTz)))
+                                ->format('Y-m-d H:i:s'),
+                            'event_user_timezone' => $userTz,
+                            'session_id'          => session_id(),
+                            'ip'                  => $ip,
+                        ],
+
+                        // ---- POSTER DETAILS ----
+                        'event_details' => [
+                            'event_id'          => $eventId,
+                            'poster_library_id' => $libraryId,
+                            'poster_url'        => $url,
+                        ],
+
+                        // ---- USER ----
+                        'user'          => [
+                            'user_id'    => $userId,
+                            'username'   => $_SESSION['user_email'] ?? null,
+                            'first_name' => $userName,
+                            'tenant_id'  => $tenantId,
+                        ],
+
+                        // ---- LOCATION ----
+                        'location'      => [
+                            'city'     => $geo['city'] ?? null,
+                            'region'   => $geo['region'] ?? null,
+                            'country'  => $geo['country'] ?? null,
+                            'timezone' => $geo['timezone'] ?? null,
+                            'lat'      => $geo['latitude'] ?? null,
+                            'lon'      => $geo['longitude'] ?? null,
+                        ],
+
+                        // ---- NETWORK ----
+                        'network'       => [
+                            'asn' => $geo['asn'] ?? null,
+                            'isp' => $geo['isp'] ?? null,
+                        ],
+
+                        // ---- SECURITY ----
+                        'security'      => [
+                            'vpn'     => $geo['vpn'] ?? null,
+                            'proxy'   => $geo['proxy'] ?? null,
+                            'tor'     => $geo['tor'] ?? null,
+                            'hosting' => $geo['hosting'] ?? null,
+                            'mobile'  => $geo['mobile'] ?? null,
+                            'carrier' => $geo['carrier'] ?? null,
+                            'bot'     => $geo['bot'] ?? null,
+                        ],
+
+                        // ---- DEVICE ----
+                        'device'        => [
+                            'browser' => $browser,
+                            'device'  => $device,
+                        ],
+                    ],
+                ]
             );
         }
 
