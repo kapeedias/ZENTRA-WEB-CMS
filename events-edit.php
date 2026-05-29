@@ -306,7 +306,7 @@
                                                             class="text-danger">*</span></div>
                                                     <div class="fw-semibold"><select
                                                             class="form-select-sm form-select text-warning"
-                                                            name="event_category" required="yes">
+                                                            name="event_category" id="event_category" required="yes">
                                                             <option value="">-- Select Event Category --</option>
                                                             <option value="Event"
                                                                 <?php echo($eventCategory === 'Event') ? 'selected' : '' ?>>
