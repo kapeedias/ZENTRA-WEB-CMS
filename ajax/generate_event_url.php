@@ -6,11 +6,9 @@ secureSessionStart();
 ob_clean();
 header('Content-Type: application/json; charset=utf-8');
 
-//error_log("AJAX SESSION: " . print_r($_SESSION, true));
-
 require_once __DIR__ . '/../config/db.php';
-require_once __DIR__ . '/../classes/User.php';
 require_once __DIR__ . '/../classes/ActivityLogger.php';
+require_once __DIR__ . '/../classes/EventsModule.php';
 
 // Validate request
 if (! isset($_POST['title']) || ! isset($_POST['start_dt'])) {
@@ -26,6 +24,9 @@ if ($title === '' || $startDT === '') {
     exit;
 }
 
+// Split datetime-local
+list($date, $time) = explode('T', $startDT);
+
 // Connect to DB
 try {
     $pdo = Database::getInstance();
@@ -34,37 +35,25 @@ try {
     exit;
 }
 
-// Slugify
-$slug = strtolower($title);
-$slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
-$slug = trim($slug, '-');
+// Init logger + events module
+$tenantId = $_SESSION['tenant_id'] ?? 0;
+$logger   = new ActivityLogger($pdo, $tenantId);
+$events   = new EventsModule($pdo, $tenantId, $logger);
 
-// Split datetime-local
-list($date, $time) = explode('T', $startDT);
+// Generate slug using unified backend logic
+$slug = $events->generateSlug($title, $date);
 
-// Build date parts
-$ts    = strtotime($date);
-$year  = date("Y", $ts);
-$month = date("m", $ts);
-$day   = date("d", $ts);
+// Build preview URL (same as getEventUrl())
+$baseUrl = rtrim(getenv('APP_URL') ?: 'https://mywebsite.com', '/');
 
-// Duplicate check
-$stmt = $pdo->prepare("
-    SELECT COUNT(*)
-    FROM zentra_events
-    WHERE event_slug = ?
-      AND event_start_date = ?
-");
-$stmt->execute([$slug, $date]);
-$count = $stmt->fetchColumn();
+$year  = date("Y", strtotime($date));
+$month = date("m", strtotime($date));
+$day   = date("d", strtotime($date));
 
-if ($count > 0) {
-    $slug .= "-" . ($count + 1);
-}
-
-$url = "http://mywebsite.com/events/$year/$month/$day/$slug";
+$url = "{$baseUrl}/events/{$year}/{$month}/{$day}/{$slug}";
 
 echo json_encode([
     'success' => true,
+    'slug'    => $slug,
     'url'     => $url,
 ]);

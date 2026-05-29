@@ -114,7 +114,7 @@ class EventsModule
         $hasChanges = ! empty($changes);
 
         // ---------------------------------------------------------
-        // 4) Guarantee slug ALWAYS exists
+        // 4) Guarantee slug ALWAYS exists (unified slug generator)
         // ---------------------------------------------------------
         $slugMissingInPost = empty($data['event_slug']);
         $slugMissingInDb   = empty($existingEvent['event_slug'] ?? null);
@@ -124,17 +124,8 @@ class EventsModule
             $title     = $data['event_title'] ?? 'event';
             $startDate = $data['event_start_date'] ?? date('Y-m-d');
 
-            // Slugify title
-            $slug = strtolower(trim(preg_replace('/[^a-z0-9]+/', '-', $title), '-'));
-
-            // Build date path
-            $ts    = strtotime($startDate);
-            $year  = date("Y", $ts);
-            $month = date("m", $ts);
-            $day   = date("d", $ts);
-
-            // Final slug
-            $data['event_slug'] = "$year/$month/$day/$slug";
+            // Generate only the slug (no date path)
+            $data['event_slug'] = $this->generateSlug($title, $startDate);
 
             // Add slug to diff log if updating
             if ($existingEvent !== null) {
@@ -395,6 +386,29 @@ class EventsModule
         } catch (Throwable $e) {
             error_log("Event logging failed: " . $e->getMessage());
         }
+    }
+    public function generateSlug(string $title, string $startDate): string
+    {
+        // Normalize title
+        $slug = strtolower($title);
+        $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
+        $slug = trim($slug, '-');
+
+        // Duplicate check (same slug + same date)
+        $stmt = $this->pdo->prepare("
+        SELECT COUNT(*)
+        FROM zentra_events
+        WHERE event_slug = ?
+          AND event_start_date = ?
+    ");
+        $stmt->execute([$slug, $startDate]);
+        $count = $stmt->fetchColumn();
+
+        if ($count > 0) {
+            $slug .= "-" . ($count + 1);
+        }
+
+        return $slug; // IMPORTANT: return ONLY the slug
     }
 
     public function getEventUrl(string $hash): ?string
