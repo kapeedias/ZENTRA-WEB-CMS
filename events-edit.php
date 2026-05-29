@@ -856,7 +856,7 @@
     <script>
     tinymce.init({
         selector: '#event_description',
-        license_key: 'gpl',
+        license_key: 'gpl', // required for TinyMCE 8 self-hosted
         height: 500,
 
         plugins: `
@@ -879,7 +879,7 @@
 
         setup: function(editor) {
 
-            // ⭐ 1. Register your custom image button
+            // Custom toolbar image button → open your media modal
             editor.ui.registry.addButton('myimage', {
                 icon: 'image',
                 tooltip: 'Insert image',
@@ -888,7 +888,16 @@
                 }
             });
 
-            // ⭐ 2. Clicking an image inside the editor opens your modal
+            // Replace Insert → Image… menu item → open your media modal
+            editor.ui.registry.addMenuItem('image', {
+                text: 'Image…',
+                icon: 'image',
+                onAction: function() {
+                    openZentraMediaLibraryModal('editor');
+                }
+            });
+
+            // Clicking an image inside the editor → open your media modal
             editor.on('click', function(e) {
                 if (e.target.nodeName === 'IMG') {
                     openZentraMediaLibraryModal('editor');
@@ -897,6 +906,7 @@
         }
     });
     </script>
+
     <script>
     function insertImageIntoEditor(url) {
         tinymce.activeEditor.insertContent(`<img src="${url}" alt="">`);
@@ -1206,20 +1216,16 @@
 
 
     document.getElementById('insertSelectedMedia').addEventListener('click', function(e) {
-        // Remove focus from the button BEFORE closing modal
-        if (e && e.target) {
-            e.target.blur();
-        }
-        // --- EDITOR MODE ---
+        if (e && e.target) e.target.blur();
+
+        // --- EDITOR MODE (TinyMCE) ---
         if (selectionMode === 'editor') {
             const selectedItems = document.querySelectorAll('.media-item.selected');
+            if (!selectedItems.length) return;
 
             selectedItems.forEach(item => {
                 const url = item.dataset.url;
-                const range = quill.getSelection(true);
-
-                quill.insertEmbed(range.index, 'image', url);
-                quill.setSelection(range.index + 1);
+                tinymce.activeEditor.insertContent(`<img src="${url}" alt="">`);
             });
 
             bootstrap.Modal.getInstance(document.getElementById('zentraMediaModal')).hide();
@@ -1241,8 +1247,8 @@
             // Update hidden input
             document.getElementById('poster_media_id').value = id;
 
-            // ⭐ NEW: Update event poster immediately
-            const eventId = document.getElementById('event_id').value; // hidden input on edit page
+            // Update event poster immediately
+            const eventId = document.getElementById('event_id').value;
 
             fetch('/ajax/update_event_poster.php', {
                     method: 'POST',
@@ -1260,11 +1266,12 @@
                         alert("Failed to update event poster");
                     }
                 });
-            // Close modal
+
             bootstrap.Modal.getInstance(document.getElementById('zentraMediaModal')).hide();
             return;
         }
     });
+
 
     document.getElementById('zentraMediaModal')
         .addEventListener('hide.bs.modal', function() {
