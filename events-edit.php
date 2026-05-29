@@ -148,6 +148,29 @@
     <title><?php echo getenv('APP_NAME') ?> - Edit Event</title>
     <?php include '_include/head.php'; ?>
     <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <style>
+    /* Lower TinyMCE fullscreen overlay so modals can sit above it */
+    .tox-fullscreen {
+        z-index: 1040 !important;
+    }
+
+    /* Raise Zentra modal and backdrop above TinyMCE fullscreen */
+    #zentraMediaModal,
+    .modal-backdrop {
+        z-index: 2000 !important;
+    }
+    </style>
+
+    <script>
+    // Allow Bootstrap modal to receive focus even when TinyMCE is fullscreen
+    document.addEventListener('focusin', function(e) {
+        const modal = document.getElementById('zentraMediaModal');
+        if (modal && modal.contains(e.target)) {
+            e.stopPropagation();
+        }
+    });
+    </script>
+
 </head>
 
 <body>
