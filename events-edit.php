@@ -701,7 +701,7 @@
                         </div>
                         <div class="row">
                             <div class="col-12 d-flex justify-content-center">
-                                <button type="button" id="saveEventBtn" class="btn btn-secondary mt-3">Save
+                                <button type="submit" id="saveEventBtn" class="btn btn-secondary mt-3">Save
                                     Event</button>
                             </div>
                         </div>
