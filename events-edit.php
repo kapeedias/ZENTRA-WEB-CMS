@@ -233,9 +233,20 @@
 
                                                 <input type="text" class="form-control fw-bold text-warning"
                                                     autofocus="" name="event_title" id="event_title"
-                                                    value="<?php echo htmlspecialchars($event['event_title']); ?>"><span
-                                                    class="text-secondary text-x-small"
-                                                    id="event-url">http://mywebsite.com/events/yyyy/mm/dd/event-title</span>
+                                                    value="<?php echo htmlspecialchars($event['event_title']); ?>"><?php
+      $slug = $event['event_slug'] ?? '';
+
+      $defaultUrl = "http://mywebsite.com/events/yyyy/mm/dd/event-title";
+
+      $eventUrlDisplay = $slug
+          ? "http://mywebsite.com/events/" . htmlspecialchars($slug)
+          : $defaultUrl;
+  ?>
+                                                <span class="text-secondary text-x-small" id="event-url">
+                                                    <?php echo $eventUrlDisplay ?>
+                                                </span>
+
+
                                             </div>
                                             <div class="row g-3">
                                                 <div class="col-md-4">
