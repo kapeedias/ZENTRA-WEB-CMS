@@ -113,8 +113,8 @@
 
     // 2️⃣ Tags
     $tags = json_decode($_POST['hiddenTags'] ?? '[]', true);
+    error_log('Tags received: ' . print_r($tags, true));
 
-    // 3️⃣ Poster
     $posterId = $_POST['poster_media_id'] ?? null;
 
     // 4️⃣ Determine CREATE vs UPDATE
