@@ -383,26 +383,44 @@ class EventsModule
     }
     public function generateSlug(string $title, string $startDate): string
     {
-        // Normalize title
-        $slug = strtolower($title);
-        $slug = preg_replace('/[^a-z0-9]+/', '-', $slug);
-        $slug = trim($slug, '-');
+        // 1) Normalize base slug from title
+        $baseSlug = strtolower($title);
+        $baseSlug = preg_replace('/[^a-z0-9]+/', '-', $baseSlug);
+        $baseSlug = trim($baseSlug, '-');
 
-        // Duplicate check (same slug + same date)
+        // 2) Look for existing slugs for THIS tenant on the SAME date
+        //    - Same tenant only
+        //    - Same calendar date (ignores time component)
+        //    - Same slug prefix (for -2, -3, etc.)
+        //    - Ignore hard-deleted events if you ever use that status
         $stmt = $this->pdo->prepare("
-        SELECT COUNT(*)
+        SELECT event_slug
         FROM zentra_events
-        WHERE event_slug = ?
-          AND event_start_date = ?
+        WHERE tenant_id = :tenant_id
+          AND DATE(event_start_date) = DATE(:start_date)
+          AND event_slug LIKE :slug_pattern
+          AND event_status <> 'Deleted'
     ");
-        $stmt->execute([$slug, $startDate]);
-        $count = $stmt->fetchColumn();
+        $stmt->execute([
+            'tenant_id'    => $this->tenant_id,
+            'start_date'   => $startDate,
+            'slug_pattern' => $baseSlug . '%',
+        ]);
 
-        if ($count > 0) {
-            $slug .= "-" . ($count + 1);
+        $existingSlugs = $stmt->fetchAll(PDO::FETCH_COLUMN);
+
+        // 3) If no conflict, use base slug as-is
+        if (! in_array($baseSlug, $existingSlugs, true)) {
+            return $baseSlug;
         }
 
-        return $slug; // IMPORTANT: return ONLY the slug
+        // 4) Find the next available numeric suffix (-2, -3, ...)
+        $suffix = 2;
+        while (in_array($baseSlug . '-' . $suffix, $existingSlugs, true)) {
+            $suffix++;
+        }
+
+        return $baseSlug . '-' . $suffix;
     }
 
     public function getEventUrl(string $hash): ?string
