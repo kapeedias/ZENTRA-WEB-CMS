@@ -106,6 +106,7 @@
         'event_timezone'    => $_POST['event_timezone'] ?? 'UTC',
         'is_event_all_day'  => isset($_POST['is_event_all_day']) ? 1 : 0,
         'event_slug'        => $_POST['event_slug'] ?? null,
+        'event_category'    => $_POST['event_category'] ?? 'event',
     ];
 
     // 2️⃣ Tags
@@ -262,7 +263,8 @@
                                                             event?</span></div>
                                                     <label class="form-check">
                                                         <input class="form-check-input text-warning" type="checkbox"
-                                                            id="all_day_event" onchange="setAllDayEvent(this.checked)"
+                                                            id="all_day_event" name="all_day_event"
+                                                            onchange="setAllDayEvent(this.checked)"
                                                             <?php echo $isAllDay ? 'checked' : '' ?>>
                                                         <span class="form-check-label">Yes</span>
                                                     </label>
