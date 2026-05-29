@@ -113,25 +113,37 @@ class EventsModule
         $hasChanges = ! empty($changes);
 
         // ---------------------------------------------------------
-        // 4) Guarantee slug ALWAYS exists (unified slug generator)
+        // 4) Slug handling (edit-safe, only regenerate when title changes)
         // ---------------------------------------------------------
-        $slugMissingInPost = empty($data['event_slug']);
-        $slugMissingInDb   = empty($existingEvent['event_slug'] ?? null);
+        if ($existingEvent !== null) {
+            // EDIT MODE
+            $oldTitle = $existingEvent['event_title'] ?? null;
+            $newTitle = $data['event_title'] ?? null;
 
-        if ($slugMissingInPost || $slugMissingInDb) {
+            if ($oldTitle !== $newTitle) {
+                // Title changed → regenerate slug
+                $data['event_slug'] = $this->generateSlug(
+                    $data['event_title'],
+                    $data['event_start_date']
+                );
 
-            $title     = $data['event_title'] ?? 'event';
-            $startDate = $data['event_start_date'] ?? date('Y-m-d');
-
-            $data['event_slug'] = $this->generateSlug($title, $startDate);
-
-            if ($existingEvent !== null) {
                 $changes['event_slug'] = [
-                    'old' => $existingEvent['event_slug'] ?? null,
+                    'old' => $existingEvent['event_slug'],
                     'new' => $data['event_slug'],
                 ];
                 $hasChanges = true;
+
+            } else {
+                // Title unchanged → keep existing slug
+                $data['event_slug'] = $existingEvent['event_slug'];
             }
+
+        } else {
+            // CREATE MODE → always generate slug
+            $data['event_slug'] = $this->generateSlug(
+                $data['event_title'],
+                $data['event_start_date']
+            );
         }
 
         // ---------------------------------------------------------
@@ -505,21 +517,33 @@ class EventsModule
     }
     public function updateEventPoster(int $eventId, int $libraryId, int $tenantId): bool
     {
-
-        // Use session values set at login
+        // ---------------------------------------------------------
+        // 0. Resolve environment + session metadata
+        // ---------------------------------------------------------
         $ip      = $_SESSION['user_ip'] ?? cleanIP(getClientIP());
         $agent   = $_SESSION['user_agent'] ?? ($_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
         $browser = getBrowserName($agent);
         $device  = getDeviceType($agent);
         $geo     = $_SESSION['geo'] ?? [];
 
-        // 1. Validate media belongs to tenant
-        $sql = "SELECT file_url
-            FROM zentra_library
-            WHERE library_id = :id AND tenant_id = :tenant_id
-            LIMIT 1";
+        $userId   = (int) ($_SESSION['user_id'] ?? 0);
+        $userName = $_SESSION['user_name'] ?? 'Unknown';
+        $userTz   = $_SESSION['user_timezone'] ?? 'UTC';
 
-        $stmt = $this->pdo->prepare($sql);
+        // Timestamps
+        $nowUtc   = gmdate('Y-m-d H:i:s');
+        $nowLocal = (new DateTime('now', new DateTimeZone($userTz)))->format('Y-m-d H:i:s');
+
+        // ---------------------------------------------------------
+        // 1. Validate media belongs to tenant
+        // ---------------------------------------------------------
+        $stmt = $this->pdo->prepare("
+        SELECT file_url
+        FROM zentra_library
+        WHERE library_id = :id
+        AND (tenant_id = :tenant_id OR is_global = 1)
+        LIMIT 1
+    ");
         $stmt->execute([
             'id'        => $libraryId,
             'tenant_id' => $tenantId,
@@ -529,18 +553,20 @@ class EventsModule
         if (! $url) {
             return false; // media not found or not tenant-owned
         }
-        $nowUtc   = gmdate('Y-m-d H:i:s');
-        $nowLocal = $_SESSION['user_timezone'] ?? 'UTC';
-        // 2. Update event poster (tenant-scoped)
-        $sql = "UPDATE zentra_events
-            SET poster_library_id = :lib_id,
-                poster_url = :url,
-                updated_at_utc    = :updated_at_utc,
-                updated_at_localtime = :updated_at_localtime
-            WHERE event_id = :event_id
-              AND tenant_id = :tenant_id";
 
-        $stmt    = $this->pdo->prepare($sql);
+        // ---------------------------------------------------------
+        // 2. Update event poster (tenant-scoped)
+        // ---------------------------------------------------------
+        $stmt = $this->pdo->prepare("
+        UPDATE zentra_events
+        SET poster_library_id   = :lib_id,
+            poster_url          = :url,
+            updated_at_utc      = :updated_at_utc,
+            updated_at_localtime = :updated_at_localtime
+        WHERE event_id = :event_id
+          AND tenant_id = :tenant_id
+    ");
+
         $success = $stmt->execute([
             'lib_id'               => $libraryId,
             'url'                  => $url,
@@ -550,17 +576,16 @@ class EventsModule
             'updated_at_localtime' => $nowLocal,
         ]);
 
-        // 3. Log activity (tenant-aware)
+        // ---------------------------------------------------------
+        // 3. Log activity (SOC2-compliant unified audit)
+        // ---------------------------------------------------------
         if ($success) {
-            $userId   = (int) ($_SESSION['user_id'] ?? 0);
-            $userName = $_SESSION['user_name'] ?? 'Unknown';
-            $userTz   = $_SESSION['user_timezone'] ?? 'UTC';
 
             $eventType  = 'event_poster_updated';
-            $identifier = "Event Poster Updated (Event ID {$eventId}, Media ID {$libraryId} by user {$userId} | {$userName})";
+            $identifier = "Event Poster Updated (Event ID {$eventId}, Media ID {$libraryId}, User {$userId} | {$userName})";
 
             $this->logEventActivity(
-                (int) $_SESSION['user_id'],
+                $userId,
                 $identifier,
                 ucfirst(str_replace('_', ' ', $eventType)),
                 [
@@ -583,9 +608,8 @@ class EventsModule
                             'type'                => $eventType,
                             'identifier'          => $identifier,
                             'success'             => true,
-                            'event_time_utc'      => gmdate('Y-m-d H:i:s'),
-                            'event_time_local'    => (new DateTime('now', new DateTimeZone($userTz)))
-                                ->format('Y-m-d H:i:s'),
+                            'event_time_utc'      => $nowUtc,
+                            'event_time_local'    => $nowLocal,
                             'event_user_timezone' => $userTz,
                             'session_id'          => session_id(),
                             'ip'                  => $ip,

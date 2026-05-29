@@ -231,6 +231,9 @@
 
                                                 <input type="hidden" id="event_idhash" name="event_idhash"
                                                     value="<?php echo htmlspecialchars($eventHash) ?>">
+                                                <input type="hidden" name="event_slug"
+                                                    value="<?php echo $event['event_slug'] ?>">
+
 
                                                 <input type="text" class="form-control fw-bold text-warning"
                                                     autofocus="" name="event_title" id="event_title"
