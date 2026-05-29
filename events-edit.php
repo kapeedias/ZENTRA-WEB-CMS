@@ -746,6 +746,13 @@
         const modal = new bootstrap.Modal(modalEl);
         modal.show();
     }
+
+    document.addEventListener('hidden.bs.modal', function() {
+        const backdrops = document.querySelectorAll('.modal-backdrop');
+        if (backdrops.length > 1) {
+            backdrops[0].remove();
+        }
+    });
     </script>
 
     <div class="modal fade" id="zentraMediaModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
