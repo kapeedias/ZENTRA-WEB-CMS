@@ -308,15 +308,13 @@
                                                             class="form-select-sm form-select text-warning"
                                                             name="event_category" id="event_category" required="yes">
                                                             <option value="">-- Select Event Category --</option>
-                                                            <option value="Event"
-                                                                <?php echo($eventCategory === 'Event') ? 'selected' : '' ?>>
-                                                                Event
-                                                            </option>
+                                                            <option value="event"
+                                                                <?php echo $eventCategory === 'event' ? 'selected' : '' ?>>
+                                                                Event</option>
+                                                            <option value="festival"
+                                                                <?php echo $eventCategory === 'festival' ? 'selected' : '' ?>>
+                                                                Festival</option>
 
-                                                            <option value="Festival"
-                                                                <?php echo($eventCategory === 'Festival') ? 'selected' : '' ?>>
-                                                                Festival
-                                                            </option>
                                                         </select></div>
                                                 </div>
                                             </div>
