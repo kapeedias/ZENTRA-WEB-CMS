@@ -880,22 +880,20 @@
 
         setup: function(editor) {
 
-            // 1️⃣ Override toolbar image button → open your modal
-            editor.ui.registry.addButton('image', {
-                icon: 'image',
-                tooltip: 'Insert image',
-                onAction: function() {
-                    openZentraMediaLibraryModal('editor');
-                }
-            });
-
-            // 2️⃣ Clicking an image inside the editor → open your modal
-            editor.on('click', function(e) {
-                if (e.target.nodeName === 'IMG') {
-                    openZentraMediaLibraryModal('editor');
-                }
+            // Override built-in image button
+            editor.on('PreInit', function() {
+                editor.execCommand = (function(orig) {
+                    return function(cmd, ui, value) {
+                        if (cmd === 'mceImage') {
+                            openZentraMediaLibraryModal('editor');
+                            return;
+                        }
+                        return orig.call(this, cmd, ui, value);
+                    };
+                })(editor.execCommand);
             });
         }
+
     });
     </script>
 
