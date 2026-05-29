@@ -31,8 +31,6 @@
 
     $moduleManager = new ModuleManager($pdo);
 
-    // ==== LOAD LOGGER + EVENTS MODULE ====
-    $logger   = new ActivityLogger($pdo, (int) ($_SESSION['tenant_id'] ?? 0));
     $tenantId = $_SESSION['tenant_id'] ?? null;
 
     if (! $tenantId) {
@@ -77,7 +75,10 @@
     exit;
     }
 
-    $events    = new EventsModule($pdo, $tenantId);
+    // ==== LOAD LOGGER + EVENTS MODULE ====
+
+    $logger    = new ActivityLogger($pdo, (int) ($_SESSION['tenant_id'] ?? 0));
+    $events    = new EventsModule($pdo, $tenantId, $logger);
     $locations = $events->getEventLocations();
 
     // ==== HANDLE FORM SUBMISSION ====
