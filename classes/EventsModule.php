@@ -91,7 +91,7 @@ class EventsModule
             'created_by'           => $userId,
             'created_on_utc'       => $nowUtc,
             'created_at_localtime' => $nowLocal,
-
+            'event_category'       => $data['event_category'] ?? 'event',
         ];
 
         // CREATE MODE
