@@ -856,9 +856,10 @@
     <script>
     tinymce.init({
         selector: '#event_description',
-        license_key: 'gpl', // required for TinyMCE 8 self-hosted
+        license_key: 'gpl',
         height: 500,
 
+        // ⭐ Load all free plugins
         plugins: `
         advlist anchor autolink autosave charmap code codesample directionality
         emoticons fullscreen help image insertdatetime link lists media nonbreaking
@@ -866,20 +867,34 @@
         wordcount
     `,
 
+        // ⭐ Show ALL toolbar tools (no hiding, no overflow)
+        toolbar_mode: 'wrap', // prevents collapsing
         toolbar: `
-        undo redo | blocks fontsize | bold italic underline strikethrough | myimage media table | link
-         | alignleft aligncenter alignright alignjustify |
+        undo redo |
+        blocks fontfamily fontsize |
+        bold italic underline strikethrough |
+        forecolor backcolor |
+        alignleft aligncenter alignright alignjustify |
+        lineheight |
         bullist numlist outdent indent |
-        emoticons charmap | pagebreak anchor | codesample code |
-        visualblocks visualchars | fullscreen preview
+        myimage media table |
+        link anchor |
+        emoticons charmap |
+        pagebreak insertdatetime |
+        codesample code |
+        visualblocks visualchars |
+        fullscreen preview |
+        removeformat
     `,
 
+        // ⭐ Show ALL menu items
         menubar: 'file edit view insert format tools table help',
+
         branding: false,
 
         setup: function(editor) {
 
-            // Custom toolbar image button → open your media modal
+            // ⭐ Replace toolbar image button with your modal
             editor.ui.registry.addButton('myimage', {
                 icon: 'image',
                 tooltip: 'Insert image',
@@ -888,7 +903,7 @@
                 }
             });
 
-            // Replace Insert → Image… menu item → open your media modal
+            // ⭐ Replace Insert → Image menu item
             editor.ui.registry.addMenuItem('image', {
                 text: 'Image…',
                 icon: 'image',
@@ -897,7 +912,7 @@
                 }
             });
 
-            // Clicking an image inside the editor → open your media modal
+            // ⭐ Clicking an image inside editor opens your modal
             editor.on('click', function(e) {
                 if (e.target.nodeName === 'IMG') {
                     openZentraMediaLibraryModal('editor');
@@ -909,7 +924,8 @@
 
     <script>
     function insertImageIntoEditor(url) {
-        tinymce.activeEditor.insertContent(`<img src="${url}" alt="">`);
+        const filename = url.split('/').pop();
+        tinymce.activeEditor.insertContent(`<img src="${url}" alt="${filename}" style="max-width:100%; height:auto;">`);
     }
     </script>
 
