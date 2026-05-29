@@ -197,6 +197,10 @@ class EventsModule
         }
 
         // Add update timestamps
+        $nowUtc                          = gmdate('Y-m-d H:i:s');
+        $userTz                          = $_SESSION['user_timezone'] ?? 'UTC';
+        $dt                              = new DateTime('now', new DateTimeZone($userTz));
+        $nowLocal                        = $dt->format('Y-m-d H:i:s');
         $payload['updated_at_utc']       = $nowUtc;
         $payload['updated_at_localtime'] = $nowLocal;
 
@@ -529,16 +533,20 @@ class EventsModule
         // 2. Update event poster (tenant-scoped)
         $sql = "UPDATE zentra_events
             SET poster_library_id = :lib_id,
-                poster_url = :url
+                poster_url = :url,
+                updated_at_utc    = :updated_at_utc,
+                updated_at_localtime = :updated_at_localtime
             WHERE event_id = :event_id
               AND tenant_id = :tenant_id";
 
         $stmt    = $this->pdo->prepare($sql);
         $success = $stmt->execute([
-            'lib_id'    => $libraryId,
-            'url'       => $url,
-            'event_id'  => $eventId,
-            'tenant_id' => $tenantId,
+            'lib_id'               => $libraryId,
+            'url'                  => $url,
+            'event_id'             => $eventId,
+            'tenant_id'            => $tenantId,
+            'updated_at_utc'       => $nowUtc,
+            'updated_at_localtime' => $nowLocal,
         ]);
 
         // 3. Log activity (tenant-aware)
