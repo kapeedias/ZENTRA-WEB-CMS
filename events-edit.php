@@ -856,9 +856,9 @@
     <script>
     tinymce.init({
         selector: '#event_description',
-        height: 500,
         license_key: 'gpl',
-        // ⭐ Enable ALL free plugins
+        height: 500,
+
         plugins: `
         advlist anchor autolink autosave charmap code codesample directionality
         emoticons fullscreen help image insertdatetime link lists media nonbreaking
@@ -866,11 +866,10 @@
         wordcount
     `,
 
-        // ⭐ Full toolbar
         toolbar: `
         undo redo | blocks fontfamily fontsize | bold italic underline strikethrough |
         forecolor backcolor | alignleft aligncenter alignright alignjustify |
-        bullist numlist outdent indent | link image media table |
+        bullist numlist outdent indent | myimage media table |
         emoticons charmap | pagebreak anchor | codesample code |
         visualblocks visualchars | fullscreen preview
     `,
@@ -880,20 +879,22 @@
 
         setup: function(editor) {
 
-            // Override built-in image button
-            editor.on('PreInit', function() {
-                editor.execCommand = (function(orig) {
-                    return function(cmd, ui, value) {
-                        if (cmd === 'mceImage') {
-                            openZentraMediaLibraryModal('editor');
-                            return;
-                        }
-                        return orig.call(this, cmd, ui, value);
-                    };
-                })(editor.execCommand);
+            // ⭐ 1. Register your custom image button
+            editor.ui.registry.addButton('myimage', {
+                icon: 'image',
+                tooltip: 'Insert image',
+                onAction: function() {
+                    openZentraMediaLibraryModal('editor');
+                }
+            });
+
+            // ⭐ 2. Clicking an image inside the editor opens your modal
+            editor.on('click', function(e) {
+                if (e.target.nodeName === 'IMG') {
+                    openZentraMediaLibraryModal('editor');
+                }
             });
         }
-
     });
     </script>
 
