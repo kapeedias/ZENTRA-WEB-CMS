@@ -115,7 +115,7 @@
     $posterId = $_POST['poster_media_id'] ?? null;
 
     // 4️⃣ Determine CREATE vs UPDATE
-    $eventHash = $_POST['event_id'] ?: null;
+    $eventHash = $_POST['event_idhash'] ?: null;
 
     // 5️⃣ Save event
     $savedHash = $events->saveEvent($data, $eventHash, $userId);
@@ -192,14 +192,17 @@
 
                                         <div class="card-body pt-2">
                                             <div class="mb-3"><span>Event Title</span>
-                                                <<input type="hidden" id="event_id" name="event_id"
+                                                <input type="hidden" id="event_id" name="event_id"
+                                                    value="<?php echo htmlspecialchars($event['event_id']) ?>">
+
+                                                <input type="hidden" id="event_idhash" name="event_idhash"
                                                     value="<?php echo htmlspecialchars($eventHash) ?>">
 
-                                                    <input type="text" class="form-control fw-bold text-warning"
-                                                        autofocus="" name="event_title" id="event_title"
-                                                        value="<?php echo htmlspecialchars($event['event_title']); ?>"><span
-                                                        class="small text-secondary"
-                                                        id="event-url"><?php echo htmlspecialchars($eventUrl); ?></span>
+                                                <input type="text" class="form-control fw-bold text-warning"
+                                                    autofocus="" name="event_title" id="event_title"
+                                                    value="<?php echo htmlspecialchars($event['event_title']); ?>"><span
+                                                    class="small text-secondary"
+                                                    id="event-url"><?php echo htmlspecialchars($eventUrl); ?></span>
                                             </div>
                                             <div class="row g-3">
                                                 <div class="col-md-4">
