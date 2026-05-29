@@ -85,6 +85,34 @@ class EventsModule
         }
 
         // ---------------------------------------------------------
+        // 2.1) Normalize datetime-local fields BEFORE diff comparison
+        // ---------------------------------------------------------
+        $datetimeFields = [
+            'event_start_date',
+            'event_end_date',
+        ];
+
+        $timeFields = [
+            'event_start_time',
+            'event_end_time',
+        ];
+
+        foreach ($datetimeFields as $field) {
+            if (! empty($data[$field]) && str_contains($data[$field], 'T')) {
+                // Convert "2026-05-23T00:00" → "2026-05-23 00:00:00"
+                $data[$field] = str_replace('T', ' ', $data[$field]) . ':00';
+            }
+        }
+
+        foreach ($timeFields as $field) {
+            if (! empty($data[$field]) && str_contains($data[$field], 'T')) {
+                // Extract only the time portion
+                $parts        = explode('T', $data[$field]);
+                $data[$field] = $parts[1] . ':00';
+            }
+        }
+
+        // ---------------------------------------------------------
         // 3) FIELD‑LEVEL DIFF LOGGING
         // ---------------------------------------------------------
         $changes = [];
