@@ -67,9 +67,8 @@ class EventsModule
 
     public function saveEvent(array $data, ?string $hash = null, ?int $userId = null): string
     {
-
         // ---------------------------------------------------------
-        // 1) Timestamps
+        // 1) Timestamps (strict UTC + user local)
         // ---------------------------------------------------------
         $nowUtc = gmdate('Y-m-d H:i:s');
 
@@ -84,6 +83,7 @@ class EventsModule
         if ($hash !== null) {
             $existingEvent = $this->getEventByHash($hash);
         }
+
         // ---------------------------------------------------------
         // 3) FIELD‑LEVEL DIFF LOGGING
         // ---------------------------------------------------------
@@ -93,7 +93,6 @@ class EventsModule
             foreach ($data as $key => $newValue) {
                 $oldValue = $existingEvent[$key] ?? null;
 
-                // Normalize empty values
                 if ($oldValue === '') {
                     $oldValue = null;
                 }
@@ -124,10 +123,8 @@ class EventsModule
             $title     = $data['event_title'] ?? 'event';
             $startDate = $data['event_start_date'] ?? date('Y-m-d');
 
-            // Generate only the slug (no date path)
             $data['event_slug'] = $this->generateSlug($title, $startDate);
 
-            // Add slug to diff log if updating
             if ($existingEvent !== null) {
                 $changes['event_slug'] = [
                     'old' => $existingEvent['event_slug'] ?? null,
@@ -138,7 +135,7 @@ class EventsModule
         }
 
         // ---------------------------------------------------------
-        // 5) Build payload
+        // 5) Build payload (CREATE defaults)
         // ---------------------------------------------------------
         $payload = [
             'tenant_id'            => $this->tenant_id,
@@ -158,7 +155,9 @@ class EventsModule
             'event_status'         => $data['event_status'] ?? 'Draft',
             'event_category'       => $data['event_category'] ?? 'event',
             'created_by'           => $userId,
-            'created_on_utc'       => $nowUtc,
+
+            // Corrected names
+            'created_at_utc'       => $nowUtc,
             'created_at_localtime' => $nowLocal,
         ];
 
@@ -167,11 +166,9 @@ class EventsModule
         // ---------------------------------------------------------
         if ($hash === null) {
 
-            // Generate secure event hash
             $eventHash             = substr(bin2hex(random_bytes(16)), 0, 12);
             $payload['event_hash'] = $eventHash;
 
-            // Insert
             $columns      = implode(', ', array_keys($payload));
             $placeholders = ':' . implode(', :', array_keys($payload));
 
@@ -180,9 +177,6 @@ class EventsModule
             );
             $stmt->execute($payload);
 
-            // ---------------------------------------------------------
-            // CREATE LOGGING (always logs)
-            // ---------------------------------------------------------
             $this->logEventAudit(
                 $userId,
                 "Event Created ({$payload['event_title']})",
@@ -199,8 +193,12 @@ class EventsModule
         // 7) UPDATE MODE — skip if no changes
         // ---------------------------------------------------------
         if (! $hasChanges) {
-            return $hash; // No update, no logging
+            return $hash;
         }
+
+        // Add update timestamps
+        $payload['updated_at_utc']       = $nowUtc;
+        $payload['updated_at_localtime'] = $nowLocal;
 
         $payload['event_hash'] = $hash;
 
@@ -209,7 +207,6 @@ class EventsModule
             if ($key === 'tenant_id' || $key === 'event_hash') {
                 continue;
             }
-
             $setParts[] = "{$key} = :{$key}";
         }
         $setQuery = implode(', ', $setParts);
@@ -221,9 +218,6 @@ class EventsModule
         );
         $stmt->execute($payload);
 
-        // ---------------------------------------------------------
-        // UPDATE LOGGING (only when changes exist)
-        // ---------------------------------------------------------
         $this->logEventAudit(
             $userId,
             "Event Updated ({$payload['event_title']})",
