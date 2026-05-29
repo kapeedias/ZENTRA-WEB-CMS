@@ -55,7 +55,7 @@ $stmt = $pdo->prepare("
     WHERE event_slug = ?
       AND event_start_date = ?
 ");
-$stmt->execute([$slug, $startDT]);
+$stmt->execute([$slug, $date]);
 $count = $stmt->fetchColumn();
 
 if ($count > 0) {
