@@ -193,7 +193,7 @@
                                         <div class="card-body pt-2">
                                             <div class="mb-3"><span>Event Title</span>
                                                 <input type="hidden" id="event_id" name="event_id"
-                                                    value="<?php echo htmlspecialchars($event['event_id']) ?>">
+                                                    value="<?php echo intval($event['event_id']); ?>">
 
                                                 <input type="hidden" id="event_idhash" name="event_idhash"
                                                     value="<?php echo htmlspecialchars($eventHash) ?>">
