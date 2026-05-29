@@ -848,66 +848,6 @@
     <script src="/assets/tinymce/tinymce.min.js"></script>
 
     <script>
-    let quill; // global
-    document.addEventListener("DOMContentLoaded", function() {
-
-        const fullToolbar = [
-            [{
-                header: [1, 2, 3, 4, 5, 6, false]
-            }],
-            ["bold", "italic", "underline", "strike"],
-            [{
-                color: []
-            }, {
-                background: []
-            }],
-            [{
-                script: "sub"
-            }, {
-                script: "super"
-            }],
-            [{
-                list: "ordered"
-            }, {
-                list: "bullet"
-            }],
-            [{
-                indent: "-1"
-            }, {
-                indent: "+1"
-            }],
-            [{
-                align: []
-            }],
-            ["blockquote", "code-block"],
-            ["link", "image", "video"],
-            ["clean"]
-        ];
-
-        // ✅ Initialize Quill ONCE
-        quill = new Quill("#editor", {
-            theme: "snow",
-            modules: {
-                toolbar: fullToolbar
-            }
-        });
-
-        // ✅ Override image button to open media library
-        const toolbar = quill.getModule("toolbar");
-        toolbar.addHandler("image", function() {
-            openZentraMediaLibraryModal('editor');
-        });
-
-        // Optional: sync content before submit
-        window.syncQuillContent = function() {
-            const html = quill.root.innerHTML;
-            document.getElementById("event_description").value = html;
-            return true;
-        };
-    });
-    </script>
-
-    <script>
     tinymce.init({
         selector: '#event_description',
         license_key: 'gpl',
@@ -993,20 +933,44 @@
         const form = document.getElementById("eventForm");
 
         if (saveBtn && form) {
-            saveBtn.addEventListener("click", function() {
+            saveBtn.addEventListener("click", function(e) {
+                e.preventDefault();
 
-                // ⭐ Sync Quill content
-                const html = quill.root.innerHTML;
-                document.getElementById("event_description").value = html;
+                // ⭐ Sync TinyMCE content
+                tinymce.triggerSave(); // puts HTML into textarea
 
-                // ⭐ Sync tags (if you use tags)
+                // ⭐ Sync tags (if used)
                 if (window.selectedTags) {
                     document.getElementById("hiddenTags").value =
                         JSON.stringify(window.selectedTags);
                 }
 
-                // ⭐ Submit form
-                form.submit();
+                // ⭐ Serialize form
+                const formData = $(form).serialize();
+
+                // ⭐ AJAX save
+                $.post('/events/save', formData, function(response) {
+
+                    if (typeof response === "string") {
+                        response = JSON.parse(response);
+                    }
+
+                    switch (response.status) {
+
+                        case 'no_changes':
+                            showToast("No changes to save", "warning");
+                            break;
+
+                        case 'success':
+                            showToast("Event updated successfully", "success");
+                            break;
+
+                        case 'error':
+                        default:
+                            showToast("Error: event did not update", "danger");
+                            break;
+                    }
+                });
             });
         }
     });
@@ -1353,7 +1317,60 @@
         });
     </script>
 
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 9999;">
+        <div id="zentraToast" class="toast align-items-center border-0" role="alert">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <span id="zentraToastMessage"></span>
+                    <small id="zentraToastTime" class="text-light ms-2"></small>
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button>
+            </div>
+        </div>
+    </div>
 
+
+    <script>
+    let toastTimer = null;
+    let toastStartTime = null;
+
+    function showToast(message, type = 'primary') {
+        const toastEl = document.getElementById('zentraToast');
+        const toastMsg = document.getElementById('zentraToastMessage');
+        const toastTime = document.getElementById('zentraToastTime');
+
+        // Reset classes
+        toastEl.className = 'toast align-items-center border-0 text-bg-' + type;
+
+        // Set message
+        toastMsg.textContent = message;
+
+        // Start timestamp
+        toastStartTime = Date.now();
+        toastTime.textContent = "just now";
+
+        // Clear previous timer
+        if (toastTimer) clearInterval(toastTimer);
+
+        // Update "x seconds ago" every second
+        toastTimer = setInterval(() => {
+            const diff = Math.floor((Date.now() - toastStartTime) / 1000);
+            toastTime.textContent = diff === 0 ? "just now" : `${diff} sec ago`;
+        }, 1000);
+
+        // Show toast
+        const toast = new bootstrap.Toast(toastEl, {
+            delay: 5000
+        });
+        toast.show();
+
+        // Stop timer when toast hides
+        toastEl.addEventListener('hidden.bs.toast', () => {
+            clearInterval(toastTimer);
+            toastTimer = null;
+        });
+    }
+    </script>
     <?php include '_include/body_end_plugins.php'; ?>
 </body>
 
