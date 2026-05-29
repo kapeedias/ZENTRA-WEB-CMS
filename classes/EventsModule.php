@@ -17,7 +17,6 @@ class EventsModule
         $this->object_id = $object_id;
         $this->logger    = $logger;
     }
-
     public function listEvents(
         bool $activeOnly = true,
         ?string $status = null,
@@ -47,7 +46,6 @@ class EventsModule
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC) ?: [];
     }
-
     public function getEventByHash(string $hash): ?array
     {
         $stmt = $this->pdo->prepare(
@@ -80,39 +78,32 @@ class EventsModule
         // ---------------------------------------------------------
         $existingEvent = null;
         if ($hash !== null) {
+            // SOC2: hash-based lookup prevents ID enumeration
             $existingEvent = $this->getEventByHash($hash);
         }
 
         // ---------------------------------------------------------
         // 2.1) Normalize datetime-local fields BEFORE diff comparison
+        // Ensures consistent DB format and accurate diff detection
         // ---------------------------------------------------------
-        $datetimeFields = [
-            'event_start_date',
-            'event_end_date',
-        ];
-
-        $timeFields = [
-            'event_start_time',
-            'event_end_time',
-        ];
+        $datetimeFields = ['event_start_date', 'event_end_date'];
+        $timeFields     = ['event_start_time', 'event_end_time'];
 
         foreach ($datetimeFields as $field) {
             if (! empty($data[$field]) && str_contains($data[$field], 'T')) {
-                // Convert "2026-05-23T00:00" → "2026-05-23 00:00:00"
                 $data[$field] = str_replace('T', ' ', $data[$field]) . ':00';
             }
         }
 
         foreach ($timeFields as $field) {
             if (! empty($data[$field]) && str_contains($data[$field], 'T')) {
-                // Extract only the time portion
                 $parts        = explode('T', $data[$field]);
                 $data[$field] = $parts[1] . ':00';
             }
         }
 
         // ---------------------------------------------------------
-        // 3) FIELD‑LEVEL DIFF LOGGING
+        // 3) FIELD‑LEVEL DIFF LOGGING (SOC2 audit requirement)
         // ---------------------------------------------------------
         $changes = [];
 
@@ -129,10 +120,7 @@ class EventsModule
                 }
 
                 if ($oldValue != $newValue) {
-                    $changes[$key] = [
-                        'old' => $oldValue,
-                        'new' => $newValue,
-                    ];
+                    $changes[$key] = ['old' => $oldValue, 'new' => $newValue];
                 }
             }
         }
@@ -140,10 +128,10 @@ class EventsModule
         $hasChanges = ! empty($changes);
 
         // ---------------------------------------------------------
-        // 4) Slug handling (edit-safe, only regenerate when title changes)
+        // 4) Slug handling (edit-safe, SOC2: deterministic slug rules)
         // ---------------------------------------------------------
         if ($existingEvent !== null) {
-            // EDIT MODE
+
             $oldTitle = $existingEvent['event_title'] ?? null;
             $newTitle = $data['event_title'] ?? null;
 
@@ -161,7 +149,7 @@ class EventsModule
                 $hasChanges = true;
 
             } else {
-                // Title unchanged → keep existing slug
+                // Title unchanged → preserve slug
                 $data['event_slug'] = $existingEvent['event_slug'];
             }
 
@@ -201,7 +189,7 @@ class EventsModule
         ];
 
         // ---------------------------------------------------------
-        // 6) CREATE MODE
+        // 6) CREATE MODE (hash-based, SOC2-safe)
         // ---------------------------------------------------------
         if ($hash === null) {
 
@@ -216,10 +204,10 @@ class EventsModule
             );
             $stmt->execute($payload);
 
-            // ⭐⭐⭐ ADD THIS — GET event_id
+            // DB-generated PK (never exposed to UI)
             $eventId = (int) $this->pdo->lastInsertId();
 
-            // ⭐⭐⭐ ADD THIS — SAVE TAGS
+            // Save tag mappings (SOC2: internal-only)
             $this->saveEventTags($eventId, $this->tenant_id, $tags, $userId);
 
             $this->logEventAudit(
@@ -235,15 +223,36 @@ class EventsModule
         }
 
         // ---------------------------------------------------------
-        // 7) UPDATE MODE — skip if no changes
+        // 7) UPDATE MODE — detect tag changes (hash-based)
         // ---------------------------------------------------------
-        if (! $hasChanges) {
+        $existingTagIds = $this->getEventTagsByHash($hash);
+        $newTagIds      = array_map(fn($t) => (int) ($t['tagId'] ?? 0), $tags);
+
+        sort($existingTagIds);
+        sort($newTagIds);
+
+        $tagsChanged = ($existingTagIds !== $newTagIds);
+
+        // ---------------------------------------------------------
+        // 7.1) Nothing changed → skip DB writes (SOC2: minimal writes)
+        // ---------------------------------------------------------
+        if (! $hasChanges && ! $tagsChanged) {
             return $hash;
         }
 
-        // Add update timestamps
+        // ---------------------------------------------------------
+        // 7.2) Only tags changed → update tags, skip event update
+        // ---------------------------------------------------------
+        if (! $hasChanges && $tagsChanged) {
+            $eventId = (int) $existingEvent['event_id'];
+            $this->saveEventTags($eventId, $this->tenant_id, $tags, $userId);
+            return $hash;
+        }
+
+        // ---------------------------------------------------------
+        // 7.3) Event fields changed → update event + tags
+        // ---------------------------------------------------------
         $nowUtc                          = gmdate('Y-m-d H:i:s');
-        $userTz                          = $_SESSION['user_timezone'] ?? 'UTC';
         $dt                              = new DateTime('now', new DateTimeZone($userTz));
         $nowLocal                        = $dt->format('Y-m-d H:i:s');
         $payload['updated_at_utc']       = $nowUtc;
@@ -266,10 +275,10 @@ class EventsModule
          WHERE event_hash = :event_hash AND tenant_id = :tenant_id"
         );
         $stmt->execute($payload);
-        // ⭐⭐⭐ ADD THIS — GET event_id
+
         $eventId = (int) $existingEvent['event_id'];
 
-        // ⭐⭐⭐ ADD THIS — SAVE TAGS
+        // Save updated tag mappings
         $this->saveEventTags($eventId, $this->tenant_id, $tags, $userId);
 
         $this->logEventAudit(
@@ -380,7 +389,6 @@ class EventsModule
             ]
         );
     }
-
     public function deleteEvent(string $hash, ?int $userId = null): void
     {
         $stmt = $this->pdo->prepare(
@@ -400,7 +408,6 @@ class EventsModule
             );
         }
     }
-
     private function logEventActivity(
         int $userId,
         string $identifier,
@@ -476,7 +483,6 @@ class EventsModule
 
         return $baseSlug . '-' . $suffix;
     }
-
     public function getEventUrl(string $hash): ?string
     {
         $event = $this->getEventByHash($hash);
@@ -497,7 +503,6 @@ class EventsModule
 
         return "{$baseUrl}/events/{$year}/{$month}/{$day}/{$slug}";
     }
-
     public function getStatusBadge(string $status): array
     {
         $map = [
@@ -774,6 +779,22 @@ class EventsModule
         AND tag_id NOT IN (" . implode(',', $tagIds ?: [0]) . ")
     ");
         $delete->execute([$eventId, $tenantId]);
+    }
+    public function getEventTagsByHash(string $eventHash): array
+    {
+        $stmt = $this->pdo->prepare("
+        SELECT m.tag_id
+        FROM zentra_event_tag_map m
+        INNER JOIN {$this->table} e
+            ON e.event_id = m.event_id
+           AND e.tenant_id = m.tenant_id
+        WHERE e.tenant_id = ?
+          AND e.event_hash = ?
+        ORDER BY m.tag_id ASC
+    ");
+        $stmt->execute([$this->tenant_id, $eventHash]);
+
+        return array_map('intval', $stmt->fetchAll(PDO::FETCH_COLUMN));
     }
 
 }
