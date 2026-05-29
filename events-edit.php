@@ -897,6 +897,11 @@
         }
     });
     </script>
+    <script>
+    function insertImageIntoEditor(url) {
+        tinymce.activeEditor.insertContent(`<img src="${url}" alt="">`);
+    }
+    </script>
 
 
 
