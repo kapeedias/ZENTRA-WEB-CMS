@@ -932,7 +932,7 @@
 
         setup: function(editor) {
 
-            // ⭐ Replace toolbar image button with your modal
+            // Custom toolbar image button
             editor.ui.registry.addButton('myimage', {
                 icon: 'image',
                 tooltip: 'Insert image',
@@ -941,7 +941,7 @@
                 }
             });
 
-            // ⭐ Replace Insert → Image menu item
+            // Replace Insert → Image… menu item
             editor.ui.registry.addMenuItem('image', {
                 text: 'Image…',
                 icon: 'image',
@@ -950,13 +950,14 @@
                 }
             });
 
-            // ⭐ Clicking an image inside editor opens your modal
+            // Clicking an image inside the editor opens modal
             editor.on('click', function(e) {
                 if (e.target.nodeName === 'IMG') {
                     openZentraMediaLibraryModal('editor');
                 }
             });
         }
+
     });
     </script>
 
