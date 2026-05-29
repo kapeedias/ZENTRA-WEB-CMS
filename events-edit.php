@@ -341,6 +341,7 @@
                                             <button class="btn btn-warning text-white btn-sm" type="button"
                                                 data-bs-toggle="modal" data-bs-target="#tagPickerModal"> Add Event Tags
                                             </button>
+                                            <input type="hidden" id="hiddenTags" name="tags">
                                         </div>
 
                                         <div class="card-body pt-2">
@@ -836,8 +837,6 @@
 
                 <div class="modal-footer">
                     <button class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <input type="hidden" id="hiddenTags" name="tags">
-
                 </div>
 
             </div>
