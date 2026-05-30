@@ -714,76 +714,137 @@ class EventsModule
     }
     public function saveEventTags(int $eventId, int $tenantId, array $tags, ?int $userId = null): void
     {
-        $tagIds = [];
+        if ($eventId <= 0 || $tenantId <= 0) {
+            throw new InvalidArgumentException('Invalid eventId or tenantId');
+        }
 
-        foreach ($tags as $tag) {
-            $userTz    = $_SESSION['user_timezone'] ?? 'UTC';
-            $dt        = new DateTime('now', new DateTimeZone($userTz));
-            $localTime = $dt->format('Y-m-d H:i:s');
+        $this->pdo->beginTransaction();
 
-            $name = trim($tag['name']);
-            $slug = trim(strtolower(preg_replace('/[^a-z0-9]+/', '-', $name)), '-');
+        try {
+            $tagIds   = [];
+            $userTz   = $_SESSION['user_timezone'] ?? 'UTC';
+            $dt       = new DateTime('now', new DateTimeZone($userTz));
+            $localNow = $dt->format('Y-m-d H:i:s');
 
-            // 1) Check if tag exists
-            $stmt = $this->pdo->prepare("
+            $selectTagStmt = $this->pdo->prepare("
             SELECT tag_id
             FROM zentra_event_tags
             WHERE tenant_id = ? AND tag_slug = ?
             LIMIT 1
         ");
-            $stmt->execute([$tenantId, $slug]);
-            $row = $stmt->fetch();
 
-            if ($row) {
-                $tagId = $row['tag_id'];
-            } else {
-                // 2) Insert new tag
-                $insert = $this->pdo->prepare("
-                INSERT INTO zentra_event_tags
+            $insertTagStmt = $this->pdo->prepare("
+            INSERT INTO zentra_event_tags
                 (tenant_id, tag_name, tag_slug, created_at_utc, created_at_localtime, created_by)
-                VALUES (?, ?, ?, UTC_TIMESTAMP(), ?, ?)
-            ");
-                $insert->execute([
+            VALUES
+                (?, ?, ?, UTC_TIMESTAMP(), ?, ?)
+        ");
+
+            $upsertMapStmt = $this->pdo->prepare("
+            INSERT INTO zentra_event_tag_map
+                (tenant_id, event_id, tag_id, created_at_utc, created_at_localtime, created_by)
+            VALUES
+                (?, ?, ?, UTC_TIMESTAMP(), ?, ?)
+            ON DUPLICATE KEY UPDATE
+                updated_at_utc       = UTC_TIMESTAMP(),
+                updated_at_localtime = VALUES(created_at_localtime),
+                updated_by           = VALUES(created_by)
+        ");
+
+            foreach ($tags as $tag) {
+                if (! isset($tag['name'])) {
+                    continue;
+                }
+
+                $name = trim((string) $tag['name']);
+                if ($name === '') {
+                    continue;
+                }
+
+                $slug = $this->normalizeSlug($name);
+
+                // 1) Try to find existing tag by slug
+                $selectTagStmt->execute([$tenantId, $slug]);
+                $row = $selectTagStmt->fetch(PDO::FETCH_ASSOC);
+
+                if ($row) {
+                    $tagId = (int) $row['tag_id'];
+                } else {
+                    // 2) Insert new tag, safely handling race via unique index
+                    try {
+                        $insertTagStmt->execute([
+                            $tenantId,
+                            $name,
+                            $slug,
+                            $localNow,
+                            $userId,
+                        ]);
+                        $tagId = (int) $this->pdo->lastInsertId();
+                    } catch (PDOException $e) {
+                        // Another request may have inserted the same slug concurrently
+                        if ($this->isDuplicateKeyException($e)) {
+                            $selectTagStmt->execute([$tenantId, $slug]);
+                            $row = $selectTagStmt->fetch(PDO::FETCH_ASSOC);
+                            if (! $row) {
+                                throw $e; // unexpected, rethrow
+                            }
+                            $tagId = (int) $row['tag_id'];
+                        } else {
+                            throw $e;
+                        }
+                    }
+                }
+
+                $tagIds[] = $tagId;
+
+                // 3) Upsert mapping
+                $upsertMapStmt->execute([
                     $tenantId,
-                    $name,
-                    $slug,
-                    $localTime,
+                    $eventId,
+                    $tagId,
+                    $localNow,
                     $userId,
                 ]);
-
-                $tagId = (int) $this->pdo->lastInsertId();
             }
 
-            $tagIds[] = $tagId;
+            // 4) Remove mappings that are no longer selected
+            $tagIds = array_unique(array_map('intval', $tagIds));
+            $idsSql = $tagIds ? implode(',', $tagIds) : '0';
 
-            $map = $this->pdo->prepare("
-            INSERT INTO zentra_event_tag_map
-            (tenant_id, event_id, tag_id, created_at_utc, created_at_localtime, created_by)
-            VALUES (?, ?, ?, UTC_TIMESTAMP(), ?, ?)
-            ON DUPLICATE KEY UPDATE
-                updated_at_utc = UTC_TIMESTAMP(),
-                updated_at_localtime = VALUES(updated_at_localtime),
-                updated_by = VALUES(updated_by)
-           ");
+            $deleteStmt = $this->pdo->prepare("
+            DELETE FROM zentra_event_tag_map
+            WHERE event_id = ? AND tenant_id = ?
+              AND tag_id NOT IN ($idsSql)
+        ");
+            $deleteStmt->execute([$eventId, $tenantId]);
 
-            $map->execute([
-                $tenantId,  // ?
-                $eventId,   // ?
-                $tagId,     // ?
-                $localTime, // ?
-                $userId,    // created_by ?
-            ]);
-
+            $this->pdo->commit();
+        } catch (Throwable $e) {
+            $this->pdo->rollBack();
+            // Log with ActivityLogger or similar here
+            throw $e;
         }
-
-        // 4) Remove tags that are no longer selected
-        $delete = $this->pdo->prepare("
-        DELETE FROM zentra_event_tag_map
-        WHERE event_id = ? AND tenant_id = ?
-        AND tag_id NOT IN (" . implode(',', $tagIds ?: [0]) . ")
-    ");
-        $delete->execute([$eventId, $tenantId]);
     }
+
+/**
+ * Normalize a tag name into a stable slug.
+ */
+    private function normalizeSlug(string $name): string
+    {
+        $name = trim($name);
+        $slug = preg_replace('/[^a-z0-9]+/i', '-', strtolower($name));
+        return trim($slug, '-');
+    }
+
+/**
+ * Detect duplicate key / unique constraint violations.
+ */
+    private function isDuplicateKeyException(PDOException $e): bool
+    {
+        // MySQL: 1062, MariaDB similar; adjust if you support multiple drivers
+        return $e->errorInfo[0] === '23000' && (int) $e->errorInfo[1] === 1062;
+    }
+
     public function getEventTagsByHash(string $eventHash): array
     {
         $stmt = $this->pdo->prepare("
