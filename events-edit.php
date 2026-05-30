@@ -974,22 +974,34 @@
     let badgeContainer;
     let tagSearchInput;
     let tagSearchResults;
-    //const badgeContainer = document.getElementById('eventTagBadges');
-    const tagSearchInput = document.getElementById('tagSearchInput');
-    const tagSearchResults = document.getElementById('tagSearchResults');
-    // --- SEARCH TAGS ---
-    tagSearchInput.addEventListener('input', function() {
-        const q = this.value.trim();
-        if (!q) {
-            tagSearchResults.innerHTML = '';
-            return;
-        }
 
-        fetch(`/api/v1/tags/search.php?q=${encodeURIComponent(q)}`)
-            .then(r => r.json())
-            .then(tags => renderTagSearch(tags, q));
+    document.addEventListener("DOMContentLoaded", function() {
+
+        // DOM elements MUST be fetched here
+        badgeContainer = document.getElementById('eventTagBadges');
+        tagSearchInput = document.getElementById('tagSearchInput');
+        tagSearchResults = document.getElementById('tagSearchResults');
+
+        // Attach search listener
+        tagSearchInput.addEventListener('input', function() {
+            const q = this.value.trim();
+            if (!q) {
+                tagSearchResults.innerHTML = '';
+                return;
+            }
+
+            fetch(`/api/v1/tags/search.php?q=${encodeURIComponent(q)}`)
+                .then(r => r.json())
+                .then(tags => renderTagSearch(tags, q));
+        });
+
+        // Load tags if editing
+        <?php if (! empty($event_id)): ?>
+        loadEventTags(<?php echo (int)$event['event_id'] ?>);
+        <?php endif; ?>
     });
 
+    // --- SEARCH RESULTS RENDER ---
     function renderTagSearch(tags, query) {
         tagSearchResults.innerHTML = '';
 
@@ -1010,13 +1022,13 @@
                 </button>`;
         });
     }
+
     // --- ADD TAG ---
     function addTag(name, isNew, tagId = null) {
         const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
 
         if (selectedTags.some(t => t.slug === slug)) return;
 
-        // If it's a new tag, create it in DB first
         if (isNew) {
             fetch('/api/v1/tags/create.php', {
                     method: 'POST',
@@ -1039,7 +1051,6 @@
                     renderBadges();
                 });
         } else {
-            // Existing tag
             selectedTags.push({
                 name,
                 slug,
@@ -1049,26 +1060,28 @@
             renderBadges();
         }
     }
+
     // --- RENDER BADGES ---
     function renderBadges() {
         badgeContainer.innerHTML = '';
 
         selectedTags.forEach((tag, index) => {
             badgeContainer.innerHTML += `
-            <span class="badge bg-light d-inline-flex gap-1 align-items-center">
-                ${tag.name}
-                <span class="remove-tag text-muted" onclick="removeTag(${index})">&times;</span>
-            </span>`;
-
+                <span class="badge bg-light d-inline-flex gap-1 align-items-center">
+                    ${tag.name}
+                    <span class="remove-tag text-muted" onclick="removeTag(${index})">&times;</span>
+                </span>`;
         });
 
         document.getElementById('hiddenTags').value = JSON.stringify(selectedTags);
     }
+
     // --- REMOVE TAG ---
     function removeTag(index) {
         selectedTags.splice(index, 1);
         renderBadges();
     }
+
     // --- LOAD TAGS FOR EDIT MODE ---
     function loadEventTags(eventId) {
         fetch(`/api/v1/tags/event-tags.php?event_id=${eventId}`)
@@ -1082,16 +1095,10 @@
                 }));
                 renderBadges();
                 console.log("Loaded tags:", selectedTags);
-
             });
     }
-    // Auto-run on page load (only if editing)
-    <?php if (! empty($event_id)): ?>
-    document.addEventListener("DOMContentLoaded", function() {
-        loadEventTags(<?php echo (int) $event['event_id'] ?>);
-    });
-    <?php endif; ?>
     </script>
+
 
     <script>
     (() => {
