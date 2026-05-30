@@ -971,7 +971,10 @@
     </script>
     <script>
     let selectedTags = [];
-    const badgeContainer = document.getElementById('eventTagBadges');
+    let badgeContainer;
+    let tagSearchInput;
+    let tagSearchResults;
+    //const badgeContainer = document.getElementById('eventTagBadges');
     const tagSearchInput = document.getElementById('tagSearchInput');
     const tagSearchResults = document.getElementById('tagSearchResults');
     // --- SEARCH TAGS ---
@@ -1085,7 +1088,7 @@
     // Auto-run on page load (only if editing)
     <?php if (! empty($event_id)): ?>
     document.addEventListener("DOMContentLoaded", function() {
-        loadEventTags(<?php echo $event_id ?>);
+        loadEventTags(<?php echo (int) $event['event_id'] ?>);
     });
     <?php endif; ?>
     </script>
