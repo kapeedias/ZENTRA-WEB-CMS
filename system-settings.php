@@ -11,73 +11,177 @@
     require_once __DIR__ . '/classes/MenuManager.php';
     require_once __DIR__ . '/_include/nav_renderer.php';
     require_once __DIR__ . '/classes/ModuleManager.php';
+    require_once __DIR__ . '/classes/ActivityLogger.php';
+
     enforceSessionSecurity();
     $ip = getClientIP();
+
+    $errors  = [];
+    $success = [];
 
     try {
     $pdo     = Database::getInstance();
     $userObj = new User($pdo);
-
     } catch (Throwable $e) {
-    $error[] = "Database connection failed: " . $e->getMessage();
+    $errors[] = "Database connection failed: " . $e->getMessage();
     }
 
     $moduleManager = new ModuleManager($pdo); // ← REQUIRED
 
-    // Check if the form was submitted
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // ==== HANDLE POST (UPDATE SETTINGS) ====
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && empty($errors)) {
+
+    $tenantId = (int) ($_SESSION['tenant_id'] ?? 0);
+    $userId   = (int) ($_SESSION['user_id'] ?? 0);
+    $geo      = $_SESSION['geo'] ?? [];
+    $browser  = $_SERVER['HTTP_USER_AGENT'] ?? 'unknown';
+    $device   = $_SESSION['device'] ?? null;
+    $userTz   = $_SESSION['user_timezone'] ?? 'UTC';
+
     foreach ($_POST['settings'] as $setting_key => $setting_value) {
+
         // Sanitize setting_key (ensure it's alphanumeric and underscores or dashes only)
         if (! preg_match('/^[a-zA-Z0-9_-]+$/', $setting_key)) {
             $errors[] = "Invalid setting key: $setting_key<br>";
-            continue; // Skip this iteration if setting_key is invalid
+            continue;
         }
-                                                                                // Trim and sanitize setting_value
-        $setting_value = trim($setting_value);                                  // Remove extra spaces
-        $setting_value = htmlspecialchars($setting_value, ENT_QUOTES, 'UTF-8'); // Prevent XSS
+
+        // Trim and sanitize setting_value
+        $setting_value = trim($setting_value);
+        $setting_value = htmlspecialchars($setting_value, ENT_QUOTES, 'UTF-8');
 
         // Check if the setting is enabled (checkbox is checked)
-        if (isset($_POST['enabled'][$setting_key])) {
-            $is_enabled = 1; // Checkbox was checked
-        } else {
-            $is_enabled = 0; // Checkbox was unchecked
-        }
+        $is_enabled = isset($_POST['enabled'][$setting_key]) ? 1 : 0;
 
-        // Secure database update using prepared statements
         try {
-            // Prepare the update query
+            // Fetch old value BEFORE update for audit
+            $stmtOld = $pdo->prepare("
+                    SELECT setting_value, is_enabled
+                    FROM zentra_system_settings
+                    WHERE setting_key = :setting_key
+                ");
+            $stmtOld->execute([':setting_key' => $setting_key]);
+            $oldRow = $stmtOld->fetch(PDO::FETCH_ASSOC) ?: ['setting_value' => null, 'is_enabled' => null];
+
+            // Update setting
             $stmt = $pdo->prepare("
                     UPDATE `zentra_system_settings`
                     SET
                         `setting_value` = :setting_value,
-                        `is_enabled` = :is_enabled,
-                        `updated_by` = :updated_by
+                        `is_enabled`    = :is_enabled,
+                        `updated_by`    = :updated_by
                     WHERE
-                        `setting_key` = :setting_key
+                        `setting_key`   = :setting_key
                 ");
 
-            // Execute the update query with the prepared values
             $stmt->execute([
                 ':setting_value' => $setting_value,
                 ':is_enabled'    => $is_enabled,
-                ':updated_by'    => $_SESSION['user_id'],
+                ':updated_by'    => $userId,
                 ':setting_key'   => $setting_key,
             ]);
 
+            // SOC2 AUDIT LOG
+            $logger = new ActivityLogger($pdo, $tenantId);
+
+            $logger->log(
+                $userId,
+                $setting_key,
+                'System Setting Updated',
+                [
+                    'user_name'     => $_SESSION['first_name'] ?? null,
+                    'user_timezone' => $userTz,
+                    'tenant_id'     => $tenantId,
+
+                    // Raw geo data (forensics)
+                    'geo_raw'       => $geo['raw'] ?? null,
+                    'ip'            => $ip,
+                    'browser'       => $browser,
+                    'device'        => $device,
+                    'city'          => $geo['city'] ?? null,
+                    'region'        => $geo['region'] ?? null,
+                    'country'       => $geo['country'] ?? null,
+
+                    // Structured SOC2 JSON
+                    'audit_payload' => [
+                        'event'    => [
+                            'type'                => 'system_setting_update',
+                            'identifier'          => $setting_key,
+                            'success'             => true,
+                            'event_time_utc'      => gmdate('Y-m-d H:i:s'),
+                            'event_time_local'    => (new DateTime('now', new DateTimeZone($userTz)))->format('Y-m-d H:i:s'),
+                            'event_user_timezone' => $userTz,
+                            'session_id'          => session_id(),
+                            'ip'                  => $ip,
+                        ],
+
+                        'user'     => [
+                            'user_id'    => $userId,
+                            'username'   => $_SESSION['email'] ?? null,
+                            'first_name' => $_SESSION['first_name'] ?? null,
+                            'tenant_id'  => $tenantId,
+                        ],
+
+                        'change'   => [
+                            'setting_key' => $setting_key,
+                            'old_value'   => $oldRow['setting_value'],
+                            'new_value'   => $setting_value,
+                            'old_enabled' => (int) ($oldRow['is_enabled'] ?? 0),
+                            'new_enabled' => $is_enabled,
+                        ],
+
+                        'location' => [
+                            'city'     => $geo['city'] ?? null,
+                            'region'   => $geo['region'] ?? null,
+                            'country'  => $geo['country'] ?? null,
+                            'timezone' => $geo['timezone'] ?? null,
+                            'lat'      => $geo['latitude'] ?? null,
+                            'lon'      => $geo['longitude'] ?? null,
+                        ],
+
+                        'network'  => [
+                            'asn' => $geo['asn'] ?? null,
+                            'isp' => $geo['isp'] ?? null,
+                        ],
+
+                        'security' => [
+                            'vpn'     => $geo['vpn'] ?? null,
+                            'proxy'   => $geo['proxy'] ?? null,
+                            'tor'     => $geo['tor'] ?? null,
+                            'hosting' => $geo['hosting'] ?? null,
+                            'mobile'  => $geo['mobile'] ?? null,
+                            'carrier' => $geo['carrier'] ?? null,
+                            'bot'     => $geo['bot'] ?? null,
+                        ],
+
+                        'device'   => [
+                            'browser' => $browser,
+                            'device'  => $device,
+                        ],
+                    ],
+                ]
+            );
+
             $success[] = "Setting '$setting_key' updated successfully.<br>";
-            header("Location: system-settings.php");
+
         } catch (Exception $e) {
-            // Handle any errors that occur during the query execution
             $errors[] = "Error updating setting '$setting_key': " . $e->getMessage() . "<br>";
         }
     }
+
+    if (empty($errors)) {
+        header("Location: system-settings.php");
+        exit;
+    }
     }
 
+    // ==== LOAD SETTINGS FOR VIEW ====
     try {
     $stmt     = $pdo->query("SELECT * FROM zentra_system_settings");
     $settings = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (Throwable $e) {
-    $error[] = "Database query failed: " . $e->getMessage();
+    $errors[] = "Database query failed: " . $e->getMessage();
+    $settings = [];
     }
 
     $pageTitle   = "System Settings";
