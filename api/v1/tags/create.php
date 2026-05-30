@@ -75,12 +75,20 @@ if ($existingId) {
     exit;
 }
 
+$nowUtc   = gmdate('Y-m-d H:i:s');
+$userTz   = $_SESSION['user_timezone'] ?? 'UTC';
+$dt       = new DateTime('now', new DateTimeZone($userTz));
+$nowLocal = $dt->format('Y-m-d H:i:s');
+
+$payload['updated_at_utc']       = $nowUtc;
+$payload['updated_at_localtime'] = $nowLocal;
+
 // ---- INSERT NEW TAG ----
 $stmt = $pdo->prepare("
-    INSERT INTO zentra_event_tags (tenant_id, tag_name, tag_slug, created_by)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO zentra_event_tags (tenant_id, tag_name, tag_slug, created_by, created_at_utc, created_at_localtime)
+    VALUES (?, ?, ?, ?, ?, ?)
 ");
-$stmt->execute([$tenantId, $name, $slug, $userId]);
+$stmt->execute([$tenantId, $name, $slug, $userId, $nowUtc, $nowLocal]);
 
 $newTagId = (int) $pdo->lastInsertId();
 
