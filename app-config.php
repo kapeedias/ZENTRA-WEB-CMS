@@ -143,6 +143,30 @@
             </div>
         </div>
     </div>
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+
+        let table = $('#AppConfigData').DataTable({
+            paging: true,
+            ordering: true,
+            info: true,
+            searching: true,
+            lengthChange: false,
+            pageLength: 25,
+            language: {
+                search: "",
+                searchPlaceholder: "Search settings..."
+            }
+        });
+
+        // Bind your custom search box
+        $('input[name="searchAppConfig"]').on('keyup', function() {
+            table.search(this.value).draw();
+        });
+
+    });
+    </script>
+
     <?php include '_include/body_end_plugins.php'; ?>
     <script>
     document.querySelectorAll('.sai').forEach(function(toggle) {
