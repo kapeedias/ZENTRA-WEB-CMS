@@ -1078,6 +1078,8 @@
                     isNew: false
                 }));
                 renderBadges();
+                console.log("Loaded tags:", selectedTags);
+
             });
     }
     // Auto-run on page load (only if editing)
