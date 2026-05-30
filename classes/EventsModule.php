@@ -293,7 +293,6 @@ class EventsModule
 
         return $hash;
     }
-
     private function logEventAudit(
         int $userId,
         string $identifier,
@@ -723,7 +722,7 @@ class EventsModule
             $localTime = $dt->format('Y-m-d H:i:s');
 
             $name = trim($tag['name']);
-            $slug = strtolower(preg_replace('/[^a-z0-9]+/', '-', $name));
+            $slug = trim(strtolower(preg_replace('/[^a-z0-9]+/', '-', $name)), '-');
 
             // 1) Check if tag exists
             $stmt = $this->pdo->prepare("
