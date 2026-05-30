@@ -67,11 +67,12 @@ class EventsModule
         // ---------------------------------------------------------
         // 1) Timestamps (strict UTC + user local)
         // ---------------------------------------------------------
-        $nowUtc = gmdate('Y-m-d H:i:s');
-
-        $userTz   = $_SESSION['user_timezone'] ?? 'UTC';
-        $dt       = new DateTime('now', new DateTimeZone($userTz));
-        $nowLocal = $dt->format('Y-m-d H:i:s');
+        $nowUtc                          = gmdate('Y-m-d H:i:s');
+        $userTz                          = $_SESSION['user_timezone'] ?? 'UTC';
+        $dt                              = new DateTime('now', new DateTimeZone($userTz));
+        $nowLocal                        = $dt->format('Y-m-d H:i:s');
+        $payload['updated_at_utc']       = $nowUtc;
+        $payload['updated_at_localtime'] = $nowLocal;
 
         // ---------------------------------------------------------
         // 2) Load existing event ONLY in update mode
@@ -768,8 +769,11 @@ class EventsModule
                 $eventId,
                 $tagId,
                 $_SESSION['user_localtime'] ?? date('Y-m-d H:i:s'),
-                $userId,
+                $userId,                                            // created_by
+                $userId,                                            // updated_by
+                $_SESSION['user_localtime'] ?? date('Y-m-d H:i:s'), // updated_at_localtime
             ]);
+
         }
 
         // 4) Remove tags that are no longer selected
