@@ -718,7 +718,7 @@ class EventsModule
         $tagIds = [];
 
         foreach ($tags as $tag) {
-            $userTz    = $_SESSION['user_timezone'] ?? 'America/Vancouver';
+            $userTz    = $_SESSION['user_timezone'] ?? 'UTC';
             $dt        = new DateTime('now', new DateTimeZone($userTz));
             $localTime = $dt->format('Y-m-d H:i:s');
 
@@ -768,11 +768,11 @@ class EventsModule
            ");
 
             $map->execute([
-                $tenantId,                                          // ?
-                $eventId,                                           // ?
-                $tagId,                                             // ?
-                $_SESSION['user_localtime'] ?? date('Y-m-d H:i:s'), // created_at_localtime ?
-                $userId,                                            // created_by ?
+                $tenantId,  // ?
+                $eventId,   // ?
+                $tagId,     // ?
+                $localTime, // ?
+                $userId,    // created_by ?
             ]);
 
         }
