@@ -68,7 +68,7 @@ class EventsModule
         // 1) Timestamps (strict UTC + user local)
         // ---------------------------------------------------------
         $nowUtc                          = gmdate('Y-m-d H:i:s');
-        $_SESSION['user_timezone']       = $user->timezone ?? 'UTC';
+        $userTz                          = $_SESSION['user_timezone'] ?? 'UTC';
         $dt                              = new DateTime('now', new DateTimeZone($userTz));
         $nowLocal                        = $dt->format('Y-m-d H:i:s');
         $payload['updated_at_utc']       = $nowUtc;
