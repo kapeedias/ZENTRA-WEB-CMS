@@ -799,6 +799,20 @@
 
                     </div>
                     <!-- Filter row ends here -->
+                    <!-- Upload Progress -->
+                    <div id="uploadProgressWrapper" class="mb-3" style="display:none;">
+                        <div class="d-flex justify-content-between mb-1">
+                            <small id="uploadStatus">Uploading...</small>
+                            <small id="uploadPercent">0%</small>
+                        </div>
+                        <div class="progress">
+                            <div id="uploadProgressBar" class="progress-bar progress-bar-striped progress-bar-animated"
+                                style="width:0%"></div>
+                        </div>
+                    </div>
+
+                    <input type="file" id="zentraUploadInput" multiple accept="image/*,video/*,.pdf,.doc,.docx" hidden>
+
                     <div id="mediaGrid" class="row g-2" style="max-height:60vh; overflow-y:auto;"></div>
                     <!--
                         <div id="mediaGrid" class="media-grid"></div>
@@ -838,7 +852,73 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script>
+    document.getElementById("uploadBtn").addEventListener("click", () => {
+        document.getElementById("zentraUploadInput").click();
+    });
+
+    document.getElementById("zentraUploadInput").addEventListener("change", async (e) => {
+        const files = Array.from(e.target.files);
+        if (!files.length) return;
+
+        const progressWrapper = document.getElementById("uploadProgressWrapper");
+        const progressBar = document.getElementById("uploadProgressBar");
+        const uploadStatus = document.getElementById("uploadStatus");
+        const uploadPercent = document.getElementById("uploadPercent");
+
+        progressWrapper.style.display = "block";
+        progressBar.style.width = "0%";
+        uploadPercent.textContent = "0%";
+
+        const totalSize = files.reduce((sum, f) => sum + f.size, 0);
+        let uploadedSize = 0;
+
+        for (const file of files) {
+            await uploadSingleFile(file, (loaded) => {
+                uploadedSize += loaded;
+                const percent = Math.round((uploadedSize / totalSize) * 100);
+
+                progressBar.style.width = percent + "%";
+                uploadPercent.textContent = percent + "%";
+
+                uploadStatus.textContent =
+                    `Uploading ${(uploadedSize / 1e6).toFixed(1)} MB / ${(totalSize / 1e6).toFixed(1)} MB`;
+            });
+        }
+
+        uploadStatus.textContent = "Upload complete!";
+        progressBar.classList.remove("progress-bar-animated");
+
+        // Reload media grid after upload
+        loadMediaLibrary();
+    });
+
+    function uploadSingleFile(file, onProgress) {
+        return new Promise((resolve, reject) => {
+            const xhr = new XMLHttpRequest();
+            const formData = new FormData();
+            formData.append("file", file);
+
+            xhr.open("POST", "/api/v1/media/upload.php");
+
+            xhr.upload.addEventListener("progress", (e) => {
+                if (e.lengthComputable) {
+                    onProgress(e.loaded);
+                }
+            });
+
+            xhr.onload = () => {
+                if (xhr.status === 200) resolve(xhr.responseText);
+                else reject("Upload failed");
+            };
+
+            xhr.onerror = () => reject("XHR error");
+
+            xhr.send(formData);
+        });
+    }
+    </script>
+
     <script src="/assets/tinymce/tinymce.min.js"></script>
 
     <script>
@@ -997,7 +1077,7 @@
 
         // Load tags if editing
         <?php if (! empty($event['event_id'])): ?>
-        loadEventTags(<?php echo (int)$event['event_id'] ?>);
+        loadEventTags(<?php echo (int) $event['event_id'] ?>);
         <?php endif; ?>
 
     });
@@ -1136,27 +1216,7 @@
     })();
     </script>
 
-    <script>
-    function showPosterError(msg) {
-        const box = document.getElementById('posterUploadError');
-        box.innerHTML = `<span>${msg}</span>`;
-        box.classList.remove('d-none');
 
-        setTimeout(() => {
-            box.classList.add('d-none');
-        }, 5000);
-    }
-
-    function showPosterSuccess(msg) {
-        const box = document.getElementById('posterUploadSuccess');
-        box.innerHTML = `<span>${msg}</span>`;
-        box.classList.remove('d-none');
-
-        setTimeout(() => {
-            box.classList.add('d-none');
-        }, 5000);
-    }
-    </script>
     <script>
     function loadMediaLibrary(page = 1, search = "", filter = "all") {
         const grid = document.getElementById("mediaGrid");
