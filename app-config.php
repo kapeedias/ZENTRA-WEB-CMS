@@ -155,7 +155,7 @@
             pageLength: 25,
             language: {
                 search: "",
-                searchPlaceholder: "Search settings..."
+                searchPlaceholder: "Search modules..."
             }
         });
 
@@ -166,6 +166,7 @@
 
     });
     </script>
+
 
     <?php include '_include/body_end_plugins.php'; ?>
     <script>
