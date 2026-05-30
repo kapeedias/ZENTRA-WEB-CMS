@@ -754,7 +754,6 @@ class EventsModule
 
             $tagIds[] = $tagId;
 
-            // 3) Insert or update mapping
             $map = $this->pdo->prepare("
             INSERT INTO zentra_event_tag_map
             (tenant_id, event_id, tag_id, created_at_utc, created_at_localtime, created_by)
@@ -763,15 +762,14 @@ class EventsModule
                 updated_at_utc = UTC_TIMESTAMP(),
                 updated_at_localtime = VALUES(updated_at_localtime),
                 updated_by = VALUES(updated_by)
-        ");
+           ");
+
             $map->execute([
-                $tenantId,
-                $eventId,
-                $tagId,
-                $_SESSION['user_localtime'] ?? date('Y-m-d H:i:s'),
-                $userId,                                            // created_by
-                $userId,                                            // updated_by
-                $_SESSION['user_localtime'] ?? date('Y-m-d H:i:s'), // updated_at_localtime
+                $tenantId,                                          // ?
+                $eventId,                                           // ?
+                $tagId,                                             // ?
+                $_SESSION['user_localtime'] ?? date('Y-m-d H:i:s'), // created_at_localtime ?
+                $userId,                                            // created_by ?
             ]);
 
         }
