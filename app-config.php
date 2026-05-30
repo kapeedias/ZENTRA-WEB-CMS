@@ -150,6 +150,7 @@
             paging: true,
             ordering: true,
             info: true,
+            dom: 'lrtip', // removes the default search box from DOM
             searching: true,
             lengthChange: false,
             pageLength: 25,
