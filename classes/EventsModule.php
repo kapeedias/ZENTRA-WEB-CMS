@@ -68,7 +68,7 @@ class EventsModule
         // 1) Timestamps (strict UTC + user local)
         // ---------------------------------------------------------
         $nowUtc                          = gmdate('Y-m-d H:i:s');
-        $userTz                          = $_SESSION['user_timezone'] ?? 'UTC';
+        $_SESSION['user_timezone']       = $user->timezone ?? 'UTC';
         $dt                              = new DateTime('now', new DateTimeZone($userTz));
         $nowLocal                        = $dt->format('Y-m-d H:i:s');
         $payload['updated_at_utc']       = $nowUtc;
@@ -718,6 +718,9 @@ class EventsModule
         $tagIds = [];
 
         foreach ($tags as $tag) {
+            $userTz    = $_SESSION['user_timezone'] ?? 'America/Vancouver';
+            $dt        = new DateTime('now', new DateTimeZone($userTz));
+            $localTime = $dt->format('Y-m-d H:i:s');
 
             $name = trim($tag['name']);
             $slug = strtolower(preg_replace('/[^a-z0-9]+/', '-', $name));
@@ -745,7 +748,7 @@ class EventsModule
                     $tenantId,
                     $name,
                     $slug,
-                    $_SESSION['user_localtime'] ?? date('Y-m-d H:i:s'),
+                    $localTime,
                     $userId,
                 ]);
 
