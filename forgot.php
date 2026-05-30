@@ -109,9 +109,108 @@
                 $mailSent = $mailer->sendResetPasswordEmail($user['user_email'], $user['first_name'], $token);
 
                 if ($mailSent) {
-                    $success[]  = "A password reset link has been sent to your email.";
-                    $identifier = "Password reset requested for user {$user['user_email']}";
-                    $userObj->logActivity($user['id'], $identifier, 'Password Reset Requested');
+                    $success[] = "A password reset link has been sent to your email.";
+                    // Tenant from session (Option A)
+                    $tenantId = $_SESSION['tenant_id'] ?? null;
+
+                    // Fallback if session missing (public forgot-password page)
+                    if (! $tenantId) {
+                        $tenantStmt = $pdo->prepare("SELECT tenant_id FROM zentra_users WHERE id = ?");
+                        $tenantStmt->execute([$user['id']]);
+                        $tenantId = (int) $tenantStmt->fetchColumn();
+                    }
+
+                    // Environment context
+                    $ip      = $_SESSION['user_ip'] ?? cleanIP(getClientIP());
+                    $agent   = $_SESSION['user_agent'] ?? ($_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
+                    $browser = getBrowserName($agent);
+                    $device  = getDeviceType($agent);
+                    $geo     = $_SESSION['geo'] ?? [];
+
+                    $logger = new ActivityLogger($pdo, $tenantId);
+
+                    $logger->log(
+                        $user['id'],
+                        "Password Reset Requested: {$user['user_email']}",
+                        'Password Reset Requested',
+                        [
+                            'user_name'      => $user['first_name'],
+                            'user_timezone'  => $_SESSION['user_timezone'] ?? 'UTC',
+                            'tenant_id'      => $tenantId,
+
+                            'geo_raw'        => $geo['raw'] ?? null,
+                            'ip'             => $ip,
+                            'browser'        => $browser,
+                            'device'         => $device,
+                            'city'           => $geo['city'] ?? null,
+                            'region'         => $geo['region'] ?? null,
+                            'country'        => $geo['country'] ?? null,
+
+                            'audit_payload'  => [
+
+                                // EVENT BLOCK
+                                'event'               => [
+                                    'type'       => 'password_reset_requested',
+                                    'identifier' => "password_reset_request:{$user['id']}",
+                                    'success'             => true,
+                                    'event_time_utc'      => gmdate('Y-m-d H:i:s'),
+                                    'event_time_local'    => (new DateTime('now', new DateTimeZone($_SESSION['user_timezone'] ?? 'UTC')))
+                                        ->format('Y-m-d H:i:s'),
+                                    'event_user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+                                    'session_id'          => session_id(),
+                                    'ip'                  => $ip,
+                                ],
+
+                                // USER BLOCK
+                                'user'           => [
+                                    'user_id'    => $user['id'],
+                                    'username'   => $user['user_email'],
+                                    'first_name' => $user['first_name'],
+                                    'tenant_id'  => $tenantId,
+                                ],
+
+                                // PASSWORD RESET BLOCK
+                                'password_reset' => [
+                                    'token_created' => true,
+                                    'expires_at'    => $expires,
+                                ],
+
+                                // LOCATION BLOCK
+                                'location'       => [
+                                    'city'     => $geo['city'] ?? null,
+                                    'region'   => $geo['region'] ?? null,
+                                    'country'  => $geo['country'] ?? null,
+                                    'timezone' => $geo['timezone'] ?? null,
+                                    'lat'      => $geo['latitude'] ?? null,
+                                    'lon'      => $geo['longitude'] ?? null,
+                                ],
+
+                                // NETWORK BLOCK
+                                'network'        => [
+                                    'asn' => $geo['asn'] ?? null,
+                                    'isp' => $geo['isp'] ?? null,
+                                ],
+
+                                // SECURITY BLOCK
+                                'security'       => [
+                                    'vpn'     => $geo['vpn'] ?? null,
+                                    'proxy'   => $geo['proxy'] ?? null,
+                                    'tor'     => $geo['tor'] ?? null,
+                                    'hosting' => $geo['hosting'] ?? null,
+                                    'mobile'  => $geo['mobile'] ?? null,
+                                    'carrier' => $geo['carrier'] ?? null,
+                                    'bot'     => $geo['bot'] ?? null,
+                                ],
+
+                                // DEVICE BLOCK
+                                'device'         => [
+                                    'browser' => $browser,
+                                    'device'  => $device,
+                                ],
+                            ],
+                        ]
+                    );
+
                 } else {
                     $errors[] = "Failed to send reset email. Please try again later.";
                 }
@@ -127,12 +226,91 @@
         $_SESSION['forgot_attempts'][time()] = $ip;
         $identifier                          = "Failed password reset request for email: " . ($email ?? '[unknown]');
         $userId                              = $user['id'] ?? null;
-        $userObj->logActivity(
+        $tenantId                            = $_SESSION['tenant_id'] ?? null;
+
+        if (! $tenantId && $userId) {
+            $tenantStmt = $pdo->prepare("SELECT tenant_id FROM zentra_users WHERE id = ?");
+            $tenantStmt->execute([$userId]);
+            $tenantId = (int) $tenantStmt->fetchColumn();
+        }
+
+        $ip      = $_SESSION['user_ip'] ?? cleanIP(getClientIP());
+        $agent   = $_SESSION['user_agent'] ?? ($_SERVER['HTTP_USER_AGENT'] ?? 'unknown');
+        $browser = getBrowserName($agent);
+        $device  = getDeviceType($agent);
+        $geo     = $_SESSION['geo'] ?? [];
+
+        $logger = new ActivityLogger($pdo, $tenantId);
+
+        $logger->log(
             $userId,
             $identifier,
             'Password Reset Error',
-            ['context_error' => implode(" | ", $errors)]
+            [
+                'tenant_id'     => $tenantId,
+                'user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+                'ip'            => $ip,
+                'browser'       => $browser,
+                'device'        => $device,
+                'city'          => $geo['city'] ?? null,
+                'region'        => $geo['region'] ?? null,
+                'country'       => $geo['country'] ?? null,
+                'geo_raw'       => $geo['raw'] ?? null,
+
+                'audit_payload' => [
+                    'event'    => [
+                        'type'                => 'password_reset_error',
+                        'identifier'          => "password_reset_error:" . ($userId ?? 'unknown'),
+                        'success'             => false,
+                        'event_time_utc'      => gmdate('Y-m-d H:i:s'),
+                        'event_time_local'    => (new DateTime('now', new DateTimeZone($_SESSION['user_timezone'] ?? 'UTC')))
+                            ->format('Y-m-d H:i:s'),
+                        'event_user_timezone' => $_SESSION['user_timezone'] ?? 'UTC',
+                        'session_id'          => session_id(),
+                        'ip'                  => $ip,
+                    ],
+
+                    'user'     => [
+                        'user_id'   => $userId,
+                        'tenant_id' => $tenantId,
+                    ],
+
+                    'error'    => [
+                        'messages' => $errors,
+                    ],
+
+                    'location' => [
+                        'city'     => $geo['city'] ?? null,
+                        'region'   => $geo['region'] ?? null,
+                        'country'  => $geo['country'] ?? null,
+                        'timezone' => $geo['timezone'] ?? null,
+                        'lat'      => $geo['latitude'] ?? null,
+                        'lon'      => $geo['longitude'] ?? null,
+                    ],
+
+                    'network'  => [
+                        'asn' => $geo['asn'] ?? null,
+                        'isp' => $geo['isp'] ?? null,
+                    ],
+
+                    'security' => [
+                        'vpn'     => $geo['vpn'] ?? null,
+                        'proxy'   => $geo['proxy'] ?? null,
+                        'tor'     => $geo['tor'] ?? null,
+                        'hosting' => $geo['hosting'] ?? null,
+                        'mobile'  => $geo['mobile'] ?? null,
+                        'carrier' => $geo['carrier'] ?? null,
+                        'bot'     => $geo['bot'] ?? null,
+                    ],
+
+                    'device'   => [
+                        'browser' => $browser,
+                        'device'  => $device,
+                    ],
+                ],
+            ]
         );
+
     }
 
     // Save errors or success message for display and redirect to self

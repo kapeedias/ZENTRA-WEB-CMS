@@ -137,7 +137,9 @@
                     // ==== ACTIVITY LOG ====
                     $identifier = "User {$user['first_name']} ({$email}) logged in successfully";
 
-                    $userObj->logActivity(
+                    $logger = new ActivityLogger($pdo, (int) $user['tenant_id']);
+
+                    $logger->log(
                         $userId,
                         $identifier,
                         'Login',
@@ -225,7 +227,9 @@
         $identifier = "Failed login attempt for email: {$safeEmail}";
         $userId     = $user['id'] ?? null;
 
-        $userObj->logActivity(
+        $logger = new ActivityLogger($pdo, (int) ($user['tenant_id'] ?? 0));
+
+        $logger->log(
             $userId,
             $identifier,
             'Login Error',
