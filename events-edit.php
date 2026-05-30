@@ -996,9 +996,10 @@
         });
 
         // Load tags if editing
-        <?php if (! empty($event_id)): ?>
+        <?php if (! empty($event['event_id'])): ?>
         loadEventTags(<?php echo (int)$event['event_id'] ?>);
         <?php endif; ?>
+
     });
 
     // --- SEARCH RESULTS RENDER ---
